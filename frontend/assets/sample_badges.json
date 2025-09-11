@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "First Lesson Completed",
+    "description": "Complete your first lesson",
+    "iconUrl": null
+  },
+  {
+    "id": 2,
+    "name": "Quiz Master",
+    "description": "Complete 5 quizzes with 100% score",
+    "iconUrl": null
+  },
+  {
+    "id": 3,
+    "name": "Course Explorer",
+    "description": "Complete all lessons in a course",
+    "iconUrl": null
+  },
+  {
+    "id": 4,
+    "name": "Community Champion",
+    "description": "Create 10 forum posts",
+    "iconUrl": null
+  },
+  {
+    "id": 5,
+    "name": "Early Bird",
+    "description": "Log in for 7 consecutive days",
+    "iconUrl": null
+  }
+]

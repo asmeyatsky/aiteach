@@ -1,0 +1,35 @@
+{
+  "title": "Sample Quiz: Introduction to AI",
+  "questions": [
+    {
+      "question": "What does AI stand for?",
+      "options": [
+        "Artificial Intelligence",
+        "Automated Interface",
+        "Advanced Integration",
+        "Algorithmic Implementation"
+      ],
+      "correctAnswerIndex": 0
+    },
+    {
+      "question": "Which of the following is NOT a type of machine learning?",
+      "options": [
+        "Supervised Learning",
+        "Unsupervised Learning",
+        "Reinforcement Learning",
+        "Deterministic Learning"
+      ],
+      "correctAnswerIndex": 3
+    },
+    {
+      "question": "What is the main goal of a neural network?",
+      "options": [
+        "To store large amounts of data",
+        "To mimic the structure and function of the human brain",
+        "To replace human workers",
+        "To create random patterns"
+      ],
+      "correctAnswerIndex": 1
+    }
+  ]
+}
