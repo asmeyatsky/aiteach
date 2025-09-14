@@ -73,11 +73,21 @@ class _AnimatedButtonState extends State<AnimatedButton>
         child: ElevatedButton(
           onPressed: widget.onPressed,
           style: buttonStyle.copyWith(
-            backgroundColor: WidgetStatePropertyAll<Color?>(widget.backgroundColor ?? buttonStyle.backgroundColor),
-            foregroundColor: WidgetStatePropertyAll<Color?>(widget.foregroundColor ?? buttonStyle.foregroundColor),
-            elevation: WidgetStatePropertyAll<double?>(widget.elevation ?? buttonStyle.elevation?.resolve({})),
-            padding: WidgetStatePropertyAll<EdgeInsetsGeometry?>(widget.padding ?? buttonStyle.padding),
-            shape: WidgetStatePropertyAll<OutlinedBorder?>(widget.shape ?? buttonStyle.shape),
+            backgroundColor: widget.backgroundColor != null
+                ? WidgetStatePropertyAll<Color?>(widget.backgroundColor)
+                : buttonStyle.backgroundColor,
+            foregroundColor: widget.foregroundColor != null
+                ? WidgetStatePropertyAll<Color?>(widget.foregroundColor)
+                : buttonStyle.foregroundColor,
+            elevation: widget.elevation != null
+                ? WidgetStatePropertyAll<double?>(widget.elevation)
+                : buttonStyle.elevation,
+            padding: widget.padding != null
+                ? WidgetStatePropertyAll<EdgeInsetsGeometry?>(widget.padding)
+                : buttonStyle.padding,
+            shape: widget.shape != null
+                ? WidgetStatePropertyAll<OutlinedBorder?>(widget.shape)
+                : buttonStyle.shape,
           ),
           child: widget.child,
         ),

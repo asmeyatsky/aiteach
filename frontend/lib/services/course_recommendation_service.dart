@@ -1,3 +1,5 @@
+import 'package:frontend/models/user_proficiency.dart';
+
 class CourseRecommendation {
   final int id;
   final String title;

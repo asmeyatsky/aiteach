@@ -13,7 +13,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(currentUserIdProvider);
-    final userProfileAsyncValue = ref.watch(userProfileProvider(userId ?? 0));
+    final userProfileAsyncValue = ref.watch(userProfileProvider);
     final userBadgesAsyncValue = ref.watch(userBadgesProvider(userId ?? 0));
 
     return Scaffold(

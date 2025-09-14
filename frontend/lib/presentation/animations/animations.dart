@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 class FadeInAnimation extends StatefulWidget {
@@ -20,6 +21,7 @@ class _FadeInAnimationState extends State<FadeInAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  Timer? _timer;
   bool _disposed = false;
 
   @override
@@ -34,16 +36,21 @@ class _FadeInAnimationState extends State<FadeInAnimation>
     );
 
     // Start animation after delay
-    Future.delayed(widget.delay, () {
-      if (mounted && !_disposed) {
-        _controller.forward();
-      }
-    });
+    if (widget.delay == Duration.zero) {
+      _controller.forward();
+    } else {
+      _timer = Timer(widget.delay, () {
+        if (mounted && !_disposed) {
+          _controller.forward();
+        }
+      });
+    }
   }
 
   @override
   void dispose() {
     _disposed = true;
+    _timer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -79,6 +86,7 @@ class _SlideInAnimationState extends State<SlideInAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _animation;
+  Timer? _timer;
   bool _disposed = false;
 
   @override
@@ -96,16 +104,21 @@ class _SlideInAnimationState extends State<SlideInAnimation>
     );
 
     // Start animation after delay
-    Future.delayed(widget.delay, () {
-      if (mounted && !_disposed) {
-        _controller.forward();
-      }
-    });
+    if (widget.delay == Duration.zero) {
+      _controller.forward();
+    } else {
+      _timer = Timer(widget.delay, () {
+        if (mounted && !_disposed) {
+          _controller.forward();
+        }
+      });
+    }
   }
 
   @override
   void dispose() {
     _disposed = true;
+    _timer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -141,6 +154,7 @@ class _ScaleInAnimationState extends State<ScaleInAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  Timer? _timer;
   bool _disposed = false;
 
   @override
@@ -158,16 +172,21 @@ class _ScaleInAnimationState extends State<ScaleInAnimation>
     );
 
     // Start animation after delay
-    Future.delayed(widget.delay, () {
-      if (mounted && !_disposed) {
-        _controller.forward();
-      }
-    });
+    if (widget.delay == Duration.zero) {
+      _controller.forward();
+    } else {
+      _timer = Timer(widget.delay, () {
+        if (mounted && !_disposed) {
+          _controller.forward();
+        }
+      });
+    }
   }
 
   @override
   void dispose() {
     _disposed = true;
+    _timer?.cancel();
     _controller.dispose();
     super.dispose();
   }

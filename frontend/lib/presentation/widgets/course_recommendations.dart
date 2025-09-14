@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/services/course_recommendation_service.dart';
+import 'package:frontend/models/user_proficiency.dart';
 import 'package:go_router/go_router.dart';
 
 class RecommendedCoursesSection extends StatelessWidget {
