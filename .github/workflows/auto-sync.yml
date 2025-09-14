@@ -1,0 +1,42 @@
+name: Auto Sync Repository
+
+# This workflow only runs manually or on schedule to avoid infinite loops
+on:
+  workflow_dispatch:  # Manual trigger
+  schedule:
+    - cron: '*/30 * * * *'  # Every 30 minutes
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Check for changes and sync
+      run: |
+        echo "Checking repository sync status..."
+
+        # Fetch latest from remote
+        git fetch origin
+
+        # Check if local is ahead of remote
+        LOCAL=$(git rev-parse HEAD)
+        REMOTE=$(git rev-parse origin/$(git branch --show-current) 2>/dev/null || echo "")
+
+        if [ "$LOCAL" != "$REMOTE" ]; then
+          echo "⚠️ Local and remote repositories are out of sync"
+          echo "This workflow runs periodically to check sync status"
+          echo "Consider setting up a post-commit hook for immediate pushing"
+        else
+          echo "✅ Repository is synchronized"
+        fi
