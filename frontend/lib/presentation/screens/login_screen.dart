@@ -97,14 +97,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               });
                               if (token != null) {
                                 print('Logged in! Token: $token');
-                                // Set current user when logged in
-                                ref.read(currentUserProvider.notifier).state = User(
-                                  id: 1,
-                                  username: 'testuser',
-                                  email: 'test@example.com',
-                                  createdAt: DateTime.now(),
-                                );
-                                context.go('/'); // Navigate to home screen on successful login
+                                // Get actual user data from backend
+                                try {
+                                  final user = await authService.getCurrentUser();
+                                  if (user != null) {
+                                    ref.read(currentUserProvider.notifier).state = user;
+                                    if (mounted) {
+                                      context.go('/'); // Navigate to home screen on successful login
+                                    }
+                                  }
+                                } catch (userError) {
+                                  print('Error getting user info: $userError');
+                                  // Still navigate even if user info fails
+                                  if (mounted) {
+                                    context.go('/');
+                                  }
+                                }
                               } else {
                                 // Show error message
                                 ScaffoldMessenger.of(context).showSnackBar(

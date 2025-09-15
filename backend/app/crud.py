@@ -26,6 +26,22 @@ def create_user(db: Session, user: user.UserCreate):
     db.refresh(db_user)
     return db_user
 
+def delete_user(db: Session, user_id: int):
+    db_user = db.query(user_model.User).filter(user_model.User.id == user_id).first()
+    if db_user:
+        db.delete(db_user)
+        db.commit()
+        return True
+    return False
+
+def delete_user_by_username(db: Session, username: str):
+    db_user = db.query(user_model.User).filter(user_model.User.username == username).first()
+    if db_user:
+        db.delete(db_user)
+        db.commit()
+        return True
+    return False
+
 # Course CRUD
 def get_course(db: Session, course_id: int):
     return db.query(course_model.Course).filter(course_model.Course.id == course_id).first()

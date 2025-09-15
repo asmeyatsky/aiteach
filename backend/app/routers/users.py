@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app import crud, schemas
 from app.database import get_db
-from app.auth import create_access_token, verify_password
+from app.auth import create_access_token, verify_password, verify_token
 from datetime import timedelta
 
 router = APIRouter()
@@ -33,6 +33,20 @@ def login(form_data: schemas.user.UserLogin, db: Session = Depends(get_db)):
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/me", response_model=schemas.user.User)
+def get_current_user(username: str = Depends(verify_token), db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_username(db, username=username)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
+@router.delete("/username/{username}")
+def delete_user_by_username(username: str, db: Session = Depends(get_db)):
+    success = crud.delete_user_by_username(db, username=username)
+    if not success:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"message": f"User '{username}' has been deleted successfully"}
 
 @router.get("/{user_id}", response_model=schemas.user.User)
 def get_user(user_id: int, db: Session = Depends(get_db)):

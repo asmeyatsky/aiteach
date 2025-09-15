@@ -18,11 +18,11 @@ class ErrorInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     String errorMessage = 'An unexpected error occurred.';
     ApiException exception;
 
-    if (err.type == DioErrorType.badResponse) {
+    if (err.type == DioExceptionType.badResponse) {
       final statusCode = err.response?.statusCode;
       final detail = err.response?.data['detail'] ?? 'Something went wrong.';
 
@@ -43,24 +43,24 @@ class ErrorInterceptor extends Interceptor {
           exception = ApiException(detail, statusCode: statusCode);
           break;
       }
-    } else if (err.type == DioErrorType.connectionTimeout ||
-        err.type == DioErrorType.receiveTimeout ||
-        err.type == DioErrorType.sendTimeout) {
+    } else if (err.type == DioExceptionType.connectionTimeout ||
+        err.type == DioExceptionType.receiveTimeout ||
+        err.type == DioExceptionType.sendTimeout) {
       exception = NetworkException('Connection timed out. Please check your internet connection.');
-    } else if (err.type == DioErrorType.unknown) {
+    } else if (err.type == DioExceptionType.unknown) {
       exception = NetworkException('No internet connection or server is unreachable.');
     } else {
       exception = ApiException(errorMessage);
     }
 
-    // Create a new DioError with the custom exception
-    final newError = DioError(
+    // Create a new DioException with the custom exception
+    final newError = DioException(
       requestOptions: err.requestOptions,
       response: err.response,
       type: err.type,
       error: exception,
     );
-    
+
     // Pass the new error to the next handler
     handler.next(newError);
   }

@@ -164,7 +164,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 _selectedIndex = index;
               });
             },
-            labelType: NavigationRailLabelType.all,
+            labelType: NavigationRailLabelType.none, // Must be none when extended is true
             destinations: const [
               NavigationRailDestination(
                 icon: Icon(Icons.book),

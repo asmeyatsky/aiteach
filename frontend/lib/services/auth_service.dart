@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/utils/dio_interceptor.dart';
 import 'package:frontend/utils/exceptions.dart';
+import 'package:frontend/models/user.dart';
 
 class AuthService {
   final Dio _dio = Dio(BaseOptions(baseUrl: 'http://localhost:8000')); // Replace with your backend URL
@@ -22,8 +23,12 @@ class AuthService {
         await _saveToken(token);
       }
       return token;
-    } on DioError catch (e) {
-      throw e.error as ApiException; // Rethrow the custom exception
+    } on DioException catch (e) {
+      if (e.error is ApiException) {
+        throw e.error as ApiException;
+      } else {
+        throw ApiException('Login failed: ${e.message}');
+      }
     }
   }
 
@@ -34,8 +39,12 @@ class AuthService {
         data: {'username': username, 'email': email, 'password': password},
       );
       return true;
-    } on DioError catch (e) {
-      throw e.error as ApiException; // Rethrow the custom exception
+    } on DioException catch (e) {
+      if (e.error is ApiException) {
+        throw e.error as ApiException;
+      } else {
+        throw ApiException('Registration failed: ${e.message}');
+      }
     }
   }
 
@@ -47,6 +56,19 @@ class AuthService {
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_tokenKey);
+  }
+
+  Future<User?> getCurrentUser() async {
+    try {
+      final response = await _dio.get('/users/me');
+      return User.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.error is ApiException) {
+        throw e.error as ApiException;
+      } else {
+        throw ApiException('Failed to get user info: ${e.message}');
+      }
+    }
   }
 
   Future<void> logout() async {
