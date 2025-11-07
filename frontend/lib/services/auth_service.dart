@@ -3,9 +3,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/utils/dio_interceptor.dart';
 import 'package:frontend/utils/exceptions.dart';
 import 'package:frontend/models/user.dart';
+import 'package:frontend/config/environment.dart';
 
 class AuthService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: 'http://localhost:8000')); // Replace with your backend URL
+  final Dio _dio = Dio(BaseOptions(
+    baseUrl: EnvironmentConfig.apiBaseUrl,
+    connectTimeout: EnvironmentConfig.connectTimeout,
+    receiveTimeout: EnvironmentConfig.receiveTimeout,
+  ));
   static const String _tokenKey = 'jwt_token';
 
   AuthService() {

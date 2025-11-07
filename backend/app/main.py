@@ -1,30 +1,60 @@
+import os
+import logging
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from app.routers import users, courses, forum, gamification, user_progress
-from app.database import create_tables
+from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import JSONResponse
+from app.presentation.api import users, courses, forum, gamification, user_progress
+from app.infrastructure.database import create_tables, check_db_connection
+from app.infrastructure.middleware import setup_middleware, limiter
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+
+# Configure logging
+logging.basicConfig(
+    level=getattr(logging, os.getenv("LOG_LEVEL", "INFO")),
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    logger.info("Starting AI Education Platform API")
+
+    # Check database connection
+    if not check_db_connection():
+        logger.error("Database connection failed!")
+        raise Exception("Database connection failed")
+
+    # Create tables
     create_tables()
+    logger.info("Database tables created/verified")
+
     yield
+
+    logger.info("Shutting down AI Education Platform API")
 
 app = FastAPI(
     title="AI Education Platform API",
     description="API for the AI Education Platform, providing user management, course content, forum, and gamification features.",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
+    docs_url="/docs" if os.getenv("DEBUG", "False").lower() == "true" else None,
+    redoc_url="/redoc" if os.getenv("DEBUG", "False").lower() == "true" else None,
 )
 
-# CORS Middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # In a real app, restrict this to your frontend's domain
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Setup middleware
+setup_middleware(app)
 
+# Global exception handler
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    logger.error(f"Global exception: {exc}")
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": "Internal server error"}
+    )
+
+# Include routers with rate limiting
 app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(courses.router, prefix="/courses", tags=["courses"])
 app.include_router(forum.router, prefix="/forum", tags=["forum"])
@@ -32,5 +62,17 @@ app.include_router(gamification.router, prefix="/gamification", tags=["gamificat
 app.include_router(user_progress.router, prefix="/progress", tags=["progress"])
 
 @app.get("/")
-def read_root():
-    return {"message": "Welcome to the AI Education Platform API"}
+@limiter.limit("10/minute")
+async def read_root(request):
+    return {"message": "Welcome to the AI Education Platform API", "status": "healthy"}
+
+@app.get("/health")
+@limiter.limit("30/minute")
+async def health_check(request):
+    """Health check endpoint for load balancer"""
+    db_status = check_db_connection()
+    return {
+        "status": "healthy" if db_status else "unhealthy",
+        "database": "connected" if db_status else "disconnected",
+        "version": "1.0.0"
+    }

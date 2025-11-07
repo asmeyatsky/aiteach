@@ -8,3 +8,7 @@ python-jose[cryptography]
 pytest
 httpx
 pydantic[email]
+slowapi
+python-multipart
+google-cloud-logging
+google-cloud-secret-manager
