@@ -15,3 +15,4 @@ class UserBadge:
     user_id: int
     badge_id: int
     awarded_at: datetime
+    badge: Badge

@@ -1,6 +1,7 @@
 import os
 import logging
 from sqlalchemy import create_engine, event
+from sqlalchemy.orm import sessionmaker
 from app.infrastructure.repositories.orm.base import Base
 from app.infrastructure.repositories.orm import user, course, lesson, forum, gamification, user_progress
 from sqlalchemy.pool import StaticPool

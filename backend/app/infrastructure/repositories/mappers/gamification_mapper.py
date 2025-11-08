@@ -14,5 +14,6 @@ def to_user_badge_domain(orm_user_badge: UserBadgeORM) -> UserBadgeDomain:
         id=orm_user_badge.id,
         user_id=orm_user_badge.user_id,
         badge_id=orm_user_badge.badge_id,
-        awarded_at=orm_user_badge.awarded_at
+        awarded_at=orm_user_badge.awarded_at,
+        badge=to_badge_domain(orm_user_badge.badge)
     )

@@ -1,6 +1,8 @@
+import os
 from fastapi.testclient import TestClient
 from app.main import app
-from app.database import get_db, Base
+from app.infrastructure.database import get_db
+from app.infrastructure.repositories.orm.base import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import pytest
@@ -21,7 +23,11 @@ def client_fixture(db_session):
     def override_get_db():
         yield db_session
     app.dependency_overrides[get_db] = override_get_db
+    os.environ["TESTING"] = "True" # Set TESTING environment variable
+    os.environ["DEBUG"] = "True" # Set DEBUG environment variable to disable TrustedHostMiddleware
     yield TestClient(app)
+    del os.environ["TESTING"] # Unset TESTING environment variable
+    del os.environ["DEBUG"] # Unset DEBUG environment variable
     app.dependency_overrides.clear()
 
 def test_get_user_progress_nonexistent_user(client):

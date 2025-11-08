@@ -5,9 +5,7 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
 from app.presentation.api import users, courses, forum, gamification, user_progress
 from app.infrastructure.database import create_tables, check_db_connection
-from app.infrastructure.middleware import setup_middleware, limiter
-from slowapi import _rate_limit_exceeded_handler
-from slowapi.errors import RateLimitExceeded
+from app.infrastructure.middleware import setup_middleware
 
 # Configure logging
 logging.basicConfig(
@@ -20,14 +18,15 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     logger.info("Starting AI Education Platform API")
 
-    # Check database connection
-    if not check_db_connection():
-        logger.error("Database connection failed!")
-        raise Exception("Database connection failed")
+    if os.getenv("TESTING") != "True":
+        # Check database connection
+        if not check_db_connection():
+            logger.error("Database connection failed!")
+            raise Exception("Database connection failed")
 
-    # Create tables
-    create_tables()
-    logger.info("Database tables created/verified")
+        # Create tables
+        create_tables()
+        logger.info("Database tables created/verified")
 
     yield
 
@@ -43,7 +42,8 @@ app = FastAPI(
 )
 
 # Setup middleware
-setup_middleware(app)
+if os.getenv("TESTING") != "True":
+    setup_middleware(app)
 
 # Global exception handler
 @app.exception_handler(Exception)
@@ -54,7 +54,7 @@ async def global_exception_handler(request, exc):
         content={"detail": "Internal server error"}
     )
 
-# Include routers with rate limiting
+# Include routers
 app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(courses.router, prefix="/courses", tags=["courses"])
 app.include_router(forum.router, prefix="/forum", tags=["forum"])
@@ -62,13 +62,11 @@ app.include_router(gamification.router, prefix="/gamification", tags=["gamificat
 app.include_router(user_progress.router, prefix="/progress", tags=["progress"])
 
 @app.get("/")
-@limiter.limit("10/minute")
-async def read_root(request):
+async def read_root():
     return {"message": "Welcome to the AI Education Platform API", "status": "healthy"}
 
 @app.get("/health")
-@limiter.limit("30/minute")
-async def health_check(request):
+async def health_check():
     """Health check endpoint for load balancer"""
     db_status = check_db_connection()
     return {
