@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/models/user.dart';
-import 'package:frontend/services/auth_service.dart';
-import 'package:frontend/providers/auth_provider.dart';
+import 'package:frontend/domain/entities/user.dart';
+import 'package:frontend/domain/entities/user_profile.dart';
+import 'package:frontend/data/datasources/user_profile_api_data_source.dart';
+import 'package:frontend/data/repositories/user_profile_repository_impl.dart';
+import 'package:frontend/providers/auth_provider.dart'; // To get Dio instance
 
 // Provider for the current user
 final currentUserProvider = StateProvider<User?>((ref) => null);
@@ -12,22 +14,20 @@ final currentUserIdProvider = Provider<int?>((ref) {
   return user?.id;
 });
 
+final userProfileApiDataSourceProvider = Provider<UserProfileApiDataSource>((ref) {
+  return UserProfileApiDataSource(ref.read(dioProvider));
+});
+
+final userProfileRepositoryProvider = Provider<UserProfileRepositoryImpl>((ref) {
+  return UserProfileRepositoryImpl(ref.read(userProfileApiDataSourceProvider));
+});
+
 // Provider to fetch current user profile
-final userProfileProvider = FutureProvider<User?>((ref) async {
-  final authService = ref.read(authServiceProvider);
-  final token = await authService.getToken();
-  
-  if (token == null) {
+final userProfileProvider = FutureProvider<UserProfile?>((ref) async {
+  final userId = ref.watch(currentUserIdProvider);
+  if (userId == null) {
     return null;
   }
-  
-  // TODO: Implement actual user profile fetching
-  // This would typically be an API call to get user details
-  // For now, we'll return a mock user
-  return User(
-    id: 1,
-    username: 'testuser',
-    email: 'test@example.com',
-    createdAt: DateTime.now(),
-  );
+  final userProfileRepository = ref.read(userProfileRepositoryProvider);
+  return userProfileRepository.getUserProfile(userId);
 });

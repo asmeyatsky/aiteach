@@ -1,20 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/services/forum_service.dart';
-import 'package:frontend/models/forum_post.dart';
-import 'package:frontend/models/forum_comment.dart';
-import 'package:frontend/providers/auth_provider.dart';
+import 'package:frontend/domain/entities/forum_post.dart';
+import 'package:frontend/domain/entities/forum_comment.dart';
+import 'package:frontend/data/datasources/forum_api_data_source.dart';
+import 'package:frontend/data/repositories/forum_repository_impl.dart';
+import 'package:frontend/providers/auth_provider.dart'; // To get Dio instance and AuthService
 
-final forumServiceProvider = Provider<ForumService>((ref) {
-  final authService = ref.read(authServiceProvider);
-  return ForumService(authService);
+final forumApiDataSourceProvider = Provider<ForumApiDataSource>((ref) {
+  return ForumApiDataSource(ref.read(dioProvider));
+});
+
+final forumRepositoryProvider = Provider<ForumRepositoryImpl>((ref) {
+  return ForumRepositoryImpl(ref.read(forumApiDataSourceProvider), ref.read(authServiceProvider));
 });
 
 final forumPostsProvider = FutureProvider<List<ForumPost>>((ref) async {
-  final forumService = ref.read(forumServiceProvider);
-  return forumService.getPosts();
+  final forumRepository = ref.read(forumRepositoryProvider);
+  return forumRepository.getPosts();
 });
 
 final forumCommentsProvider = FutureProvider.family<List<ForumComment>, int>((ref, postId) async {
-  final forumService = ref.read(forumServiceProvider);
-  return forumService.getComments(postId);
+  final forumRepository = ref.read(forumRepositoryProvider);
+  return forumRepository.getCommentsByPost(postId);
 });

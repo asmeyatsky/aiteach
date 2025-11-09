@@ -1,26 +1,29 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/services/course_service.dart';
-import 'package:frontend/models/course.dart';
-import 'package:frontend/models/lesson.dart';
-import 'package:frontend/providers/auth_provider.dart';
+import 'package:frontend/domain/entities/course.dart';
+import 'package:frontend/domain/entities/lesson.dart';
+import 'package:frontend/data/datasources/course_api_data_source.dart';
+import 'package:frontend/data/repositories/course_repository_impl.dart';
+import 'package:frontend/providers/auth_provider.dart'; // To get Dio instance
 
-final courseServiceProvider = Provider<CourseService>((ref) {
-  final authService = ref.read(authServiceProvider);
-  return CourseService(authService);
+final courseApiDataSourceProvider = Provider<CourseApiDataSource>((ref) {
+  return CourseApiDataSource(ref.read(dioProvider));
+});
+
+final courseRepositoryProvider = Provider<CourseRepositoryImpl>((ref) {
+  return CourseRepositoryImpl(ref.read(courseApiDataSourceProvider));
 });
 
 final coursesProvider = FutureProvider<List<Course>>((ref) async {
-  final courseService = ref.read(courseServiceProvider);
-  return courseService.getCourses();
+  final courseRepository = ref.read(courseRepositoryProvider);
+  return courseRepository.getCourses();
 });
 
 final courseProvider = FutureProvider.family<Course, int>((ref, courseId) async {
-  final courseService = ref.read(courseServiceProvider);
-  final courses = await courseService.getCourses();
-  return courses.firstWhere((course) => course.id == courseId);
+  final courseRepository = ref.read(courseRepositoryProvider);
+  return courseRepository.getCourseDetails(courseId);
 });
 
 final lessonsByCourseProvider = FutureProvider.family<List<Lesson>, int>((ref, courseId) async {
-  final courseService = ref.read(courseServiceProvider);
-  return courseService.getLessonsByCourse(courseId);
+  final courseRepository = ref.read(courseRepositoryProvider);
+  return courseRepository.getLessonsByCourse(courseId);
 });

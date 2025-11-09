@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/services/course_recommendation_service.dart';
-import 'package:frontend/models/user_proficiency.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/domain/entities/course_recommendation.dart';
+import 'package:frontend/data/models/user_proficiency_model.dart'; // Assuming ProficiencyLevel is still used
 import 'package:go_router/go_router.dart';
+import 'package:frontend/providers/course_recommendation_provider.dart';
+import 'package:frontend/providers/user_provider.dart'; // To get currentUserIdProvider
 
-class RecommendedCoursesSection extends StatelessWidget {
+class RecommendedCoursesSection extends ConsumerWidget {
   final ProficiencyLevel userLevel;
   final VoidCallback onViewAll;
 
@@ -14,8 +17,9 @@ class RecommendedCoursesSection extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final recommendedCourses = CourseRecommendationService.getRecommendedCourses(userLevel);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentUserId = ref.watch(currentUserIdProvider);
+    final recommendedCoursesAsync = ref.watch(recommendedCoursesProvider(currentUserId ?? 0)); // Pass a default or handle null
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,18 +38,24 @@ class RecommendedCoursesSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        SizedBox(
-          height: 250,
-          child: recommendedCourses.isEmpty
-              ? _buildEmptyState()
-              : ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: recommendedCourses.length,
-                  itemBuilder: (context, index) {
-                    final course = recommendedCourses[index];
-                    return _CourseCard(course: course);
-                  },
-                ),
+        recommendedCoursesAsync.when(
+          data: (recommendedCourses) {
+            return SizedBox(
+              height: 250,
+              child: recommendedCourses.isEmpty
+                  ? _buildEmptyState()
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: recommendedCourses.length,
+                      itemBuilder: (context, index) {
+                        final course = recommendedCourses[index];
+                        return _CourseCard(course: course);
+                      },
+                    ),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(child: Text('Error: $error')),
         ),
       ],
     );
@@ -262,14 +272,15 @@ class _CourseCard extends StatelessWidget {
   }
 }
 
-class PopularCoursesSection extends StatelessWidget {
+class PopularCoursesSection extends ConsumerWidget {
   final VoidCallback onViewAll;
 
   const PopularCoursesSection({super.key, required this.onViewAll});
 
   @override
-  Widget build(BuildContext context) {
-    final popularCourses = CourseRecommendationService.getPopularCourses();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentUserId = ref.watch(currentUserIdProvider);
+    final popularCoursesAsync = ref.watch(recommendedCoursesProvider(currentUserId ?? 0)); // Using recommended for now
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,18 +299,24 @@ class PopularCoursesSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        SizedBox(
-          height: 250,
-          child: popularCourses.isEmpty
-              ? _buildEmptyState()
-              : ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: popularCourses.length,
-                  itemBuilder: (context, index) {
-                    final course = popularCourses[index];
-                    return _CourseCard(course: course);
-                  },
-                ),
+        popularCoursesAsync.when(
+          data: (popularCourses) {
+            return SizedBox(
+              height: 250,
+              child: popularCourses.isEmpty
+                  ? _buildEmptyState()
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: popularCourses.length,
+                      itemBuilder: (context, index) {
+                        final course = popularCourses[index];
+                        return _CourseCard(course: course);
+                      },
+                    ),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(child: Text('Error: $error')),
         ),
       ],
     );

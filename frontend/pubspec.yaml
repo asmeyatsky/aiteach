@@ -38,7 +38,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   hooks_riverpod: ^2.5.1
   dio: ^5.5.0+1
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
   shared_preferences: ^2.2.3
   flutter_markdown: ^0.7.1
   url_launcher: ^6.2.5
