@@ -6,7 +6,7 @@ from app.dependencies import get_feed_repository
 
 router = APIRouter()
 
-@router.get("/feed/", response_model=List[feed_dto.FeedItem])
+@router.get("/", response_model=List[feed_dto.FeedItem])
 def read_feed(
     skip: int = 0,
     limit: int = 20, # Default to a smaller number for a feed

@@ -6,7 +6,7 @@ from app.dependencies import get_project_repository
 
 router = APIRouter()
 
-@router.get("/projects/", response_model=List[project_dto.Project])
+@router.get("/", response_model=List[project_dto.Project])
 def read_projects(
     skip: int = 0,
     limit: int = 100,
@@ -15,17 +15,17 @@ def read_projects(
     projects = project_repo.get_projects(skip=skip, limit=limit)
     return projects
 
-@router.get("/projects/{project_id}", response_model=project_dto.Project)
+@router.get("/{project_id}", response_model=project_dto.Project)
 def read_project(project_id: int, project_repo: ProjectRepositoryPort = Depends(get_project_repository)):
     project = project_repo.get_project(project_id)
     if project is None:
         raise HTTPException(status_code=404, detail="Project not found")
     return project
 
-@router.post("/projects/{project_id}/submit", response_model=project_dto.UserProject)
+@router.post("/{project_id}/submit", response_model=project_dto.UserProject)
 def submit_project(
-    project_id: int, 
-    submission: project_dto.UserProjectSubmit, 
+    project_id: int,
+    submission: project_dto.UserProjectSubmit,
     user_id: int = 1, # Hardcoded user_id
     project_repo: ProjectRepositoryPort = Depends(get_project_repository)
 ):
@@ -46,7 +46,7 @@ def submit_project(
 
     return user_project
 
-@router.get("/me/projects/", response_model=List[project_dto.UserProject])
+@router.get("/me/", response_model=List[project_dto.UserProject])
 def read_my_projects(
     user_id: int = 1, # Hardcoded user_id
     project_repo: ProjectRepositoryPort = Depends(get_project_repository)

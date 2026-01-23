@@ -6,7 +6,7 @@ class ChatPrompt(BaseModel):
 
 router = APIRouter()
 
-@router.post("/playground/chat")
+@router.post("/chat")
 async def chat_playground(prompt: ChatPrompt):
     # Mock response simulating a call to an LLM
     # In a real implementation, this would call the Gemini API

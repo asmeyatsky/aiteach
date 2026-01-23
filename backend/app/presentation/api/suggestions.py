@@ -5,7 +5,7 @@ from app.dependencies import get_suggestion_repository
 
 router = APIRouter()
 
-@router.post("/suggestions/", response_model=suggestion_dto.SuggestedContent)
+@router.post("/", response_model=suggestion_dto.SuggestedContent)
 def create_suggestion(
     suggestion: suggestion_dto.SuggestedContentCreate,
     user_id: int = 1, # Hardcoded user_id
