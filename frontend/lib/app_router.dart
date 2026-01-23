@@ -10,6 +10,10 @@ import 'package:frontend/presentation/screens/create_post_screen.dart';
 import 'package:frontend/presentation/screens/forum_post_details_screen.dart';
 import 'package:frontend/presentation/screens/splash_screen.dart';
 import 'package:frontend/presentation/screens/proficiency_assessment_screen.dart';
+import 'package:frontend/presentation/screens/playground_screen.dart';
+import 'package:frontend/presentation/screens/project_list_screen.dart';
+import 'package:frontend/presentation/screens/feed_screen.dart';
+import 'package:frontend/presentation/screens/suggestion_screen.dart';
 import 'package:frontend/models/lesson.dart';
 import 'package:frontend/models/forum_post.dart';
 
@@ -77,6 +81,30 @@ final GoRouter router = GoRouter(
       path: '/proficiency-assessment',
       builder: (BuildContext context, GoRouterState state) {
         return const ProficiencyAssessmentScreen();
+      },
+    ),
+    GoRoute(
+      path: '/playground',
+      builder: (BuildContext context, GoRouterState state) {
+        return const PlaygroundScreen();
+      },
+    ),
+    GoRoute(
+      path: '/projects',
+      builder: (BuildContext context, GoRouterState state) {
+        return const ProjectListScreen();
+      },
+    ),
+    GoRoute(
+      path: '/feed',
+      builder: (BuildContext context, GoRouterState state) {
+        return const FeedScreen();
+      },
+    ),
+    GoRoute(
+      path: '/suggest-content',
+      builder: (BuildContext context, GoRouterState state) {
+        return const SuggestionScreen();
       },
     ),
   ],

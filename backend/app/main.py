@@ -3,7 +3,7 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
-from app.presentation.api import users, courses, forum, gamification, user_progress
+from app.presentation.api import users, courses, forum, gamification, user_progress, projects, feed, suggestions, playground
 from app.infrastructure.database import create_tables, check_db_connection
 from app.infrastructure.middleware import setup_middleware
 
@@ -60,6 +60,10 @@ app.include_router(courses.router, prefix="/courses", tags=["courses"])
 app.include_router(forum.router, prefix="/forum", tags=["forum"])
 app.include_router(gamification.router, prefix="/gamification", tags=["gamification"])
 app.include_router(user_progress.router, prefix="/progress", tags=["progress"])
+app.include_router(projects.router, prefix="/projects", tags=["projects"])
+app.include_router(feed.router, prefix="/feed", tags=["feed"])
+app.include_router(suggestions.router, prefix="/suggestions", tags=["suggestions"])
+app.include_router(playground.router, prefix="/playground", tags=["playground"])
 
 @app.get("/")
 async def read_root():

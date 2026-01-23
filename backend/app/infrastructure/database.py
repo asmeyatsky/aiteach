@@ -3,7 +3,7 @@ import logging
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 from app.infrastructure.repositories.orm.base import Base
-from app.infrastructure.repositories.orm import user, course, lesson, forum, gamification, user_progress
+from app.infrastructure.repositories.orm import user, course, lesson, forum, gamification, user_progress, project, feed, suggestion
 from sqlalchemy.pool import StaticPool
 
 logger = logging.getLogger(__name__)

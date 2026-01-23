@@ -1,11 +1,12 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional, List
 from .lesson import Lesson
+from app.domain.value_objects.track import Track
 
 class CourseBase(BaseModel):
     title: str
     description: str
-    tier: str
+    tier: Track
     thumbnail_url: Optional[str] = None
 
 class CourseCreate(CourseBase):

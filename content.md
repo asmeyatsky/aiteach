@@ -1,307 +1,141 @@
-# AI Education Platform - Content Strategy
+# AI Education Platform - 2026 Content Strategy
 
 ## Overview
-This document outlines the content strategy for the AI Education Platform, including educational resources, proficiency levels, and course structuring.
+This document outlines the modernized content strategy for the AI Education Platform. The curriculum is restructured into three purpose-driven tracks to align with the needs of learners in a world where AI is ubiquitous.
 
-## Proficiency Levels
+The former proficiency levels (Beginner, Intermediate, Advanced) are now replaced by these tracks. The `tier` property for a course should map to one of the following track identifiers: `user`, `builder`, or `innovator`.
 
-### 1. Beginner (Novice)
-**Target Audience**: Complete beginners with no prior AI/ML experience
-**Prerequisites**: Basic computer literacy
-**Learning Goals**:
-- Understand what AI/ML is and its applications
-- Learn basic terminology and concepts
-- Gain hands-on experience with simple examples
-- Build first AI project
+---
 
-### 2. Intermediate (Practitioner)
-**Target Audience**: Individuals with basic programming skills and some AI/ML exposure
-**Prerequisites**: Basic Python programming, understanding of mathematical concepts (algebra, statistics)
-**Learning Goals**:
-- Master core ML algorithms and techniques
-- Work with popular frameworks (Scikit-learn, TensorFlow, PyTorch)
-- Develop and evaluate ML models
-- Apply AI to real-world problems
+## Track 1: AI for Everyone (The "User" Track)
+**Identifier**: `user`
+**Goal**: Create a generation of savvy users and consumers of AI technology. This track is for non-developers, professionals, artists, students, and anyone who wants to understand and use AI tools effectively and ethically.
 
-### 3. Advanced (Professional)
-**Target Audience**: Experienced practitioners looking to deepen expertise
-**Prerequisites**: Strong programming skills, solid foundation in ML/AI, mathematics (calculus, linear algebra, probability)
-**Learning Goals**:
-- Explore cutting-edge research areas
-- Contribute to open-source AI projects
-- Lead AI initiatives in organizations
-- Stay current with industry trends
+### Core Modules & Mapped Content
 
-## Content Sources
+**1. AI Literacy 101**
+- **Goal**: Intuitive explanations of what AI is (LLMs, diffusion models), its applications, and its limitations.
+- **Existing Content**:
+    - Harvard CS50's Introduction to AI: The first few lectures provide a great, accessible overview.
+    - Google AI Education: "What is AI?" and other introductory materials.
+    - edX's "Introduction to Artificial Intelligence (AI)": A good non-technical starting point.
+- **Content Gaps**:
+    - A dedicated course, "AI for the Rest of Us," explaining modern concepts (LLMs, generative AI) in simple terms.
+    - Interactive demos showing what models can and cannot do.
 
-### Academic Courses
+**2. Prompt Engineering Mastery**
+- **Goal**: The art and science of communicating with AIs to get desired results from models like Gemini, ChatGPT, Midjourney, etc.
+- **Existing Content**: 
+    - *This is a major content gap. Most existing academic courses do not cover this.*
+- **Content Gaps**:
+    - A full course on "Practical Prompt Engineering."
+    - A "Prompting Playground" for hands-on practice.
+    - Content from sources like OpenAI's and Google's own best practice guides.
 
-#### MIT OpenCourseWare
-**URL**: https://ocw.mit.edu/search/?q=artificial%20intelligence
-**Description**: Free lecture notes, exams, and videos from MIT AI courses
-**Content Types**: Videos, Lecture Notes, Assignments
-**Proficiency Level**: Beginner to Advanced
+**3. AI in Your Profession**
+- **Goal**: Practical workshops on using AI for writing, marketing, data analysis, art creation, etc.
+- **Existing Content**: 
+    - *This is a major content gap.*
+- **Content Gaps**:
+    - A series of short courses: "AI for Writers," "AI for Marketers," "AI for Business Analysts."
+    - Case studies from industry resources like the Google AI Blog.
 
-#### Stanford CS229 - Machine Learning
-**URL**: http://cs229.stanford.edu/
-**Description**: Andrew Ng's legendary machine learning course materials
-**Content Types**: Lecture Videos, Lecture Notes, Assignments
-**Proficiency Level**: Intermediate
+**4. The Ethical AI User**
+- **Goal**: Recognizing bias, understanding misinformation, and using AI responsibly.
+- **Existing Content**:
+    - Some modules within MIT, Stanford, and Harvard courses touch on this.
+- **Content Gaps**:
+    - A dedicated, mandatory course, "Responsible AI Usage," for all tracks.
+    - Interactive examples of biased AI outputs.
 
-#### Harvard CS50's Introduction to Artificial Intelligence with Python
-**URL**: https://cs50.harvard.edu/ai/
-**Description**: Harvard's accessible introduction to AI concepts with Python
-**Content Types**: Videos, Lecture Notes, Problem Sets
-**Proficiency Level**: Beginner to Intermediate
+---
 
-#### Carnegie Mellon University AI Courses
-**URL**: https://www.cs.cmu.edu/~./15780/
-**Description**: CMU's graduate-level AI course materials
-**Content Types**: Lecture Slides, Readings, Projects
-**Proficiency Level**: Intermediate to Advanced
+## Track 2: The Modern AI Developer (The "Builder" Track)
+**Identifier**: `builder`
+**Goal**: Equip developers to build AI-powered applications using pre-trained models and the surrounding ecosystem.
 
-### Online Learning Platforms
+### Core Modules & Mapped Content
 
-#### Coursera
-**URL**: https://www.coursera.org/
-**Description**: Wide variety of AI/ML courses from top universities
-**Notable Courses**:
-- Deep Learning Specialization (DeepLearning.AI) - https://www.coursera.org/specializations/deep-learning
-- Machine Learning (Stanford) - https://www.coursera.org/learn/machine-learning
-- IBM AI Engineering Professional Certificate - https://www.coursera.org/professional-certificates/ai-engineer
-**Content Types**: Video Lectures, Quizzes, Programming Assignments, Peer Reviews
-**Proficiency Level**: All Levels
+**1. The Developer's AI Foundations**
+- **Goal**: A rapid tour of essential ML concepts for a developer audience.
+- **Existing Content**:
+    - Kaggle Learn's "Intro to Machine Learning": Perfect for a quick, practical start.
+    - Fast.ai's "Practical Deep Learning for Coders": Excellent hands-on approach.
+    - Stanford's CS229 (Machine Learning): The first few weeks are a good, slightly more theoretical, option.
 
-#### edX
-**URL**: https://www.edx.org/
-**Description**: University-level courses from institutions worldwide
-**Notable Courses**:
-- CS50's Introduction to Artificial Intelligence with Python (Harvard) - https://www.edx.org/course/cs50s-introduction-to-artificial-intelligence-with-python
-- Introduction to Artificial Intelligence (AI) - https://www.edx.org/course/introduction-to-artificial-intelligence-ai-2
-**Content Types**: Video Lectures, Exercises, Labs
-**Proficiency Level**: All Levels
+**2. Building with LLM APIs**
+- **Goal**: Deep dive into using APIs like the Gemini API, covering text generation, function calling, and embeddings.
+- **Existing Content**:
+    - *This is a major content gap. Most content focuses on building models, not using them via API.*
+- **Content Gaps**:
+    - A full, hands-on course: "Building Applications with the Gemini API."
+    - Content from official Google AI and TensorFlow.org resources on using their models.
 
-#### Kaggle Learn
-**URL**: https://www.kaggle.com/learn
-**Description**: Micro-courses focused on practical data science and ML skills
-**Notable Courses**:
-- Intro to Machine Learning - https://www.kaggle.com/learn/intro-to-machine-learning
-- Deep Learning - https://www.kaggle.com/learn/deep-learning
-- Computer Vision - https://www.kaggle.com/learn/computer-vision
-**Content Types**: Interactive Tutorials, Coding Exercises
-**Proficiency Level**: Beginner to Intermediate
+**3. Retrieval-Augmented Generation (RAG)**
+- **Goal**: Using vector databases to build applications with custom knowledge.
+- **Existing Content**:
+    - *This is a major content gap.*
+- **Content Gaps**:
+    - A dedicated course on RAG, explaining the concept and showing how to use tools like Pinecone, Chroma, or FAISS.
+    - Tutorials from the Hugging Face blog are a good source.
 
-#### Google AI Education
-**URL**: https://ai.google/education/
-**Description**: Educational resources from Google AI team
-**Content Types**: Courses, Guides, Research Papers
-**Proficiency Level**: All Levels
+**4. The LLM Toolchain**
+- **Goal**: Mastering tools like LangChain or LlamaIndex to build complex AI workflows.
+- **Existing Content**:
+    - *This is a major content gap.*
+- **Content Gaps**:
+    - Courses for LangChain and LlamaIndex. These would need to be created or sourced from the official documentation and communities of those tools.
 
-### Specialized AI Content
+**5. Responsible AI Development**
+- **Goal**: Building fairness, accountability, and transparency into AI systems.
+- **Existing Content**:
+    - Google AI Education provides good resources on this.
+    - Modules within the DeepLearning.AI specializations.
+- **Content Gaps**:
+    - This should be a dedicated course in this track, not just a lecture. It should cover techniques for bias detection, model explainability (SHAP, LIME), and data privacy.
 
-#### Fast.ai
-**URL**: https://www.fast.ai/
-**Description**: Practical deep learning for coders
-**Notable Courses**:
-- Practical Deep Learning for Coders - https://course.fast.ai/
-- Computational Linear Algebra - https://github.com/fastai/numerical-linear-algebra
-**Content Types**: Video Lectures, Jupyter Notebooks, Coding Exercises
-**Proficiency Level**: Beginner to Intermediate
+---
 
-#### DeepLearning.AI
-**URL**: https://www.deeplearning.ai/
-**Description**: Andrew Ng's company offering specialized AI education
-**Notable Courses**:
-- Deep Learning Specialization - https://www.deeplearning.ai/courses/
-- Natural Language Processing Specialization - https://www.deeplearning.ai/courses/natural-language-processing-specialization/
-**Content Types**: Video Lectures, Programming Assignments
-**Proficiency Level**: Intermediate to Advanced
+## Track 3: The AI Researcher (The "Innovator" Track)
+**Identifier**: `innovator`
+**Goal**: For those who want to push the boundaries of AI and contribute to the field.
 
-#### Hugging Face
-**URL**: https://huggingface.co/learn
-**Description**: NLP and transformer-based model tutorials
-**Content Types**: Documentation, Tutorials, Interactive Demos
-**Proficiency Level**: Intermediate to Advanced
+### Core Modules & Mapped Content
 
-#### TensorFlow.org
-**URL**: https://www.tensorflow.org/resources/learn-ml
-**Description**: Official TensorFlow learning resources
-**Content Types**: Tutorials, Guides, API Documentation
-**Proficiency Level**: Beginner to Advanced
+**1. Advanced Architectures**
+- **Goal**: Deep dive into Transformers, Mixture-of-Experts (MoE), and other SOTA architectures.
+- **Existing Content**:
+    - DeepLearning.AI's Specializations (Deep Learning, NLP).
+    - Hugging Face's courses and tutorials are excellent for this.
+    - Stanford CS229 provides strong theoretical underpinnings.
 
-### Open Educational Resources
+**2. Multimodality**
+- **Goal**: Understanding how models process and generate text, images, and audio together.
+- **Existing Content**:
+    - *This is a content gap for a full course.*
+- **Content Gaps**:
+    - A course on multimodal architectures and applications.
+    - Sourcing content from recent research papers on platforms like OpenAI Blog, Amazon Science, and Google AI Blog.
 
-#### OER Commons
-**URL**: https://www.oercommons.org/
-**Description**: Search for "AI" or "Machine Learning"
-**Content Types**: Various (Videos, Textbooks, Interactive Content)
-**Proficiency Level**: All Levels
+**3. Frontiers of Research**
+- **Goal**: Exploring the latest in AI alignment, emergent abilities, and unsupervised learning.
+- **Existing Content**:
+    - Research papers and articles from CMU AI Courses, OpenAI, Google, and Microsoft.
+- **Content Gaps**:
+    - This requires a dynamic content module (e.g., a "Paper of the Week" club) rather than a static course.
 
-#### MERLOT
-**URL**: https://www.merlot.org/merlot/materials.htm?keywords=artificial+intelligence
-**Description**: Multimedia educational resources
-**Content Types**: Various
-**Proficiency Level**: All Levels
+**4. From Paper to Code**
+- **Goal**: How to read a research paper and implement it in PyTorch or JAX.
+- **Existing Content**:
+    - Some projects in the advanced courses from Coursera or CMU require this skill.
+- **Content Gaps**:
+    - A dedicated workshop or course on this meta-skill.
 
-#### OpenStax
-**URL**: https://openstax.org/
-**Description**: Free textbooks (limited AI/ML content)
-**Content Types**: Textbooks
-**Proficiency Level**: Beginner to Intermediate
+---
+## Dynamic Content & Cross-Cutting Concerns
 
-### Industry Resources
+### AI Ethics and Safety
+- A foundational course on ethics should be created and recommended to all users, regardless of track. Content should be woven into all courses where relevant.
 
-#### Google AI Blog
-**URL**: https://ai.googleblog.com/
-**Description**: Articles and tutorials from Google AI team
-**Content Types**: Blog Posts, Research Summaries
-**Proficiency Level**: Intermediate to Advanced
-
-#### OpenAI Blog
-**URL**: https://openai.com/research
-**Description**: Cutting-edge AI research explained
-**Content Types**: Research Papers, Technical Articles
-**Proficiency Level**: Intermediate to Advanced
-
-#### Microsoft AI
-**URL**: https://azure.microsoft.com/en-us/services/cognitive-services/
-**Description**: Learning paths and documentation
-**Content Types**: Documentation, Tutorials, Learning Paths
-**Proficiency Level**: All Levels
-
-#### Amazon Science
-**URL**: https://www.amazon.science/
-**Description**: Research papers and articles from Amazon
-**Content Types**: Research Papers, Articles
-**Proficiency Level**: Intermediate to Advanced
-
-## Content Integration Strategy
-
-### 1. Content Categorization
-Each piece of content will be categorized by:
-- **Proficiency Level**: Beginner, Intermediate, Advanced
-- **Topic Area**: Supervised Learning, Unsupervised Learning, Deep Learning, NLP, Computer Vision, Reinforcement Learning, etc.
-- **Format**: Video, Text, Interactive Tutorial, Research Paper, Assignment
-- **Duration**: Time estimate to complete
-
-### 2. Personalization Algorithm
-Based on user's:
-- Selected proficiency level
-- Completed courses and lessons
-- Performance metrics (quiz scores, time spent)
-- Preferences (topic interests)
-
-### 3. Content Updates
-Regular updates to ensure content currency:
-- Monthly review of new resources
-- Quarterly assessment of relevance
-- Annual refresh of core curriculum
-
-## Sample Curriculum Structure
-
-### Beginner Pathway (Estimated 8-12 weeks)
-1. **Introduction to AI/ML Concepts** (Week 1-2)
-   - What is AI?
-   - History and applications
-   - Basic terminology
-
-2. **Programming Foundations** (Week 3)
-   - Python for data science
-   - NumPy and Pandas basics
-   - Data visualization
-
-3. **Mathematical Foundations** (Week 4)
-   - Statistics basics
-   - Linear algebra fundamentals
-   - Probability theory
-
-4. **Machine Learning Basics** (Week 5-6)
-   - Supervised vs unsupervised learning
-   - Simple algorithms (linear regression, k-means)
-   - Model evaluation
-
-5. **Hands-on Project** (Week 7-8)
-   - End-to-end ML project
-   - Data preprocessing to deployment
-
-### Intermediate Pathway (Estimated 12-16 weeks)
-1. **Advanced ML Algorithms** (Week 1-4)
-   - Decision trees and ensemble methods
-   - Support vector machines
-   - Neural network fundamentals
-
-2. **Deep Learning Fundamentals** (Week 5-8)
-   - TensorFlow/PyTorch basics
-   - Convolutional neural networks
-   - Recurrent neural networks
-
-3. **Specialized Topics** (Week 9-12)
-   - Natural language processing basics
-   - Computer vision fundamentals
-   - Model evaluation and validation
-
-4. **Real-world Applications** (Week 13-14)
-   - Industry case studies
-   - Best practices and workflows
-
-5. **Capstone Project** (Week 15-16)
-   - Complex ML problem solving
-   - Team collaboration project
-
-### Advanced Pathway (Estimated 16+ weeks)
-1. **Cutting-edge Research Areas** (Week 1-6)
-   - Transformer architectures
-   - Generative models
-   - Reinforcement learning advances
-
-2. **Research Methodology** (Week 7-10)
-   - Literature review techniques
-   - Experimental design
-   - Publishing and peer review
-
-3. **Leadership and Innovation** (Week 11-14)
-   - AI strategy in organizations
-   - Ethical considerations
-   - Future trends and predictions
-
-4. **Research Project** (Week 15+)
-   - Original research contribution
-   - Publication preparation
-   - Conference presentation
-
-## Implementation Plan
-
-### Phase 1: Core Curriculum Development
-- Integrate beginner pathway content from Fast.ai and Harvard CS50
-- Implement proficiency selection mechanism
-- Create basic recommendation engine
-
-### Phase 2: Advanced Content Integration
-- Add intermediate pathway content from Coursera and edX
-- Enhance personalization algorithm
-- Implement content filtering by topic
-
-### Phase 3: Industry Partnership
-- Collaborate with content providers for exclusive materials
-- Develop advanced research pathways
-- Create expert mentorship program
-
-## Metrics for Success
-
-### Content Quality Metrics
-- User engagement (time spent, completion rates)
-- Assessment scores and improvement
-- User feedback and ratings
-- Content update frequency
-
-### Platform Adoption Metrics
-- Number of active users
-- Course enrollment rates
-- User progression through proficiency levels
-- Community participation (forum activity)
-
-### Learning Outcomes
-- Skill assessment improvements
-- Portfolio project quality
-- Job placement rates (for career-focused users)
-- Research contributions (for academic users)
+### What's New in AI
+- A new feature should be developed to provide a feed of curated, summarized AI news and research from sources like Google AI Blog, OpenAI Blog, etc. This is crucial for keeping all tracks current.

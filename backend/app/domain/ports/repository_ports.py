@@ -153,3 +153,69 @@ class GamificationRepositoryPort(ABC):
     @abstractmethod
     def create_user_badge(self, user_badge) -> UserBadge:
         pass
+
+
+from app.domain.entities.project import Project, UserProject
+from app.domain.entities.feed import FeedItem
+from app.domain.entities.suggestion import SuggestedContent
+
+class ProjectRepositoryPort(ABC):
+    @abstractmethod
+    def get_project(self, project_id: int) -> Optional[Project]:
+        pass
+
+    @abstractmethod
+    def get_projects(self, skip: int = 0, limit: int = 100) -> List[Project]:
+        pass
+
+    @abstractmethod
+    def create_project(self, project) -> Project:
+        pass
+    
+    @abstractmethod
+    def get_user_project(self, user_id: int, project_id: int) -> Optional[UserProject]:
+        pass
+
+    @abstractmethod
+    def create_user_project(self, user_project) -> UserProject:
+        pass
+
+    @abstractmethod
+    def update_user_project(self, user_project) -> UserProject:
+        pass
+
+    @abstractmethod
+    def get_user_projects_by_user(self, user_id: int) -> List[UserProject]:
+        pass
+
+
+class FeedRepositoryPort(ABC):
+    @abstractmethod
+    def get_feed_item(self, item_id: int) -> Optional[FeedItem]:
+        pass
+
+    @abstractmethod
+    def get_feed_items(self, skip: int = 0, limit: int = 100) -> List[FeedItem]:
+        pass
+    
+    @abstractmethod
+    def create_feed_item(self, feed_item) -> FeedItem:
+        pass
+    
+    @abstractmethod
+    def get_feed_item_by_url(self, url: str) -> Optional[FeedItem]:
+        pass
+
+
+class SuggestionRepositoryPort(ABC):
+    @abstractmethod
+    def get_suggestion(self, suggestion_id: int) -> Optional[SuggestedContent]:
+        pass
+    
+    @abstractmethod
+    def get_suggestions(self, skip: int = 0, limit: int = 100) -> List[SuggestedContent]:
+        pass
+
+    @abstractmethod
+    def create_suggestion(self, suggestion, user_id: int) -> SuggestedContent:
+        pass

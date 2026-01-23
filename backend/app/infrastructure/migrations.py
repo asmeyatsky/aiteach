@@ -2,7 +2,7 @@ import os
 import logging
 from datetime import datetime
 from sqlalchemy import text, MetaData
-from app.database import engine, Base
+from app.infrastructure.database import engine, Base
 
 logger = logging.getLogger(__name__)
 
