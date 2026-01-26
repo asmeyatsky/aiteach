@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/presentation/screens/login_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/services/auth_service.dart';
 import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/test/mocks/mock_auth_service.dart';
+import 'package:frontend/test/mocks/mock_user_repository.dart';
 
 void main() {
   group('LoginScreen', () {
@@ -13,7 +13,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            authServiceProvider.overrideWithValue(MockAuthService()),
+            authServiceProvider.overrideWithValue(MockAuthService(MockUserRepository())),
           ],
           child: const MaterialApp(
             home: LoginScreen(),
@@ -33,7 +33,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            authServiceProvider.overrideWithValue(MockAuthService()),
+            authServiceProvider.overrideWithValue(MockAuthService(MockUserRepository())),
           ],
           child: const MaterialApp(
             home: LoginScreen(),
@@ -55,7 +55,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            authServiceProvider.overrideWithValue(MockAuthService()),
+            authServiceProvider.overrideWithValue(MockAuthService(MockUserRepository())),
           ],
           child: const MaterialApp(
             home: LoginScreen(),
@@ -77,7 +77,7 @@ void main() {
     });
 
     testWidgets('Login successful with correct credentials', (WidgetTester tester) async {
-      final mockAuthService = MockAuthService();
+      final mockAuthService = MockAuthService(MockUserRepository());
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -100,7 +100,7 @@ void main() {
     });
 
     testWidgets('Login fails with incorrect credentials', (WidgetTester tester) async {
-      final mockAuthService = MockAuthService();
+      final mockAuthService = MockAuthService(MockUserRepository());
       await tester.pumpWidget(
         ProviderScope(
           overrides: [

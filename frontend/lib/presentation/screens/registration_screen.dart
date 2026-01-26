@@ -86,7 +86,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                             _isLoading = true;
                           });
                           try {
-                            final success = await authService.register(
+                            final user = await authService.register(
                               _usernameController.text,
                               _emailController.text,
                               _passwordController.text,
@@ -95,7 +95,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                               setState(() {
                                 _isLoading = false;
                               });
-                              if (success) {
+                              if (user.id != null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Registration successful! Please log in.')),
                                 );

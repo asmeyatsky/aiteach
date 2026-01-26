@@ -19,7 +19,7 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final forumService = ref.read(forumServiceProvider);
+    final forumRepository = ref.read(forumRepositoryProvider);
     final userId = ref.watch(currentUserIdProvider);
 
     return Scaffold(
@@ -64,10 +64,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
                     : () async {
                         if (_formKey.currentState!.validate()) {
                           try {
-                            final success = await forumService.createPost(
+                            final success = await forumRepository.createPost(
                               _titleController.text,
                               _bodyController.text,
-                              userId,
                             );
                             if (success != null) {
                               ScaffoldMessenger.of(context).showSnackBar(

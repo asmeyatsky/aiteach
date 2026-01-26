@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../models/suggestion_model.dart';
+import 'package:frontend/data/models/suggestion_model.dart';
 
 class SuggestionApiService {
   final Dio _dio;

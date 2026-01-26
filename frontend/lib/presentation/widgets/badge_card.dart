@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/user_badge.dart';
+import 'package:frontend/data/models/user_badge_model.dart';
 
 class BadgeCard extends StatelessWidget {
-  final UserBadge userBadge;
+  final UserBadgeModel userBadge;
 
   const BadgeCard({super.key, required this.userBadge});
 

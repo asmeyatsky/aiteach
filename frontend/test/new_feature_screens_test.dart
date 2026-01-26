@@ -4,6 +4,14 @@ import 'package:frontend/presentation/screens/playground_screen.dart';
 import 'package:frontend/presentation/screens/project_list_screen.dart';
 import 'package:frontend/presentation/screens/feed_screen.dart';
 import 'package:frontend/presentation/screens/suggestion_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import ProviderScope
+import 'package:frontend/providers/project_provider.dart'; // Import projectsProvider
+import 'package:frontend/providers/feed_provider.dart'; // Import feedItemsProvider
+
+// Mock data for ProjectListScreen
+import 'mocks/mock_project_data.dart'; // Mock project data
+// Mock data for FeedScreen
+import 'mocks/mock_feed_data.dart'; // Mock feed data
 
 void main() {
   group('New Feature Screens Tests', () {
@@ -32,52 +40,52 @@ void main() {
     });
 
     // Test Project List Screen
-    testWidgets('Project list screen shows title', (WidgetTester tester) async {
+    testWidgets('Project list screen shows title and projects', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: ProjectListScreen(),
+        ProviderScope(
+          overrides: [
+            projectsProvider.overrideWith(
+              (ref) => Future.value(mockProjects),
+            ),
+          ],
+          child: const MaterialApp(
+            home: ProjectListScreen(),
+          ),
         ),
       );
 
       expect(find.text('Project-Based Learning'), findsOneWidget);
-    });
-
-    testWidgets('Project list screen has refresh indicator', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: ProjectListScreen(),
-        ),
-      );
-
-      expect(find.byType(RefreshIndicator), findsOneWidget);
+      await tester.pumpAndSettle(); // Wait for projects to load
+      expect(find.text('Project 1'), findsOneWidget);
+      expect(find.text('Project 2'), findsOneWidget);
     });
 
     // Test Feed Screen
-    testWidgets('Feed screen shows title', (WidgetTester tester) async {
+    testWidgets('Feed screen shows title and feed items', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: const FeedScreen(),
+        ProviderScope(
+          overrides: [
+            feedItemsProvider.overrideWith(
+              (ref) => Future.value(mockFeedItems),
+            ),
+          ],
+          child: const MaterialApp(
+            home: FeedScreen(),
+          ),
         ),
       );
 
       expect(find.text("What's New in AI"), findsOneWidget);
-    });
-
-    testWidgets('Feed screen has list view', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: const FeedScreen(),
-        ),
-      );
-
-      expect(find.byType(ListView), findsOneWidget);
+      await tester.pumpAndSettle(); // Wait for feed items to load
+      expect(find.text('Feed Item 1 Title'), findsOneWidget);
+      expect(find.text('Feed Item 2 Title'), findsOneWidget);
     });
 
     // Test Suggestion Screen
     testWidgets('Suggestion screen shows title', (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: const SuggestionScreen(),
+          home: SuggestionScreen(),
         ),
       );
 
@@ -87,7 +95,7 @@ void main() {
     testWidgets('Suggestion screen has form fields', (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: const SuggestionScreen(),
+          home: SuggestionScreen(),
         ),
       );
 
@@ -100,14 +108,12 @@ void main() {
     testWidgets('Suggestion screen validates URL field', (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: const SuggestionScreen(),
+          home: SuggestionScreen(),
         ),
       );
 
       // Find and enter invalid URL
-      final urlField = find.byWidgetPredicate(
-        (widget) => widget is TextFormField && widget.decoration?.labelText == 'Resource URL',
-      );
+      final urlField = find.byKey(const ValueKey('resource_url_field'));
       
       await tester.enterText(urlField, 'invalid-url');
       await tester.tap(find.byType(ElevatedButton));

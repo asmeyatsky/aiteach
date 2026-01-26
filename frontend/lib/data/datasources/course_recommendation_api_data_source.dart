@@ -1,16 +1,11 @@
 // frontend/lib/data/datasources/course_recommendation_api_data_source.dart
-import 'package:dio/dio.dart';
 import 'package:frontend/data/models/course_recommendation_model.dart';
-import 'package:frontend/data/models/user_proficiency_model.dart'; // For ProficiencyLevel
-import 'package:frontend/utils/exceptions.dart';
+import 'package:frontend/domain/value_objects/proficiency_level.dart';
 
 class CourseRecommendationApiDataSource {
-  final Dio _dio;
-
-  CourseRecommendationApiDataSource(this._dio);
 
   // Mock course recommendations based on proficiency levels
-  static final List<CourseRecommendationModel> _allCourses = [
+  static const List<CourseRecommendationModel> _allCourses = [
     // Beginner courses
     CourseRecommendationModel(
       id: 1,
@@ -45,6 +40,7 @@ class CourseRecommendationApiDataSource {
       enrolledCount: 8760,
       skillsCovered: ['Linear Algebra', 'Statistics', 'Calculus'],
     ),
+    
     
     // Intermediate courses
     CourseRecommendationModel(

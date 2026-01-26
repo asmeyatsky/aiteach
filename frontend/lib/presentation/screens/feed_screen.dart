@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../data/models/feed_item_model.dart';
+import 'package:frontend/data/models/feed_item_model.dart';
+import 'package:frontend/providers/feed_provider.dart';
 
 class FeedScreen extends ConsumerWidget {
   const FeedScreen({super.key});
@@ -69,7 +70,7 @@ class FeedScreen extends ConsumerWidget {
             },
           ),
         ),
-        loading: const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

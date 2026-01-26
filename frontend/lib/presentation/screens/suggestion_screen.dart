@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/suggestion_model.dart';
+import 'package:frontend/data/models/suggestion_model.dart';
+import 'package:frontend/providers/suggestion_provider.dart';
 
 class SuggestionScreen extends ConsumerStatefulWidget {
   const SuggestionScreen({super.key});
@@ -90,6 +91,7 @@ class _SuggestionScreenState extends ConsumerState<SuggestionScreen> {
               ),
               const SizedBox(height: 24),
               TextFormField(
+                key: const ValueKey('resource_url_field'),
                 controller: _urlController,
                 decoration: const InputDecoration(
                   labelText: 'Resource URL',

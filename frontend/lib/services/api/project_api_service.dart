@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../models/project_model.dart';
+import 'package:frontend/data/models/project_model.dart';
 
 class ProjectApiService {
   final Dio _dio;
@@ -30,7 +30,7 @@ class ProjectApiService {
   }
 
   Future<List<UserProject>> getMyProjects() async {
-    final response = await _dio.get('/me/projects/');
+    final response = await _dio.get('/projects/me/');
     return (response.data as List)
         .map((json) => UserProject.fromJson(json))
         .toList();

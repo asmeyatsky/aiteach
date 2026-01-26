@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../services/api/playground_api_service.dart';
+import 'package:frontend/services/api/playground_api_service.dart';
+import 'package:frontend/providers/auth_provider.dart';
 
 final playgroundApiServiceProvider = Provider<PlaygroundApiService>((ref) {
-  throw UnimplementedError();
+  return PlaygroundApiService(ref.read(dioProvider));
 });
 
 final chatHistoryProvider = StateProvider<List<Map<String, String>>>((ref) {

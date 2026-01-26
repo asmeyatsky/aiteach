@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/providers/forum_provider.dart';
-import 'package:frontend/models/forum_post.dart';
+import 'package:frontend/domain/entities/forum_post.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/utils/exceptions.dart';
 
@@ -90,7 +90,7 @@ class _CommentFormState extends ConsumerState<CommentForm> {
 
   @override
   Widget build(BuildContext context) {
-    final forumService = ref.read(forumServiceProvider);
+    final forumRepository = ref.read(forumRepositoryProvider);
     final userId = ref.watch(currentUserIdProvider);
 
     return Column(
@@ -110,10 +110,9 @@ class _CommentFormState extends ConsumerState<CommentForm> {
               : () async {
                   if (_commentController.text.isNotEmpty) {
                     try {
-                      final success = await forumService.createComment(
+                      final success = await forumRepository.createComment(
                         widget.postId,
                         _commentController.text,
-                        userId,
                       );
                       if (success != null) {
                         _commentController.clear();

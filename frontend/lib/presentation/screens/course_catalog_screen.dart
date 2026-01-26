@@ -8,7 +8,7 @@ import 'package:frontend/presentation/widgets/loading_animation.dart';
 import 'package:frontend/presentation/widgets/responsive_layout.dart';
 import 'package:frontend/presentation/widgets/course_recommendations.dart';
 import 'package:frontend/services/course_recommendation_service.dart';
-import 'package:frontend/models/user_proficiency.dart';
+import 'package:frontend/domain/value_objects/proficiency_level.dart';
 
 class CourseCatalogScreen extends ConsumerWidget {
   const CourseCatalogScreen({super.key});

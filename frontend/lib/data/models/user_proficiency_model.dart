@@ -7,7 +7,7 @@ class ProficiencyLevelConverter implements JsonConverter<ProficiencyLevel, Strin
 
   @override
   ProficiencyLevel fromJson(String json) {
-    return ProficiencyLevel.values.firstWhere((e) => e.toString() == 'ProficiencyLevel.' + json);
+    return ProficiencyLevel.values.firstWhere((e) => e.toString() == 'ProficiencyLevel.$json');
   }
 
   @override

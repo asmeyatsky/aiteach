@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/domain/entities/badge.dart';
 import 'package:frontend/domain/entities/user_badge.dart';
 import 'package:frontend/data/datasources/gamification_api_data_source.dart';
 import 'package:frontend/data/repositories/gamification_repository_impl.dart';
 import 'package:frontend/providers/auth_provider.dart'; // To get Dio instance
+import 'package:frontend/data/mappers/user_badge_mapper.dart';
+import 'package:frontend/data/models/user_badge_model.dart';
 
 final gamificationApiDataSourceProvider = Provider<GamificationApiDataSource>((ref) {
   return GamificationApiDataSource(ref.read(dioProvider));
@@ -39,10 +40,11 @@ final gamificationUserProfileProvider = FutureProvider.family<UserProfile?, int?
 });
 */
 
-final userBadgesProvider = FutureProvider.family<List<UserBadge>, int?>((ref, userId) async {
+final userBadgesProvider = FutureProvider.family<List<UserBadgeModel>, int?>((ref, userId) async {
   if (userId == null) {
     return [];
   }
   final gamificationRepository = ref.read(gamificationRepositoryProvider);
-  return gamificationRepository.getUserBadges(userId);
+  final userBadges = await gamificationRepository.getUserBadges(userId);
+  return userBadges.map((badge) => UserBadgeMapper.toModel(badge)).toList();
 });
