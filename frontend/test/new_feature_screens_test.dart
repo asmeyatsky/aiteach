@@ -119,7 +119,6 @@ void main() {
       await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
 
-      // Should show validation error
       expect(find.text('URL must start with http:// or https://'), findsOneWidget);
     });
   });

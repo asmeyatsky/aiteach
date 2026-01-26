@@ -8,6 +8,7 @@ part of 'user_badge_model.dart';
 
 UserBadgeModel _$UserBadgeModelFromJson(Map<String, dynamic> json) =>
     UserBadgeModel(
+      id: (json['id'] as num).toInt(),
       userId: (json['userId'] as num).toInt(),
       badgeId: (json['badgeId'] as num).toInt(),
       awardedAt: DateTime.parse(json['awardedAt'] as String),
@@ -16,6 +17,7 @@ UserBadgeModel _$UserBadgeModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UserBadgeModelToJson(UserBadgeModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'userId': instance.userId,
       'badgeId': instance.badgeId,
       'awardedAt': instance.awardedAt.toIso8601String(),

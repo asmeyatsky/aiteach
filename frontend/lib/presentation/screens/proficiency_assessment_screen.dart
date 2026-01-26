@@ -4,6 +4,7 @@ import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/services/proficiency_service.dart';
 import 'package:frontend/domain/value_objects/proficiency_level.dart';
+import 'package:go_router/go_router.dart';
 
 class ProficiencyAssessmentScreen extends ConsumerStatefulWidget {
   const ProficiencyAssessmentScreen({super.key});
@@ -177,7 +178,7 @@ class _ProficiencyAssessmentScreenState extends ConsumerState<ProficiencyAssessm
           level: ProficiencyLevel.beginner,
           title: 'Beginner',
           description: 'New to AI/ML. No prior experience needed.',
-          features: [
+          features: const [
             'Learn fundamental concepts',
             'Hands-on with simple projects',
             'No programming prerequisites'
@@ -190,7 +191,7 @@ class _ProficiencyAssessmentScreenState extends ConsumerState<ProficiencyAssessm
           level: ProficiencyLevel.intermediate,
           title: 'Intermediate',
           description: 'Some programming and math background.',
-          features: [
+          features: const [
             'Work with ML frameworks',
             'Build real-world models',
             'Apply algorithms to datasets'
@@ -203,7 +204,7 @@ class _ProficiencyAssessmentScreenState extends ConsumerState<ProficiencyAssessm
           level: ProficiencyLevel.advanced,
           title: 'Advanced',
           description: 'Experienced practitioner or researcher.',
-          features: [
+          features: const [
             'Explore cutting-edge research',
             'Lead AI initiatives',
             'Contribute to open source'

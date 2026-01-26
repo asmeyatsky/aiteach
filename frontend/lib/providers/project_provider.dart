@@ -12,7 +12,7 @@ final projectsProvider = FutureProvider.autoDispose<List<Project>>((ref) async {
   return await apiService.getProjects();
 });
 
-final projectDetailProvider = FutureProvider.family<Project, int>((ref, projectId) async {
+final projectDetailProvider = FutureProvider.autoDispose.family<Project, int>((ref, projectId) async {
   final apiService = ref.watch(projectApiServiceProvider);
   return await apiService.getProject(projectId);
 });

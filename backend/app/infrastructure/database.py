@@ -1,6 +1,6 @@
 import os
 import logging
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import sessionmaker
 from app.infrastructure.repositories.orm.base import Base
 from app.infrastructure.repositories.orm import user, course, lesson, forum, gamification, user_progress, project, feed, suggestion
@@ -71,7 +71,7 @@ def check_db_connection():
     """Check if database connection is working"""
     try:
         with engine.connect() as connection:
-            connection.execute("SELECT 1")
+            connection.execute(text("SELECT 1"))
             logger.info("Database connection successful")
             return True
     except Exception as e:

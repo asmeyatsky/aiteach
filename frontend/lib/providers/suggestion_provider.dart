@@ -1,3 +1,4 @@
+// frontend/lib/providers/suggestion_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/services/api/suggestion_api_service.dart';
 import 'package:frontend/data/models/suggestion_model.dart';

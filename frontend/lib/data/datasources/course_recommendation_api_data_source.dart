@@ -41,7 +41,6 @@ class CourseRecommendationApiDataSource {
       skillsCovered: ['Linear Algebra', 'Statistics', 'Calculus'],
     ),
     
-    
     // Intermediate courses
     CourseRecommendationModel(
       id: 4,

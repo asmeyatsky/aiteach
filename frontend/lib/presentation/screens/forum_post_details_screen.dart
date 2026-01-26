@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/providers/forum_provider.dart';
 import 'package:frontend/domain/entities/forum_post.dart';
+import 'package:frontend/providers/forum_provider.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/utils/exceptions.dart';
 
