@@ -1,9 +1,11 @@
+// frontend/lib/providers/suggestion_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../services/api/suggestion_api_service.dart';
-import '../models/suggestion_model.dart';
+import 'package:frontend/services/api/suggestion_api_service.dart';
+import 'package:frontend/data/models/suggestion_model.dart';
+import 'package:frontend/providers/auth_provider.dart';
 
 final suggestionApiServiceProvider = Provider<SuggestionApiService>((ref) {
-  throw UnimplementedError();
+  return SuggestionApiService(ref.read(dioProvider));
 });
 
 final createSuggestionProvider = FutureProvider.autoDispose.family<SuggestedContent, SuggestedContentCreate>((ref, suggestion) async {

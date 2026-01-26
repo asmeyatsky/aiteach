@@ -1,7 +1,8 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'project_detail_screen.dart';
-import '../../data/models/project_model.dart';
+import 'package:frontend/presentation/screens/project_detail_screen.dart';
+import 'package:frontend/providers/project_provider.dart';
 
 class ProjectListScreen extends ConsumerWidget {
   const ProjectListScreen({super.key});
@@ -27,7 +28,7 @@ class ProjectListScreen extends ConsumerWidget {
                 margin: const EdgeInsets.all(8.0),
                 child: ListTile(
                   title: Text(project.title),
-                  subtitle: Text('${project.track} • ${project.difficulty} • ${project.description.substring(0, Math.min(100, project.description.length))}...'),
+                  subtitle: Text('${project.track} • ${project.difficulty} • ${project.description.substring(0, min(100, project.description.length))}...'),
                   trailing: Chip(
                     label: Text(
                       project.difficulty.toUpperCase(),
@@ -48,7 +49,7 @@ class ProjectListScreen extends ConsumerWidget {
             },
           ),
         ),
-        loading: const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -79,9 +80,4 @@ class ProjectListScreen extends ConsumerWidget {
         return Colors.grey.shade100;
     }
   }
-}
-
-// Helper class for min function
-class Math {
-  static int min(int a, int b) => a < b ? a : b;
 }

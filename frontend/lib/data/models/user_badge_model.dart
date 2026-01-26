@@ -6,6 +6,7 @@ part 'user_badge_model.g.dart';
 @JsonSerializable()
 class UserBadgeModel {
   UserBadgeModel({
+    required this.id,
     required this.userId,
     required this.badgeId,
     required this.awardedAt,
@@ -15,6 +16,7 @@ class UserBadgeModel {
   factory UserBadgeModel.fromJson(Map<String, dynamic> json) => _$UserBadgeModelFromJson(json);
   Map<String, dynamic> toJson() => _$UserBadgeModelToJson(this);
 
+  final int id;
   final int userId;
   final int badgeId;
   final DateTime awardedAt;

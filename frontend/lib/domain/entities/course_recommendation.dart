@@ -1,6 +1,6 @@
 // frontend/lib/domain/entities/course_recommendation.dart
 import 'package:equatable/equatable.dart';
-import 'package:frontend/data/models/user_proficiency_model.dart'; // Assuming ProficiencyLevel is still used
+import 'package:frontend/domain/value_objects/proficiency_level.dart';
 
 class CourseRecommendation extends Equatable {
   final int id;

@@ -1,7 +1,7 @@
 // frontend/lib/data/datasources/user_profile_api_data_source.dart
 import 'package:dio/dio.dart';
 import 'package:frontend/data/models/user_profile_model.dart';
-import 'package:frontend/data/models/user_proficiency_model.dart';
+import 'package:frontend/data/models/user_skill_proficiency_model.dart';
 import 'package:frontend/utils/exceptions.dart';
 
 class UserProfileApiDataSource {
@@ -22,10 +22,10 @@ class UserProfileApiDataSource {
     }
   }
 
-  Future<UserProficiencyModel> getUserProficiency(int userId) async {
+  Future<UserSkillProficiencyModel> getUserProficiency(int userId) async {
     try {
       final response = await _dio.get('/users/$userId/proficiency');
-      return UserProficiencyModel.fromJson(response.data);
+      return UserSkillProficiencyModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.error is ApiException) {
         throw e.error as ApiException;
@@ -35,7 +35,7 @@ class UserProfileApiDataSource {
     }
   }
 
-  Future<UserProficiencyModel> setUserProficiency(int userId, String skill, int level) async {
+  Future<UserSkillProficiencyModel> setUserProficiency(int userId, String skill, int level) async {
     try {
       final response = await _dio.post(
         '/users/$userId/proficiency',
@@ -44,7 +44,7 @@ class UserProfileApiDataSource {
           'level': level,
         },
       );
-      return UserProficiencyModel.fromJson(response.data);
+      return UserSkillProficiencyModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.error is ApiException) {
         throw e.error as ApiException;
@@ -54,13 +54,13 @@ class UserProfileApiDataSource {
     }
   }
 
-  Future<UserProficiencyModel> updateAssessmentScore(int userId, double score) async {
+  Future<UserSkillProficiencyModel> updateAssessmentScore(int userId, double score) async {
     try {
       final response = await _dio.put(
         '/users/$userId/proficiency/score',
         data: {'assessment_score': score},
       );
-      return UserProficiencyModel.fromJson(response.data);
+      return UserSkillProficiencyModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.error is ApiException) {
         throw e.error as ApiException;

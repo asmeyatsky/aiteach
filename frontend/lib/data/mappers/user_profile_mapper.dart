@@ -1,7 +1,7 @@
 // frontend/lib/data/mappers/user_profile_mapper.dart
 import 'package:frontend/data/models/user_profile_model.dart';
 import 'package:frontend/domain/entities/user_profile.dart';
-import 'package:frontend/data/mappers/user_proficiency_mapper.dart'; // Assuming UserProficiencyMapper exists
+import 'package:frontend/data/mappers/user_proficiency_mapper.dart';
 
 class UserProfileMapper {
   static UserProfile fromModel(UserProfileModel model) {
@@ -11,7 +11,10 @@ class UserProfileMapper {
       email: model.email,
       profilePictureUrl: model.profilePictureUrl,
       createdAt: model.createdAt,
-      proficiencies: model.proficiencies?.map((p) => UserProficiencyMapper.fromModel(p)).toList() ?? [],
+      proficiencies: model.proficiencies?.map((p) {
+        // Convert UserProficiencyModel to UserProficiency entity
+        return UserProficiencyMapper.fromModel(p);
+      }).toList() ?? [],
     );
   }
 
@@ -22,7 +25,10 @@ class UserProfileMapper {
       email: entity.email,
       profilePictureUrl: entity.profilePictureUrl,
       createdAt: entity.createdAt,
-      proficiencies: entity.proficiencies.map((p) => UserProficiencyMapper.toModel(p)).toList(),
+      proficiencies: entity.proficiencies.map((p) {
+        // Convert UserProficiency entity to UserProficiencyModel
+        return UserProficiencyMapper.toModel(p);
+      }).toList(),
     );
   }
 }

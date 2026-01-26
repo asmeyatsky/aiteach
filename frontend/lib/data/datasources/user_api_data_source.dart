@@ -2,7 +2,6 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/data/models/user_model.dart';
 import 'package:frontend/utils/exceptions.dart';
-import 'package:frontend/config/environment.dart';
 
 class UserApiDataSource {
   final Dio _dio;

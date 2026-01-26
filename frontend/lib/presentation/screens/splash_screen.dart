@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/providers/user_provider.dart';
-import 'package:frontend/models/user.dart';
+import 'package:frontend/data/models/user_model.dart';
+import 'package:frontend/data/mappers/user_mapper.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -26,12 +27,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if (mounted) {
       if (token != null) {
         // Set current user when logged in
-        ref.read(currentUserProvider.notifier).state = User(
+        ref.read(currentUserProvider.notifier).state = UserMapper.fromModel(UserModel(
           id: 1,
           username: 'testuser',
           email: 'test@example.com',
           createdAt: DateTime.now(),
-        );
+        ));
         context.go('/'); // Navigate to home if logged in
       } else {
         context.go('/login'); // Navigate to login if not logged in

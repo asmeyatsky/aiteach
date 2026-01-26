@@ -12,7 +12,7 @@ class EnvironmentConfig {
   static String get apiBaseUrl {
     switch (_currentEnvironment) {
       case Environment.development:
-        return 'http://localhost:8000';
+        return 'http://localhost:8001';
       case Environment.staging:
         return 'https://aiteach-backend-staging-xyz.run.app';
       case Environment.production:

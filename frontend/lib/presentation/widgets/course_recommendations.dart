@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/domain/entities/course_recommendation.dart';
-import 'package:frontend/data/models/user_proficiency_model.dart'; // Assuming ProficiencyLevel is still used
+import 'package:frontend/domain/value_objects/proficiency_level.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/providers/course_recommendation_provider.dart';
 import 'package:frontend/providers/user_provider.dart'; // To get currentUserIdProvider

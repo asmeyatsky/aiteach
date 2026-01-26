@@ -5,19 +5,19 @@ import 'package:frontend/domain/entities/user_proficiency.dart';
 class UserProficiencyMapper {
   static UserProficiency fromModel(UserProficiencyModel model) {
     return UserProficiency(
-      id: model.id,
+      id: model.userId, // Assuming userId from the model maps to id in entity
       userId: model.userId,
-      skill: model.skill,
-      level: model.level,
+      skill: '', // Default value since UserProficiencyModel doesn't have a skill field
+      level: model.selectedLevel.index, // Convert enum to int
     );
   }
 
   static UserProficiencyModel toModel(UserProficiency entity) {
     return UserProficiencyModel(
-      id: entity.id,
       userId: entity.userId,
-      skill: entity.skill,
-      level: entity.level,
+      selectedLevel: ProficiencyLevel.values[entity.level], // Convert int to enum
+      assessmentScore: 0.0, // Default value
+      lastUpdated: DateTime.now(), // Default value
     );
   }
 }

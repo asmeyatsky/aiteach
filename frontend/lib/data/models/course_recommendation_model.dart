@@ -1,6 +1,6 @@
 // frontend/lib/data/models/course_recommendation_model.dart
 import 'package:json_annotation/json_annotation.dart';
-import 'package:frontend/models/user_proficiency.dart'; // Assuming ProficiencyLevel is still used
+import 'package:frontend/domain/value_objects/proficiency_level.dart';
 
 part 'course_recommendation_model.g.dart';
 
@@ -9,7 +9,7 @@ class ProficiencyLevelConverter implements JsonConverter<ProficiencyLevel, Strin
 
   @override
   ProficiencyLevel fromJson(String json) {
-    return ProficiencyLevel.values.firstWhere((e) => e.toString() == 'ProficiencyLevel.' + json);
+    return ProficiencyLevel.values.firstWhere((e) => e.toString() == 'ProficiencyLevel.$json');
   }
 
   @override

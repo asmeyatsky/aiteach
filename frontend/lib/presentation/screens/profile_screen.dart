@@ -5,7 +5,7 @@ import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/presentation/widgets/badges_grid.dart';
 import 'package:frontend/presentation/widgets/points_display.dart';
 import 'package:frontend/presentation/dialogs/proficiency_selection_dialog.dart';
-import 'package:frontend/models/user_proficiency.dart';
+import 'package:frontend/domain/value_objects/proficiency_level.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/lesson.dart';
+import 'package:frontend/data/models/lesson_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/presentation/animations/animations.dart';
 
 class LessonCard extends StatelessWidget {
-  final Lesson lesson;
+  final LessonModel lesson;
   final bool isCompleted;
   final VoidCallback onTap;
   final int index;

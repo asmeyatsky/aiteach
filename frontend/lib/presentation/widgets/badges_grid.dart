@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/user_badge.dart';
+import 'package:frontend/data/models/user_badge_model.dart';
 import 'package:frontend/presentation/widgets/badge_card.dart';
 
 class BadgesGrid extends StatelessWidget {
-  final List<UserBadge> userBadges;
+  final List<UserBadgeModel> userBadges;
 
   const BadgesGrid({super.key, required this.userBadges});
 

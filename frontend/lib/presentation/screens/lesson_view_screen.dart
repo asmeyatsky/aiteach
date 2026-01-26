@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/models/lesson.dart';
-import 'package:frontend/providers/courses_provider.dart';
+import 'package:frontend/data/models/lesson_model.dart';
 import 'package:frontend/providers/user_progress_provider.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/utils/exceptions.dart';
@@ -10,7 +9,7 @@ import 'package:frontend/presentation/widgets/animated_button.dart';
 import 'package:frontend/presentation/widgets/loading_animation.dart';
 
 class LessonViewScreen extends ConsumerWidget {
-  final Lesson lesson;
+  final LessonModel lesson;
 
   const LessonViewScreen({super.key, required this.lesson});
 
@@ -80,8 +79,8 @@ class LessonViewScreen extends ConsumerWidget {
                       child: AnimatedButton(
                         onPressed: () async {
                           try {
-                            final courseService = ref.read(courseServiceProvider);
-                            final success = await courseService.markLessonComplete(lesson.id, userId);
+                            final userProgressRepository = ref.read(userProgressRepositoryProvider);
+                            final success = await userProgressRepository.markLessonComplete(lesson.id, userId);
                             if (success != null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Lesson marked as complete!')),

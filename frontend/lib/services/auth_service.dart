@@ -2,7 +2,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/domain/entities/user.dart';
 import 'package:frontend/domain/repositories/user_repository.dart';
-import 'package:frontend/data/models/user_model.dart'; // For UserCreate DTO
 
 class AuthService {
   final UserRepository _userRepository;

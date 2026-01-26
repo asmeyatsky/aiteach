@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/providers/playground_provider.dart';
 
 class PlaygroundScreen extends ConsumerStatefulWidget {
   const PlaygroundScreen({super.key});

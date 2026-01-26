@@ -14,8 +14,10 @@ import 'package:frontend/presentation/screens/playground_screen.dart';
 import 'package:frontend/presentation/screens/project_list_screen.dart';
 import 'package:frontend/presentation/screens/feed_screen.dart';
 import 'package:frontend/presentation/screens/suggestion_screen.dart';
-import 'package:frontend/models/lesson.dart';
-import 'package:frontend/models/forum_post.dart';
+import 'package:frontend/data/models/lesson_model.dart';
+import 'package:frontend/data/models/forum_post_model.dart';
+import 'package:frontend/domain/entities/forum_post.dart';
+import 'package:frontend/data/mappers/forum_post_mapper.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/splash',
@@ -54,7 +56,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/lessons/:lessonId',
       builder: (BuildContext context, GoRouterState state) {
-        final lesson = state.extra as Lesson; // Assuming lesson object is passed as extra
+        final lesson = state.extra as LessonModel; // Assuming lesson object is passed as extra
         return LessonViewScreen(lesson: lesson);
       },
     ),
@@ -73,7 +75,8 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/forum/posts/:postId',
       builder: (BuildContext context, GoRouterState state) {
-        final post = state.extra as ForumPost; // Assuming post object is passed as extra
+        final postModel = state.extra as ForumPostModel; // Assuming post object is passed as extra
+        final post = ForumPostMapper.fromModel(postModel);
         return ForumPostDetailsScreen(post: post);
       },
     ),

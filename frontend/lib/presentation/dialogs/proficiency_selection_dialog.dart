@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/user_proficiency.dart';
+import 'package:frontend/domain/value_objects/proficiency_level.dart';
 
 class ProficiencySelectionDialog extends StatefulWidget {
   final ProficiencyLevel? initialLevel;
