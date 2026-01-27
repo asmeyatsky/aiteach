@@ -12,9 +12,9 @@ class EnvironmentConfig {
   static String get apiBaseUrl {
     switch (_currentEnvironment) {
       case Environment.development:
-        return 'http://localhost:8001';
+        return 'http://localhost:8000';
       case Environment.staging:
-        return 'https://aiteach-backend-staging-xyz.run.app';
+        return 'https://aiteach-backend-uk-186667783026.europe-west2.run.app';
       case Environment.production:
         return 'https://api.aiteach.app';
     }
@@ -32,7 +32,8 @@ class EnvironmentConfig {
   }
 
   static bool get isProduction => _currentEnvironment == Environment.production;
-  static bool get isDevelopment => _currentEnvironment == Environment.development;
+  static bool get isDevelopment =>
+      _currentEnvironment == Environment.development;
   static bool get enableLogging => !isProduction;
 
   // Feature flags

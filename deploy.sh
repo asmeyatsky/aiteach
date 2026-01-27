@@ -4,7 +4,7 @@
 set -e
 
 # Configuration
-PROJECT_ID=${GOOGLE_CLOUD_PROJECT:-"your-project-id"}
+PROJECT_ID=${GOOGLE_CLOUD_PROJECT:-"aiteach-472319"}
 REGION="us-central1"
 
 echo "🚀 Starting deployment for AI Education Platform"

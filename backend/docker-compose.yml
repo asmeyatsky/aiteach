@@ -6,7 +6,7 @@ services:
     volumes:
       - ./app:/code/app
     ports:
-      - 8001:8000
+      - 8000:8000
     environment:
       - DATABASE_URL=postgresql://user:password@db:5432/db
       - TESTING=False

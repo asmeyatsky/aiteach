@@ -1,11 +1,11 @@
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/aiteach-backend:$COMMIT_SHA', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/aiteach-backend:staging', '.']
 
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/aiteach-backend:$COMMIT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/aiteach-backend:staging']
 
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -13,9 +13,9 @@ steps:
     args:
     - 'run'
     - 'deploy'
-    - 'aiteach-backend'
+    - 'aiteach-backend-staging'
     - '--image'
-    - 'gcr.io/$PROJECT_ID/aiteach-backend:$COMMIT_SHA'
+    - 'gcr.io/$PROJECT_ID/aiteach-backend:staging'
     - '--region'
     - 'us-central1'
     - '--platform'
@@ -53,4 +53,4 @@ options:
   machineType: 'E2_HIGHCPU_8'
 
 images:
-  - gcr.io/$PROJECT_ID/aiteach-backend:$COMMIT_SHA
+  - gcr.io/$PROJECT_ID/aiteach-backend:staging

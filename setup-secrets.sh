@@ -5,7 +5,7 @@
 
 set -e
 
-PROJECT_ID=${GOOGLE_CLOUD_PROJECT:-"your-project-id"}
+PROJECT_ID=${GOOGLE_CLOUD_PROJECT:-"aiteach-472319"}
 
 echo "Setting up secrets for project: $PROJECT_ID"
 

@@ -1,0 +1,19 @@
+runtime: python312
+
+# App Engine standard environment configuration for static files
+handlers:
+# Serve Flutter web app
+- url: /
+  static_files: build/web/index.html
+  upload: build/web/index.html
+  secure: always
+  redirect_http_response_code: 301
+
+- url: /(.*)
+  static_files: build/web/\1
+  upload: build/web/(.*)
+  secure: always
+  redirect_http_response_code: 301
+
+env_variables:
+  FLUTTER_ENV: staging

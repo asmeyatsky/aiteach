@@ -6,7 +6,7 @@
 set -e
 
 # Configuration
-PROJECT_ID=${GOOGLE_CLOUD_PROJECT:-"your-project-id"}
+PROJECT_ID=${GOOGLE_CLOUD_PROJECT:-"aiteach-472319"}
 REGION="us-central1"
 INSTANCE_NAME="aiteach-db"
 DATABASE_NAME="aiteach"
@@ -29,7 +29,6 @@ gcloud sql instances create $INSTANCE_NAME \
     --storage-size=10GB \
     --storage-auto-increase \
     --backup-start-time=02:00 \
-    --enable-bin-log \
     --maintenance-window-day=SUN \
     --maintenance-window-hour=02 \
     --project=$PROJECT_ID
