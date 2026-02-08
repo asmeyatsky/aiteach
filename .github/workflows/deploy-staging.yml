@@ -1,0 +1,199 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+env:
+  GCP_REGION: europe-west2
+  BACKEND_SERVICE: aiteach-backend-stage
+  FRONTEND_SERVICE: aiteach-frontend-stage
+  BACKEND_IMAGE: ghcr.io/asmeyatsky/aiteach/backend:staging
+  FRONTEND_IMAGE: ghcr.io/asmeyatsky/aiteach/frontend:staging
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'frontend/**'
+
+  backend:
+    needs: changes
+    if: needs.changes.outputs.backend == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ env.BACKEND_IMAGE }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy backend to Cloud Run
+        run: |
+          gcloud run deploy $BACKEND_SERVICE \
+            --image=$BACKEND_IMAGE \
+            --region=$GCP_REGION \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --platform=managed \
+            --allow-unauthenticated \
+            --memory=512Mi \
+            --cpu=1 \
+            --min-instances=0 \
+            --max-instances=2 \
+            --port=8000 \
+            --set-env-vars="DATABASE_URL=sqlite:///./data/staging.db" \
+            --set-env-vars="JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" \
+            --set-env-vars='TRUSTED_HOSTS=["*"]' \
+            --set-env-vars="DEBUG=True" \
+            --set-env-vars="ALLOWED_ORIGINS=https://aiteach-frontend-stage-186667783026.europe-west2.run.app,http://localhost:3000"
+
+      - name: Get backend URL
+        id: backend-url
+        run: |
+          URL=$(gcloud run services describe $BACKEND_SERVICE \
+            --region=$GCP_REGION \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --format='value(status.url)')
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Health check
+        run: |
+          URL="${{ steps.backend-url.outputs.url }}"
+          for i in $(seq 1 12); do
+            STATUS=$(curl -s -o /dev/null -w '%{http_code}' "$URL/health" || true)
+            if [ "$STATUS" = "200" ]; then
+              echo "Backend healthy"
+              exit 0
+            fi
+            echo "Attempt $i: status=$STATUS, retrying in 10s..."
+            sleep 10
+          done
+          echo "Backend health check failed"
+          exit 1
+
+  frontend:
+    needs: [changes, backend]
+    if: |
+      always() &&
+      (needs.changes.outputs.frontend == 'true' || github.event_name == 'workflow_dispatch') &&
+      (needs.backend.result == 'success' || needs.backend.result == 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get backend URL
+        id: backend-url
+        run: |
+          # If backend was deployed this run, use its output; otherwise fetch from GCP
+          echo "Fetching backend URL from Cloud Run..."
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Resolve backend URL
+        id: resolve-backend
+        run: |
+          URL=$(gcloud run services describe $BACKEND_SERVICE \
+            --region=$GCP_REGION \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --format='value(status.url)')
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Backend URL: $URL"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile.staging
+          push: true
+          tags: ${{ env.FRONTEND_IMAGE }}
+          build-args: |
+            BACKEND_URL=${{ steps.resolve-backend.outputs.url }}
+            ENVIRONMENT=staging
+
+      - name: Deploy frontend to Cloud Run
+        run: |
+          gcloud run deploy $FRONTEND_SERVICE \
+            --image=$FRONTEND_IMAGE \
+            --region=$GCP_REGION \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --platform=managed \
+            --allow-unauthenticated \
+            --memory=256Mi \
+            --cpu=1 \
+            --min-instances=0 \
+            --max-instances=2 \
+            --port=8080
+
+      - name: Get frontend URL
+        id: frontend-url
+        run: |
+          URL=$(gcloud run services describe $FRONTEND_SERVICE \
+            --region=$GCP_REGION \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --format='value(status.url)')
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Verify frontend
+        run: |
+          URL="${{ steps.frontend-url.outputs.url }}"
+          for i in $(seq 1 6); do
+            STATUS=$(curl -s -o /dev/null -w '%{http_code}' "$URL" || true)
+            if [ "$STATUS" = "200" ]; then
+              echo "Frontend is up at $URL"
+              exit 0
+            fi
+            echo "Attempt $i: status=$STATUS, retrying in 10s..."
+            sleep 10
+          done
+          echo "Frontend verification failed"
+          exit 1

@@ -3,25 +3,40 @@ import 'package:flutter/foundation.dart';
 enum Environment { development, staging, production }
 
 class EnvironmentConfig {
-  static const Environment _currentEnvironment = kDebugMode
-      ? Environment.development
-      : Environment.production;
+  // Compile-time constants from --dart-define
+  static const String _envOverride =
+      String.fromEnvironment('ENVIRONMENT');
+  static const String _backendUrlOverride =
+      String.fromEnvironment('BACKEND_URL');
 
-  static Environment get currentEnvironment => _currentEnvironment;
+  static Environment get currentEnvironment {
+    if (_envOverride.isNotEmpty) {
+      switch (_envOverride) {
+        case 'staging':
+          return Environment.staging;
+        case 'production':
+          return Environment.production;
+        default:
+          return Environment.development;
+      }
+    }
+    return kDebugMode ? Environment.development : Environment.production;
+  }
 
   static String get apiBaseUrl {
-    switch (_currentEnvironment) {
+    if (_backendUrlOverride.isNotEmpty) return _backendUrlOverride;
+    switch (currentEnvironment) {
       case Environment.development:
         return 'http://localhost:8000';
       case Environment.staging:
-        return 'https://aiteach-backend-uk-186667783026.europe-west2.run.app';
+        return 'https://aiteach-backend-stage-186667783026.europe-west2.run.app';
       case Environment.production:
         return 'https://api.aiteach.app';
     }
   }
 
   static String get websiteUrl {
-    switch (_currentEnvironment) {
+    switch (currentEnvironment) {
       case Environment.development:
         return 'http://localhost:3000';
       case Environment.staging:
@@ -31,9 +46,9 @@ class EnvironmentConfig {
     }
   }
 
-  static bool get isProduction => _currentEnvironment == Environment.production;
+  static bool get isProduction => currentEnvironment == Environment.production;
   static bool get isDevelopment =>
-      _currentEnvironment == Environment.development;
+      currentEnvironment == Environment.development;
   static bool get enableLogging => !isProduction;
 
   // Feature flags
