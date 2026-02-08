@@ -1,38 +1,5 @@
-import os
-from fastapi.testclient import TestClient
-from app.main import app
-from app.infrastructure.database import get_db
-from app.infrastructure.repositories.orm.base import Base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 import pytest
-
-# Setup a test database
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-@pytest.fixture(name="db_session")
-def db_session_fixture():
-    print("\nDropping all tables...")
-    Base.metadata.drop_all(bind=engine)
-    print("Creating all tables...")
-    Base.metadata.create_all(bind=engine)
-    yield TestingSessionLocal()
-    print("Dropping all tables after test...")
-    Base.metadata.drop_all(bind=engine)
-
-@pytest.fixture(name="client")
-def client_fixture(db_session):
-    def override_get_db():
-        yield db_session
-    app.dependency_overrides[get_db] = override_get_db
-    os.environ["TESTING"] = "True" # Set TESTING environment variable
-    os.environ["DEBUG"] = "True" # Set DEBUG environment variable to disable TrustedHostMiddleware
-    yield TestClient(app, base_url="http://testserver", headers={"Host": "testserver"})
-    del os.environ["TESTING"] # Unset TESTING environment variable
-    del os.environ["DEBUG"] # Unset DEBUG environment variable
-    app.dependency_overrides.clear()
+from app.tests.conftest import get_auth_headers
 
 def test_create_user(client):
     response = client.post(
@@ -51,7 +18,6 @@ def test_create_user(client):
     assert "created_at" in data
 
 def test_create_existing_user(client):
-    # Create user first
     client.post(
         "/users/register",
         json={
@@ -60,7 +26,6 @@ def test_create_existing_user(client):
             "password": "password123"
         },
     )
-    # Try to create again
     response = client.post(
         "/users/register",
         json={
@@ -73,7 +38,6 @@ def test_create_existing_user(client):
     assert response.json() == {"detail": "Email already registered"}
 
 def test_login_user(client):
-    # Create user first
     client.post(
         "/users/register",
         json={
@@ -93,9 +57,9 @@ def test_login_user(client):
     data = response.json()
     assert "access_token" in data
     assert data["token_type"] == "bearer"
+    assert "user_id" in data
 
 def test_login_incorrect_password(client):
-    # Create user first
     client.post(
         "/users/register",
         json={
@@ -124,3 +88,26 @@ def test_login_non_existent_user(client):
     )
     assert response.status_code == 401
     assert response.json() == {"detail": "Incorrect username or password"}
+
+def test_get_current_user(client):
+    headers, user_id = get_auth_headers(client)
+    response = client.get("/users/me", headers=headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["username"] == "testuser"
+
+def test_delete_own_user(client):
+    headers, user_id = get_auth_headers(client)
+    response = client.delete("/users/username/testuser", headers=headers)
+    assert response.status_code == 200
+
+def test_delete_other_user_forbidden(client):
+    headers, user_id = get_auth_headers(client)
+    # Try to delete a different user
+    client.post("/users/register", json={
+        "username": "otheruser",
+        "email": "other@example.com",
+        "password": "password123",
+    })
+    response = client.delete("/users/username/otheruser", headers=headers)
+    assert response.status_code == 403

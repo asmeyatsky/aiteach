@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/presentation/screens/main_screen.dart';
 import 'package:frontend/presentation/screens/course_details_screen.dart';
 import 'package:frontend/presentation/screens/lesson_view_screen.dart';
@@ -18,8 +19,42 @@ import 'package:frontend/data/models/lesson_model.dart';
 import 'package:frontend/data/models/forum_post_model.dart';
 import 'package:frontend/data/mappers/forum_post_mapper.dart';
 
+const _publicRoutes = {'/splash', '/login', '/register'};
+const _storage = FlutterSecureStorage();
+
 final GoRouter router = GoRouter(
   initialLocation: '/splash',
+  redirect: (BuildContext context, GoRouterState state) async {
+    final location = state.matchedLocation;
+    if (_publicRoutes.contains(location)) {
+      return null;
+    }
+    final token = await _storage.read(key: 'jwt_token');
+    if (token == null) {
+      return '/login';
+    }
+    return null;
+  },
+  errorBuilder: (BuildContext context, GoRouterState state) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Page Not Found')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
+            const Text('Page not found', style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => context.go('/'),
+              child: const Text('Go Home'),
+            ),
+          ],
+        ),
+      ),
+    );
+  },
   routes: <GoRoute>[
     GoRoute(
       path: '/splash',
@@ -55,9 +90,13 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/lessons/:lessonId',
       builder: (BuildContext context, GoRouterState state) {
-        final lesson =
-            state.extra
-                as LessonModel; // Assuming lesson object is passed as extra
+        final lesson = state.extra as LessonModel?;
+        if (lesson == null) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Error')),
+            body: const Center(child: Text('Lesson data not available')),
+          );
+        }
         return LessonViewScreen(lesson: lesson);
       },
     ),
@@ -76,9 +115,13 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/forum/posts/:postId',
       builder: (BuildContext context, GoRouterState state) {
-        final postModel =
-            state.extra
-                as ForumPostModel; // Assuming post object is passed as extra
+        final postModel = state.extra as ForumPostModel?;
+        if (postModel == null) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Error')),
+            body: const Center(child: Text('Post data not available')),
+          );
+        }
         final post = ForumPostMapper.fromModel(postModel);
         return ForumPostDetailsScreen(post: post);
       },

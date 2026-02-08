@@ -4,7 +4,40 @@ import 'package:frontend/domain/entities/course_recommendation.dart';
 import 'package:frontend/domain/value_objects/proficiency_level.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/providers/course_recommendation_provider.dart';
-import 'package:frontend/providers/user_provider.dart'; // To get currentUserIdProvider
+import 'package:frontend/providers/user_provider.dart';
+
+String getLevelDisplayName(ProficiencyLevel level) {
+  switch (level) {
+    case ProficiencyLevel.beginner:
+      return 'Beginners';
+    case ProficiencyLevel.intermediate:
+      return 'Intermediate Learners';
+    case ProficiencyLevel.advanced:
+      return 'Advanced Practitioners';
+  }
+}
+
+String getLevelShortName(ProficiencyLevel level) {
+  switch (level) {
+    case ProficiencyLevel.beginner:
+      return 'Beginner';
+    case ProficiencyLevel.intermediate:
+      return 'Intermediate';
+    case ProficiencyLevel.advanced:
+      return 'Advanced';
+  }
+}
+
+Color getLevelColor(ProficiencyLevel level) {
+  switch (level) {
+    case ProficiencyLevel.beginner:
+      return Colors.green;
+    case ProficiencyLevel.intermediate:
+      return Colors.orange;
+    case ProficiencyLevel.advanced:
+      return Colors.red;
+  }
+}
 
 class RecommendedCoursesSection extends ConsumerWidget {
   final ProficiencyLevel userLevel;
@@ -19,7 +52,7 @@ class RecommendedCoursesSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUserId = ref.watch(currentUserIdProvider);
-    final recommendedCoursesAsync = ref.watch(recommendedCoursesProvider(currentUserId ?? 0)); // Pass a default or handle null
+    final recommendedCoursesAsync = ref.watch(recommendedCoursesProvider(currentUserId ?? 0));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +61,7 @@ class RecommendedCoursesSection extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Recommended for ${_getLevelName(userLevel)}',
+              'Recommended for ${getLevelDisplayName(userLevel)}',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             TextButton(
@@ -80,17 +113,6 @@ class RecommendedCoursesSection extends ConsumerWidget {
       ),
     );
   }
-
-  String _getLevelName(ProficiencyLevel level) {
-    switch (level) {
-      case ProficiencyLevel.beginner:
-        return 'Beginners';
-      case ProficiencyLevel.intermediate:
-        return 'Intermediate Learners';
-      case ProficiencyLevel.advanced:
-        return 'Advanced Practitioners';
-    }
-  }
 }
 
 class _CourseCard extends StatelessWidget {
@@ -114,7 +136,6 @@ class _CourseCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Course header with category badge
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -127,11 +148,11 @@ class _CourseCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: _getLevelColor(course.recommendedLevel),
+                        color: getLevelColor(course.recommendedLevel),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        _getLevelName(course.recommendedLevel),
+                        getLevelShortName(course.recommendedLevel),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -157,8 +178,7 @@ class _CourseCard extends StatelessWidget {
                   ],
                 ),
               ),
-              
-              // Course content
+
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -222,8 +242,7 @@ class _CourseCard extends StatelessWidget {
                   ),
                 ),
               ),
-              
-              // Action button
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: SizedBox(
@@ -248,30 +267,10 @@ class _CourseCard extends StatelessWidget {
       ),
     );
   }
-
-  Color _getLevelColor(ProficiencyLevel level) {
-    switch (level) {
-      case ProficiencyLevel.beginner:
-        return Colors.green;
-      case ProficiencyLevel.intermediate:
-        return Colors.orange;
-      case ProficiencyLevel.advanced:
-        return Colors.red;
-    }
-  }
-
-  String _getLevelName(ProficiencyLevel level) {
-    switch (level) {
-      case ProficiencyLevel.beginner:
-        return 'Beginner';
-      case ProficiencyLevel.intermediate:
-        return 'Intermediate';
-      case ProficiencyLevel.advanced:
-        return 'Advanced';
-    }
-  }
 }
 
+// PopularCoursesSection reuses the recommended courses provider since
+// there is no separate backend endpoint for popular courses yet.
 class PopularCoursesSection extends ConsumerWidget {
   final VoidCallback onViewAll;
 
@@ -280,7 +279,7 @@ class PopularCoursesSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUserId = ref.watch(currentUserIdProvider);
-    final popularCoursesAsync = ref.watch(recommendedCoursesProvider(currentUserId ?? 0)); // Using recommended for now
+    final popularCoursesAsync = ref.watch(recommendedCoursesProvider(currentUserId ?? 0));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

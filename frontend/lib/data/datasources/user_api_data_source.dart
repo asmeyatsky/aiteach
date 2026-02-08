@@ -1,4 +1,3 @@
-// frontend/lib/data/datasources/user_api_data_source.dart
 import 'package:dio/dio.dart';
 import 'package:frontend/data/models/user_model.dart';
 import 'package:frontend/utils/exceptions.dart';
@@ -46,10 +45,7 @@ class UserApiDataSource {
 
   Future<UserModel> getCurrentUser(String token) async {
     try {
-      final response = await _dio.get(
-        '/users/me',
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
-      );
+      final response = await _dio.get('/users/me');
       return UserModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.error is ApiException) {
@@ -60,12 +56,9 @@ class UserApiDataSource {
     }
   }
 
-  Future<bool> deleteUser(String username, String token) async {
+  Future<bool> deleteUser(String username) async {
     try {
-      await _dio.delete(
-        '/users/username/$username',
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
-      );
+      await _dio.delete('/users/username/$username');
       return true;
     } on DioException catch (e) {
       if (e.error is ApiException) {
@@ -76,12 +69,9 @@ class UserApiDataSource {
     }
   }
 
-  Future<UserModel> getUserById(int id, String token) async {
+  Future<UserModel> getUserById(int id) async {
     try {
-      final response = await _dio.get(
-        '/users/$id',
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
-      );
+      final response = await _dio.get('/users/$id');
       return UserModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.error is ApiException) {

@@ -1,45 +1,5 @@
-import os
-from fastapi.testclient import TestClient
-from app.main import app
-from app.infrastructure.database import get_db
-from app.infrastructure.repositories.orm.base import Base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 import pytest
-
-# Setup a test database
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-@pytest.fixture(name="db_session")
-def db_session_fixture():
-    Base.metadata.create_all(bind=engine)
-    yield TestingSessionLocal()
-    Base.metadata.drop_all(bind=engine)
-
-@pytest.fixture(name="client")
-def client_fixture(db_session):
-    def override_get_db():
-        yield db_session
-    app.dependency_overrides[get_db] = override_get_db
-    os.environ["TESTING"] = "True" # Set TESTING environment variable
-    os.environ["DEBUG"] = "True" # Set DEBUG environment variable to disable TrustedHostMiddleware
-    yield TestClient(app)
-    del os.environ["TESTING"] # Unset TESTING environment variable
-    del os.environ["DEBUG"] # Unset DEBUG environment variable
-    app.dependency_overrides.clear()
-
-@pytest.fixture
-def registered_user(client):
-    # Register a user for testing gamification functionalities
-    user_data = {
-        "username": "gameuser",
-        "email": "game@example.com",
-        "password": "password123"
-    }
-    client.post("/users/register", json=user_data)
-    return user_data
+from app.tests.conftest import get_auth_headers
 
 def test_create_badge(client):
     response = client.post(
@@ -56,7 +16,6 @@ def test_create_badge(client):
     assert "id" in data
 
 def test_get_badges(client):
-    # Create a badge first
     client.post(
         "/gamification/badges/",
         json={
@@ -71,8 +30,9 @@ def test_get_badges(client):
     assert len(data) > 0
     assert data[0]["name"] == "Another Badge"
 
-def test_create_user_badge(client, registered_user):
-    # Create a badge
+def test_create_user_badge(client):
+    headers, user_id = get_auth_headers(client, username="gameuser", email="game@example.com")
+
     create_badge_response = client.post(
         "/gamification/badges/",
         json={
@@ -82,9 +42,6 @@ def test_create_user_badge(client, registered_user):
         },
     )
     badge_id = create_badge_response.json()["id"]
-
-    # Get the user ID (hardcoded to 1 for now, will be dynamic with auth)
-    user_id = 1 # Assuming the registered_user has ID 1 in the test db
 
     response = client.post(
         "/gamification/user_badges/",
@@ -100,8 +57,9 @@ def test_create_user_badge(client, registered_user):
     assert "id" in data
     assert "awarded_at" in data
 
-def test_get_user_badges(client, registered_user):
-    # Create a badge
+def test_get_user_badges(client):
+    headers, user_id = get_auth_headers(client, username="gameuser", email="game@example.com")
+
     create_badge_response = client.post(
         "/gamification/badges/",
         json={
@@ -112,10 +70,6 @@ def test_get_user_badges(client, registered_user):
     )
     badge_id = create_badge_response.json()["id"]
 
-    # Get the user ID (hardcoded to 1 for now)
-    user_id = 1
-
-    # Award the badge to the user
     client.post(
         "/gamification/user_badges/",
         json={
@@ -124,7 +78,7 @@ def test_get_user_badges(client, registered_user):
         },
     )
 
-    response = client.get(f"/gamification/users/{user_id}/badges/")
+    response = client.get(f"/gamification/users/{user_id}/badges/", headers=headers)
     assert response.status_code == 200
     data = response.json()
     assert len(data) > 0

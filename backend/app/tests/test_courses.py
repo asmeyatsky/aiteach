@@ -1,34 +1,5 @@
-import os
-from fastapi.testclient import TestClient
-from app.main import app
-from app.infrastructure.database import get_db
-from app.infrastructure.repositories.orm.base import Base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 import pytest
-
-# Setup a test database
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-@pytest.fixture(name="db_session")
-def db_session_fixture():
-    Base.metadata.create_all(bind=engine)
-    yield TestingSessionLocal()
-    Base.metadata.drop_all(bind=engine)
-
-@pytest.fixture(name="client")
-def client_fixture(db_session):
-    def override_get_db():
-        yield db_session
-    app.dependency_overrides[get_db] = override_get_db
-    os.environ["TESTING"] = "True" # Set TESTING environment variable
-    os.environ["DEBUG"] = "True" # Set DEBUG environment variable to disable TrustedHostMiddleware
-    yield TestClient(app)
-    del os.environ["TESTING"] # Unset TESTING environment variable
-    del os.environ["DEBUG"] # Unset DEBUG environment variable
-    app.dependency_overrides.clear()
+from app.tests.conftest import get_auth_headers
 
 def test_create_course(client):
     response = client.post(
@@ -36,7 +7,7 @@ def test_create_course(client):
         json={
             "title": "Test Course",
             "description": "This is a test course.",
-            "tier": "free",
+            "tier": "user",
             "thumbnail_url": "http://example.com/thumbnail.jpg"
         },
     )
@@ -44,17 +15,16 @@ def test_create_course(client):
     data = response.json()
     assert data["title"] == "Test Course"
     assert data["description"] == "This is a test course."
-    assert data["tier"] == "free"
+    assert data["tier"] == "user"
     assert "id" in data
 
 def test_get_courses(client):
-    # Create a course first
     client.post(
         "/courses/",
         json={
             "title": "Another Course",
             "description": "Another test course.",
-            "tier": "premium",
+            "tier": "builder",
             "thumbnail_url": "http://example.com/another_thumbnail.jpg"
         },
     )
@@ -65,13 +35,12 @@ def test_get_courses(client):
     assert data[0]["title"] == "Another Course"
 
 def test_get_single_course(client):
-    # Create a course first
     create_response = client.post(
         "/courses/",
         json={
             "title": "Single Course",
             "description": "Single test course.",
-            "tier": "free",
+            "tier": "user",
             "thumbnail_url": "http://example.com/single_thumbnail.jpg"
         },
     )
@@ -82,13 +51,12 @@ def test_get_single_course(client):
     assert data["title"] == "Single Course"
 
 def test_create_lesson(client):
-    # Create a course first
     create_course_response = client.post(
         "/courses/",
         json={
             "title": "Course for Lesson",
             "description": "Course for lesson testing.",
-            "tier": "free",
+            "tier": "user",
             "thumbnail_url": "http://example.com/lesson_course.jpg"
         },
     )
@@ -109,13 +77,12 @@ def test_create_lesson(client):
     assert data["course_id"] == course_id
 
 def test_get_lessons_by_course(client):
-    # Create a course and lessons first
     create_course_response = client.post(
         "/courses/",
         json={
             "title": "Course with Lessons",
             "description": "Course for lesson listing.",
-            "tier": "free",
+            "tier": "user",
             "thumbnail_url": "http://example.com/lessons_course.jpg"
         },
     )
@@ -148,22 +115,14 @@ def test_get_lessons_by_course(client):
     assert data[1]["title"] == "Lesson 2"
 
 def test_mark_lesson_complete(client):
-    # Create a user
-    client.post(
-        "/users/register",
-        json={
-            "username": "completer",
-            "email": "completer@example.com",
-            "password": "password123"
-        },
-    )
-    # Create a course and lesson
+    headers, user_id = get_auth_headers(client, username="completer", email="completer@example.com")
+
     create_course_response = client.post(
         "/courses/",
         json={
             "title": "Course for Completion",
             "description": "Course for completion testing.",
-            "tier": "free",
+            "tier": "user",
             "thumbnail_url": "http://example.com/completion_course.jpg"
         },
     )
@@ -180,29 +139,21 @@ def test_mark_lesson_complete(client):
     )
     lesson_id = create_lesson_response.json()["id"]
 
-    response = client.post(f"/courses/lessons/{lesson_id}/complete")
+    response = client.post(f"/courses/lessons/{lesson_id}/complete", headers=headers)
     assert response.status_code == 200
     data = response.json()
     assert data["lesson_id"] == lesson_id
     assert "completed_at" in data
 
 def test_get_user_progress(client):
-    # Create a user
-    client.post(
-        "/users/register",
-        json={
-            "username": "progressuser",
-            "email": "progress@example.com",
-            "password": "password123"
-        },
-    )
-    # Create a course and lesson
+    headers, user_id = get_auth_headers(client, username="progressuser", email="progress@example.com")
+
     create_course_response = client.post(
         "/courses/",
         json={
             "title": "Course for Progress",
             "description": "Course for progress testing.",
-            "tier": "free",
+            "tier": "user",
             "thumbnail_url": "http://example.com/progress_course.jpg"
         },
     )
@@ -219,11 +170,9 @@ def test_get_user_progress(client):
     )
     lesson_id = create_lesson_response.json()["id"]
 
-    # Mark lesson complete
-    client.post(f"/courses/lessons/{lesson_id}/complete")
+    client.post(f"/courses/lessons/{lesson_id}/complete", headers=headers)
 
-    # Get user progress (hardcoded user_id=1 for now)
-    response = client.get("/progress/users/1/progress")
+    response = client.get(f"/progress/users/{user_id}/progress", headers=headers)
     assert response.status_code == 200
     data = response.json()
     assert len(data) > 0

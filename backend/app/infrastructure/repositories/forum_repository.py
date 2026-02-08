@@ -11,7 +11,7 @@ Key Design Decisions:
 2. Depends on the database session (injected) for all operations.
 3. Uses the forum_mapper to decouple the domain from the persistence model.
 """
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
 from app.domain.ports.repository_ports import ForumRepositoryPort
 from app.domain.entities.forum import ForumPost, ForumComment
@@ -24,11 +24,22 @@ class ForumRepository(ForumRepositoryPort):
         self.db = db
 
     def get_post(self, post_id: int) -> Optional[ForumPost]:
-        orm_post = self.db.query(forum_model.ForumPost).filter(forum_model.ForumPost.id == post_id).first()
+        orm_post = (
+            self.db.query(forum_model.ForumPost)
+            .options(joinedload(forum_model.ForumPost.owner), joinedload(forum_model.ForumPost.comments))
+            .filter(forum_model.ForumPost.id == post_id)
+            .first()
+        )
         return forum_mapper.to_post_domain(orm_post) if orm_post else None
 
     def get_posts(self, skip: int = 0, limit: int = 100) -> List[ForumPost]:
-        orm_posts = self.db.query(forum_model.ForumPost).offset(skip).limit(limit).all()
+        orm_posts = (
+            self.db.query(forum_model.ForumPost)
+            .options(joinedload(forum_model.ForumPost.owner))
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
         return [forum_mapper.to_post_domain(p) for p in orm_posts]
 
     def create_post(self, post: ForumPostCreate, user_id: int) -> ForumPost:
@@ -43,7 +54,14 @@ class ForumRepository(ForumRepositoryPort):
         return forum_mapper.to_comment_domain(orm_comment) if orm_comment else None
 
     def get_comments_by_post(self, post_id: int, skip: int = 0, limit: int = 100) -> List[ForumComment]:
-        orm_comments = self.db.query(forum_model.ForumComment).filter(forum_model.ForumComment.post_id == post_id).offset(skip).limit(limit).all()
+        orm_comments = (
+            self.db.query(forum_model.ForumComment)
+            .options(joinedload(forum_model.ForumComment.owner))
+            .filter(forum_model.ForumComment.post_id == post_id)
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
         return [forum_mapper.to_comment_domain(c) for c in orm_comments]
 
     def create_comment(self, comment: ForumCommentCreate, post_id: int, user_id: int) -> ForumComment:

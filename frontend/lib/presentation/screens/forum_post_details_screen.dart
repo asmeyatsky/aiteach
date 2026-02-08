@@ -89,6 +89,12 @@ class _CommentFormState extends ConsumerState<CommentForm> {
   final _commentController = TextEditingController();
 
   @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final forumRepository = ref.read(forumRepositoryProvider);
     final userId = ref.watch(currentUserIdProvider);

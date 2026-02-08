@@ -107,12 +107,12 @@ migration_system.register_migration(
     CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at);
 
     -- Add indexes for courses table
-    CREATE INDEX IF NOT EXISTS idx_courses_level ON courses(level);
+    CREATE INDEX IF NOT EXISTS idx_courses_tier ON courses(tier);
     CREATE INDEX IF NOT EXISTS idx_courses_created_at ON courses(created_at);
 
     -- Add indexes for user_progress table
     CREATE INDEX IF NOT EXISTS idx_user_progress_user_id ON user_progress(user_id);
-    CREATE INDEX IF NOT EXISTS idx_user_progress_course_id ON user_progress(course_id);
+    CREATE INDEX IF NOT EXISTS idx_user_progress_lesson_id ON user_progress(lesson_id);
 
     -- Add indexes for forum_posts table
     CREATE INDEX IF NOT EXISTS idx_forum_posts_user_id ON forum_posts(user_id);
@@ -122,10 +122,10 @@ migration_system.register_migration(
     DROP INDEX IF EXISTS idx_users_email;
     DROP INDEX IF EXISTS idx_users_username;
     DROP INDEX IF EXISTS idx_users_created_at;
-    DROP INDEX IF EXISTS idx_courses_level;
+    DROP INDEX IF EXISTS idx_courses_tier;
     DROP INDEX IF EXISTS idx_courses_created_at;
     DROP INDEX IF EXISTS idx_user_progress_user_id;
-    DROP INDEX IF EXISTS idx_user_progress_course_id;
+    DROP INDEX IF EXISTS idx_user_progress_lesson_id;
     DROP INDEX IF EXISTS idx_forum_posts_user_id;
     DROP INDEX IF EXISTS idx_forum_posts_created_at;
     """

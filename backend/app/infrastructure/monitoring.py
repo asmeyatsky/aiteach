@@ -3,14 +3,18 @@ import logging
 import time
 from typing import Dict, Any
 from fastapi import Request, Response
-from google.cloud import logging as cloud_logging
 import json
+
+try:
+    from google.cloud import logging as cloud_logging
+except Exception:
+    cloud_logging = None
 
 class CloudLogger:
     """Google Cloud Logging integration"""
 
     def __init__(self):
-        if not os.getenv("DEBUG", "False").lower() == "true":
+        if cloud_logging and not os.getenv("DEBUG", "False").lower() == "true":
             try:
                 self.client = cloud_logging.Client()
                 self.client.setup_logging()

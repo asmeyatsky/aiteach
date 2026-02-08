@@ -33,6 +33,8 @@ steps:
     - '80'
     - '--timeout'
     - '300'
+    - '--startup-probe-path'
+    - '/health'
     - '--set-env-vars'
     - 'DEBUG=False,LOG_LEVEL=INFO,GOOGLE_CLOUD_PROJECT=$PROJECT_ID'
     - '--update-secrets'

@@ -1,4 +1,6 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
+
+RUN addgroup --system app && adduser --system --group app
 
 WORKDIR /app
 
@@ -7,6 +9,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install docker
 
 COPY main.py .
+
+USER app
 
 EXPOSE 8000
 

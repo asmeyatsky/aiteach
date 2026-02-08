@@ -1,10 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/services/auth_service.dart';
 import 'package:frontend/data/datasources/user_api_data_source.dart';
 import 'package:frontend/data/repositories/user_repository_impl.dart';
 import 'package:frontend/utils/dio_interceptor.dart';
 import 'package:frontend/config/environment.dart';
 import 'package:dio/dio.dart';
+
+const _storage = FlutterSecureStorage();
+const _tokenKey = 'jwt_token';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio(BaseOptions(
@@ -13,14 +17,12 @@ final dioProvider = Provider<Dio>((ref) {
     receiveTimeout: EnvironmentConfig.receiveTimeout,
   ));
 
-  // Use a callback approach to avoid circular dependency
   dio.interceptors.add(ErrorInterceptor(
     getToken: () async {
-      // Return a dummy token for testing purposes
-      return "dummy_token";
+      return await _storage.read(key: _tokenKey);
     },
     clearToken: () async {
-      // Do nothing for testing
+      await _storage.delete(key: _tokenKey);
     },
   ));
   return dio;

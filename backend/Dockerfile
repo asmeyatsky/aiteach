@@ -1,4 +1,6 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
+
+RUN addgroup --system app && adduser --system --group app
 
 WORKDIR /app
 
@@ -6,6 +8,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
+
+USER app
 
 EXPOSE 8000
 

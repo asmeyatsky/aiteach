@@ -19,6 +19,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isLoading = false;
 
   @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     _checkLoginStatus();
@@ -95,7 +102,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 _isLoading = false;
                               });
                               if (token != null) {
-                                print('Logged in! Token: $token');
                                 // Get actual user data from backend
                                 try {
                                   final user = await authService.getCurrentUser();
@@ -106,7 +112,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     }
                                   }
                                 } catch (userError) {
-                                  print('Error getting user info: $userError');
                                   // Still navigate even if user info fails
                                   if (mounted) {
                                     context.go('/');

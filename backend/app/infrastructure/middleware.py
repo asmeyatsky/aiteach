@@ -4,6 +4,7 @@ import time
 from typing import Callable
 from fastapi import Request, Response, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 import json
 
 logger = logging.getLogger(__name__)
@@ -24,7 +25,7 @@ def setup_middleware(app):
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline'; "
+            "script-src 'self'; "
             "style-src 'self' 'unsafe-inline'; "
             "img-src 'self' data: https:; "
             "font-src 'self'; "
@@ -33,6 +34,17 @@ def setup_middleware(app):
         )
 
         return response
+
+    # Request size validation middleware
+    request_size_validator = validate_request_size()
+    @app.middleware("http")
+    async def request_size_middleware(request: Request, call_next: Callable):
+        return await request_size_validator(request, call_next)
+
+    # Request timeout middleware
+    @app.middleware("http")
+    async def timeout_middleware_handler(request: Request, call_next: Callable):
+        return await timeout_middleware(request, call_next)
 
     # Request logging middleware
     @app.middleware("http")
@@ -61,12 +73,15 @@ def setup_middleware(app):
         allow_origins=allowed_origins,
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allow_headers=["*"],
+        allow_headers=["Authorization", "Content-Type", "Accept"],
     )
 
-    # Trusted host middleware (prevents host header attacks)
-    # This middleware was removed for testing purposes as TestClient was having issues with it.
-    # In a production environment, this middleware should be re-enabled and configured with appropriate trusted_hosts.
+    # Trusted host middleware
+    trusted_hosts = json.loads(os.getenv("TRUSTED_HOSTS", '["localhost", "testserver", "127.0.0.1"]'))
+    app.add_middleware(
+        TrustedHostMiddleware,
+        allowed_hosts=trusted_hosts,
+    )
 
     return app
 

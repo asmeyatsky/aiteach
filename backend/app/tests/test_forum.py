@@ -1,53 +1,15 @@
-import os
-from fastapi.testclient import TestClient
-from app.main import app
-from app.infrastructure.database import get_db
-from app.infrastructure.repositories.orm.base import Base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 import pytest
+from app.tests.conftest import get_auth_headers
 
-# Setup a test database
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-@pytest.fixture(name="db_session")
-def db_session_fixture():
-    Base.metadata.create_all(bind=engine)
-    yield TestingSessionLocal()
-    Base.metadata.drop_all(bind=engine)
-
-@pytest.fixture(name="client")
-def client_fixture(db_session):
-    def override_get_db():
-        yield db_session
-    app.dependency_overrides[get_db] = override_get_db
-    os.environ["TESTING"] = "True" # Set TESTING environment variable
-    os.environ["DEBUG"] = "True" # Set DEBUG environment variable to disable TrustedHostMiddleware
-    yield TestClient(app)
-    del os.environ["TESTING"] # Unset TESTING environment variable
-    del os.environ["DEBUG"] # Unset DEBUG environment variable
-    app.dependency_overrides.clear()
-
-@pytest.fixture
-def registered_user(client):
-    # Register a user for testing forum functionalities
-    user_data = {
-        "username": "forumuser",
-        "email": "forum@example.com",
-        "password": "password123"
-    }
-    client.post("/users/register", json=user_data)
-    return user_data
-
-def test_create_post(client, registered_user):
+def test_create_post(client):
+    headers, user_id = get_auth_headers(client, username="forumuser", email="forum@example.com")
     response = client.post(
         "/forum/posts/",
         json={
             "title": "Test Post",
             "body": "This is the content of the test post."
         },
+        headers=headers,
     )
     assert response.status_code == 200
     data = response.json()
@@ -58,14 +20,15 @@ def test_create_post(client, registered_user):
     assert "created_at" in data
     assert data["owner"]["username"] == "forumuser"
 
-def test_get_posts(client, registered_user):
-    # Create a post first
+def test_get_posts(client):
+    headers, user_id = get_auth_headers(client, username="forumuser", email="forum@example.com")
     client.post(
         "/forum/posts/",
         json={
             "title": "Another Post",
             "body": "Content of another post."
         },
+        headers=headers,
     )
     response = client.get("/forum/posts/")
     assert response.status_code == 200
@@ -73,14 +36,15 @@ def test_get_posts(client, registered_user):
     assert len(data) > 0
     assert data[0]["title"] == "Another Post"
 
-def test_get_single_post(client, registered_user):
-    # Create a post first
+def test_get_single_post(client):
+    headers, user_id = get_auth_headers(client, username="forumuser", email="forum@example.com")
     create_response = client.post(
         "/forum/posts/",
         json={
             "title": "Single Post",
             "body": "Content of a single post."
         },
+        headers=headers,
     )
     post_id = create_response.json()["id"]
     response = client.get(f"/forum/posts/{post_id}")
@@ -88,14 +52,15 @@ def test_get_single_post(client, registered_user):
     data = response.json()
     assert data["title"] == "Single Post"
 
-def test_create_comment(client, registered_user):
-    # Create a post first
+def test_create_comment(client):
+    headers, user_id = get_auth_headers(client, username="forumuser", email="forum@example.com")
     create_post_response = client.post(
         "/forum/posts/",
         json={
             "title": "Post for Comment",
             "body": "This post will have comments."
         },
+        headers=headers,
     )
     post_id = create_post_response.json()["id"]
 
@@ -104,6 +69,7 @@ def test_create_comment(client, registered_user):
         json={
             "body": "This is a test comment."
         },
+        headers=headers,
     )
     assert response.status_code == 200
     data = response.json()
@@ -114,28 +80,27 @@ def test_create_comment(client, registered_user):
     assert "created_at" in data
     assert data["owner"]["username"] == "forumuser"
 
-def test_get_comments_by_post(client, registered_user):
-    # Create a post and comments first
+def test_get_comments_by_post(client):
+    headers, user_id = get_auth_headers(client, username="forumuser", email="forum@example.com")
     create_post_response = client.post(
         "/forum/posts/",
         json={
             "title": "Post with Comments",
             "body": "This post has multiple comments."
         },
+        headers=headers,
     )
     post_id = create_post_response.json()["id"]
 
     client.post(
         f"/forum/posts/{post_id}/comments/",
-        json={
-            "body": "Comment 1."
-        },
+        json={"body": "Comment 1."},
+        headers=headers,
     )
     client.post(
         f"/forum/posts/{post_id}/comments/",
-        json={
-            "body": "Comment 2."
-        },
+        json={"body": "Comment 2."},
+        headers=headers,
     )
 
     response = client.get(f"/forum/posts/{post_id}/comments/")
@@ -144,3 +109,13 @@ def test_get_comments_by_post(client, registered_user):
     assert len(data) == 2
     assert data[0]["body"] == "Comment 1."
     assert data[1]["body"] == "Comment 2."
+
+def test_create_post_without_auth(client):
+    response = client.post(
+        "/forum/posts/",
+        json={
+            "title": "Unauthorized Post",
+            "body": "Should fail."
+        },
+    )
+    assert response.status_code == 403

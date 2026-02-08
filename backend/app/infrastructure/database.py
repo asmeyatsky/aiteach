@@ -9,7 +9,7 @@ from sqlalchemy.pool import StaticPool
 logger = logging.getLogger(__name__)
 
 # Database URL with fallback for development
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@db/db")
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://devuser:devpassword@db:5432/aiteach_dev")
 
 # Connection pool settings
 MAX_CONNECTIONS = int(os.getenv("MAX_CONNECTIONS_COUNT", "10"))
@@ -24,6 +24,7 @@ if SQLALCHEMY_DATABASE_URL.startswith("postgresql://"):
         max_overflow=20,
         pool_pre_ping=True,
         pool_recycle=3600,
+        pool_timeout=30,
         echo=os.getenv("DEBUG", "False").lower() == "true"
     )
 else:

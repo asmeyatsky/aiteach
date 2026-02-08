@@ -11,7 +11,7 @@ Key Design Decisions:
 2. Depends on the database session (injected) for all operations.
 3. Uses the gamification_mapper to decouple the domain from the persistence model.
 """
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
 from app.domain.ports.repository_ports import GamificationRepositoryPort
 from app.domain.entities.gamification import Badge, UserBadge
@@ -43,7 +43,14 @@ class GamificationRepository(GamificationRepositoryPort):
         return gamification_mapper.to_user_badge_domain(orm_user_badge) if orm_user_badge else None
 
     def get_user_badges_by_user(self, user_id: int, skip: int = 0, limit: int = 100) -> List[UserBadge]:
-        orm_user_badges = self.db.query(gamification_model.UserBadge).filter(gamification_model.UserBadge.user_id == user_id).offset(skip).limit(limit).all()
+        orm_user_badges = (
+            self.db.query(gamification_model.UserBadge)
+            .options(joinedload(gamification_model.UserBadge.badge))
+            .filter(gamification_model.UserBadge.user_id == user_id)
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
         return [gamification_mapper.to_user_badge_domain(ub) for ub in orm_user_badges]
 
     def create_user_badge(self, user_badge: UserBadgeCreate) -> UserBadge:

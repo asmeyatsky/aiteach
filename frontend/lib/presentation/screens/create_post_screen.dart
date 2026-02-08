@@ -18,6 +18,13 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
   final _bodyController = TextEditingController();
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _bodyController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final forumRepository = ref.read(forumRepositoryProvider);
     final userId = ref.watch(currentUserIdProvider);

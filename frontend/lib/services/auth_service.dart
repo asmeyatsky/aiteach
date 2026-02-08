@@ -1,11 +1,11 @@
-// frontend/lib/services/auth_service.dart
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/domain/entities/user.dart';
 import 'package:frontend/domain/repositories/user_repository.dart';
 
 class AuthService {
   final UserRepository _userRepository;
   static const String _tokenKey = 'jwt_token';
+  static const _storage = FlutterSecureStorage();
 
   AuthService(this._userRepository);
 
@@ -18,18 +18,15 @@ class AuthService {
   }
 
   Future<User> register(String username, String email, String password) async {
-    // The register method in UserRepository returns a User entity
     return await _userRepository.register(username, email, password);
   }
 
   Future<void> _saveToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_tokenKey, token);
+    await _storage.write(key: _tokenKey, value: token);
   }
 
   Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
+    return await _storage.read(key: _tokenKey);
   }
 
   Future<User?> getCurrentUser() async {
@@ -41,29 +38,14 @@ class AuthService {
   }
 
   Future<bool> deleteUser(String username) async {
-    // This method needs the token, which is currently managed by AuthService.
-    // For now, we'll assume the token is handled externally or passed.
-    // This highlights a need for a more robust authentication flow.
-    // For testing purposes, we might need to pass the token here.
-    // Or, the repository could depend on a token manager.
-    // For now, let's assume the token is available.
-    // This will be addressed when refactoring AuthService.
     return await _userRepository.deleteUser(username);
   }
 
   Future<User?> getUserById(int id) async {
-    // This method needs the token, which is currently managed by AuthService.
-    // For now, we'll assume the token is handled externally or passed.
-    // This highlights a need for a more robust authentication flow.
-    // For testing purposes, we might need to pass the token here.
-    // Or, the repository could depend on a token manager.
-    // For now, let's assume the token is available.
-    // This will be addressed when refactoring AuthService.
     return await _userRepository.getUserById(id);
   }
 
   Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_tokenKey);
+    await _storage.delete(key: _tokenKey);
   }
 }

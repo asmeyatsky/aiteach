@@ -1,11 +1,12 @@
 import os
 import logging
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Request
 from fastapi.responses import JSONResponse
 from app.presentation.api import users, courses, forum, gamification, user_progress, projects, feed, suggestions, playground
 from app.infrastructure.database import create_tables, check_db_connection
 from app.infrastructure.middleware import setup_middleware
+from app.infrastructure.monitoring import monitoring_middleware
 
 # Configure logging
 logging.basicConfig(
@@ -44,6 +45,29 @@ app = FastAPI(
 # Setup middleware
 if os.getenv("TESTING") != "True":
     setup_middleware(app)
+
+    # Add monitoring middleware
+    @app.middleware("http")
+    async def monitoring_middleware_handler(request: Request, call_next):
+        return await monitoring_middleware(request, call_next)
+
+# Rate limiting for auth endpoints
+try:
+    from slowapi import Limiter
+    from slowapi.util import get_remote_address
+    from slowapi.errors import RateLimitExceeded
+
+    limiter = Limiter(key_func=get_remote_address)
+    app.state.limiter = limiter
+
+    @app.exception_handler(RateLimitExceeded)
+    async def rate_limit_handler(request, exc):
+        return JSONResponse(
+            status_code=429,
+            content={"detail": "Rate limit exceeded. Please try again later."}
+        )
+except ImportError:
+    limiter = None
 
 # Global exception handler
 @app.exception_handler(Exception)
