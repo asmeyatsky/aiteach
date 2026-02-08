@@ -8,14 +8,12 @@ on:
 permissions:
   contents: read
   id-token: write
-  packages: write
 
 env:
   GCP_REGION: europe-west2
+  AR_REGISTRY: europe-west2-docker.pkg.dev/aiteach-472319/aiteach
   BACKEND_SERVICE: aiteach-backend-stage
   FRONTEND_SERVICE: aiteach-frontend-stage
-  BACKEND_IMAGE: ghcr.io/asmeyatsky/aiteach/backend:staging
-  FRONTEND_IMAGE: ghcr.io/asmeyatsky/aiteach/frontend:staging
 
 jobs:
   changes:
@@ -41,20 +39,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push backend image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./backend
-          push: true
-          tags: ${{ env.BACKEND_IMAGE }}
-
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -64,10 +48,18 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker europe-west2-docker.pkg.dev --quiet
+
+      - name: Build and push backend image
+        run: |
+          docker build -t $AR_REGISTRY/backend:staging ./backend
+          docker push $AR_REGISTRY/backend:staging
+
       - name: Deploy backend to Cloud Run
         run: |
           gcloud run deploy $BACKEND_SERVICE \
-            --image=$BACKEND_IMAGE \
+            --image=$AR_REGISTRY/backend:staging \
             --region=$GCP_REGION \
             --project=${{ secrets.GCP_PROJECT_ID }} \
             --platform=managed \
@@ -113,12 +105,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get backend URL
-        id: backend-url
-        run: |
-          # If backend was deployed this run, use its output; otherwise fetch from GCP
-          echo "Fetching backend URL from Cloud Run..."
-
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -127,6 +113,9 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker europe-west2-docker.pkg.dev --quiet
 
       - name: Resolve backend URL
         id: resolve-backend
@@ -138,28 +127,20 @@ jobs:
           echo "url=$URL" >> "$GITHUB_OUTPUT"
           echo "Backend URL: $URL"
 
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build and push frontend image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile.staging
-          push: true
-          tags: ${{ env.FRONTEND_IMAGE }}
-          build-args: |
-            BACKEND_URL=${{ steps.resolve-backend.outputs.url }}
-            ENVIRONMENT=staging
+        run: |
+          docker build \
+            --build-arg BACKEND_URL=${{ steps.resolve-backend.outputs.url }} \
+            --build-arg ENVIRONMENT=staging \
+            -t $AR_REGISTRY/frontend:staging \
+            -f ./frontend/Dockerfile.staging \
+            ./frontend
+          docker push $AR_REGISTRY/frontend:staging
 
       - name: Deploy frontend to Cloud Run
         run: |
           gcloud run deploy $FRONTEND_SERVICE \
-            --image=$FRONTEND_IMAGE \
+            --image=$AR_REGISTRY/frontend:staging \
             --region=$GCP_REGION \
             --project=${{ secrets.GCP_PROJECT_ID }} \
             --platform=managed \
