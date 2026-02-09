@@ -7,31 +7,43 @@ import 'package:frontend/utils/exceptions.dart';
 import 'package:frontend/presentation/animations/animations.dart';
 import 'package:frontend/presentation/widgets/loading_animation.dart';
 import 'package:frontend/presentation/widgets/responsive_layout.dart';
-import 'package:frontend/presentation/widgets/course_recommendations.dart';
-import 'package:frontend/services/course_recommendation_service.dart';
-import 'package:frontend/domain/value_objects/proficiency_level.dart';
 
 class CourseCatalogScreen extends ConsumerWidget {
   const CourseCatalogScreen({super.key});
 
+  Color _tierColor(String tier) {
+    switch (tier) {
+      case 'user':
+        return AppColors.neonGreen;
+      case 'builder':
+        return AppColors.neonBlue;
+      case 'innovator':
+        return AppColors.neonPurple;
+      default:
+        return AppColors.neonCyan;
+    }
+  }
+
+  String _tierLabel(String tier) {
+    switch (tier) {
+      case 'user':
+        return 'AI for Everyone';
+      case 'builder':
+        return 'Developer';
+      case 'innovator':
+        return 'Researcher';
+      default:
+        return tier;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final coursesAsyncValue = ref.watch(coursesProvider);
-    // For demo purposes, we'll use a mock proficiency level
-    // In a real app, this would come from the user's profile
-    final userProficiencyLevel = ProficiencyLevel.beginner;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Course Catalog'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // TODO: Implement search functionality
-            },
-          ),
-        ],
       ),
       body: coursesAsyncValue.when(
         data: (courses) {
@@ -44,14 +56,13 @@ class CourseCatalogScreen extends ConsumerWidget {
               ),
             );
           }
-          
+
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Welcome section
                   const Text(
                     'Welcome Back!',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -62,43 +73,20 @@ class CourseCatalogScreen extends ConsumerWidget {
                     style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                   ),
                   const SizedBox(height: 24),
-                  
-                  // Recommended courses section
-                  RecommendedCoursesSection(
-                    userLevel: userProficiencyLevel,
-                    onViewAll: () {
-                      // TODO: Navigate to filtered course list
-                    },
-                  ),
-                  const SizedBox(height: 32),
-                  
-                  // Popular courses section
-                  PopularCoursesSection(
-                    onViewAll: () {
-                      // TODO: Navigate to popular courses list
-                    },
-                  ),
-                  const SizedBox(height: 32),
-                  
-                  // All courses section
-                  const Text(
-                    'All Courses',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  
+
                   AdaptivePadding(
                     child: AdaptiveGridView(
                       mobileCrossAxisCount: 1,
                       tabletCrossAxisCount: 2,
                       desktopCrossAxisCount: 3,
                       children: List.generate(courses.length, (index) {
+                        final course = courses[index];
                         return SlideInAnimation(
-                          delay: Duration(milliseconds: 100 * index),
+                          delay: Duration(milliseconds: 50 * index),
                           child: Card(
                             child: InkWell(
                               onTap: () {
-                                context.go('/courses/${courses[index].id}');
+                                context.go('/courses/${course.id}');
                               },
                               borderRadius: BorderRadius.circular(12),
                               child: Padding(
@@ -106,14 +94,33 @@ class CourseCatalogScreen extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: _tierColor(course.tier).withOpacity(0.15),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        _tierLabel(course.tier),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: _tierColor(course.tier),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
                                     Text(
-                                      courses[index].title,
+                                      course.title,
                                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(height: 8),
-                                    Text(courses[index].description),
-                                    const SizedBox(height: 8),
-                                    Text('Tier: ${courses[index].tier}'),
+                                    Text(
+                                      course.description,
+                                      style: const TextStyle(color: AppColors.textSecondary),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ],
                                 ),
                               ),
