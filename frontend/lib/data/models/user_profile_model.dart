@@ -20,7 +20,9 @@ class UserProfileModel {
   final int id;
   final String username;
   final String email;
+  @JsonKey(name: 'profile_picture_url')
   final String? profilePictureUrl;
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   final List<UserProficiencyModel>? proficiencies; // Add proficiencies field
 }

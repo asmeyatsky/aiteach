@@ -20,9 +20,11 @@ class ForumPostModel {
   Map<String, dynamic> toJson() => _$ForumPostModelToJson(this);
 
   final int id;
+  @JsonKey(name: 'user_id')
   final int userId;
   final String title;
   final String body;
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   final UserModel owner;
   final List<ForumCommentModel> comments;

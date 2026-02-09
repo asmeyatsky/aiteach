@@ -19,5 +19,6 @@ class CourseModel {
   final String title;
   final String description;
   final String tier;
+  @JsonKey(name: 'thumbnail_url')
   final String? thumbnailUrl;
 }

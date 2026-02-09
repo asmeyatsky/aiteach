@@ -11,8 +11,8 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       username: json['username'] as String,
       email: json['email'] as String,
-      profilePictureUrl: json['profilePictureUrl'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      profilePictureUrl: json['profile_picture_url'] as String?,
+      createdAt: DateTime.parse(json['created_at'] as String),
       proficiencies: (json['proficiencies'] as List<dynamic>?)
           ?.map((e) => UserProficiencyModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -23,7 +23,7 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'id': instance.id,
       'username': instance.username,
       'email': instance.email,
-      'profilePictureUrl': instance.profilePictureUrl,
-      'createdAt': instance.createdAt.toIso8601String(),
+      'profile_picture_url': instance.profilePictureUrl,
+      'created_at': instance.createdAt.toIso8601String(),
       'proficiencies': instance.proficiencies,
     };

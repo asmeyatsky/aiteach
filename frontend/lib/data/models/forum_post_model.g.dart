@@ -9,10 +9,10 @@ part of 'forum_post_model.dart';
 ForumPostModel _$ForumPostModelFromJson(Map<String, dynamic> json) =>
     ForumPostModel(
       id: (json['id'] as num).toInt(),
-      userId: (json['userId'] as num).toInt(),
+      userId: (json['user_id'] as num).toInt(),
       title: json['title'] as String,
       body: json['body'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String),
       owner: UserModel.fromJson(json['owner'] as Map<String, dynamic>),
       comments: (json['comments'] as List<dynamic>)
           .map((e) => ForumCommentModel.fromJson(e as Map<String, dynamic>))
@@ -22,10 +22,10 @@ ForumPostModel _$ForumPostModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ForumPostModelToJson(ForumPostModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'userId': instance.userId,
+      'user_id': instance.userId,
       'title': instance.title,
       'body': instance.body,
-      'createdAt': instance.createdAt.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
       'owner': instance.owner,
       'comments': instance.comments,
     };

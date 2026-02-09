@@ -8,19 +8,19 @@ part of 'lesson_model.dart';
 
 LessonModel _$LessonModelFromJson(Map<String, dynamic> json) => LessonModel(
   id: (json['id'] as num).toInt(),
-  courseId: (json['courseId'] as num).toInt(),
+  courseId: (json['course_id'] as num).toInt(),
   title: json['title'] as String,
-  contentType: json['contentType'] as String,
-  contentData: json['contentData'] as String,
+  contentType: json['content_type'] as String,
+  contentData: json['content_data'] as String,
   order: (json['order'] as num).toInt(),
 );
 
 Map<String, dynamic> _$LessonModelToJson(LessonModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'courseId': instance.courseId,
+      'course_id': instance.courseId,
       'title': instance.title,
-      'contentType': instance.contentType,
-      'contentData': instance.contentData,
+      'content_type': instance.contentType,
+      'content_data': instance.contentData,
       'order': instance.order,
     };

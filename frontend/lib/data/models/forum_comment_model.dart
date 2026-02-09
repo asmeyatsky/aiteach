@@ -18,9 +18,12 @@ class ForumCommentModel {
   Map<String, dynamic> toJson() => _$ForumCommentModelToJson(this);
 
   final int id;
+  @JsonKey(name: 'post_id')
   final int postId;
+  @JsonKey(name: 'user_id')
   final int userId;
   final String body;
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   final UserModel owner;
 }

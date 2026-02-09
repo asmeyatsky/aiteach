@@ -17,9 +17,12 @@ class LessonModel {
   Map<String, dynamic> toJson() => _$LessonModelToJson(this);
 
   final int id;
+  @JsonKey(name: 'course_id')
   final int courseId;
   final String title;
+  @JsonKey(name: 'content_type')
   final String contentType;
+  @JsonKey(name: 'content_data')
   final String contentData;
   final int order;
 }
