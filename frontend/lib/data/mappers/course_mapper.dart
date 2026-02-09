@@ -10,6 +10,8 @@ class CourseMapper {
       description: model.description,
       tier: model.tier,
       thumbnailUrl: model.thumbnailUrl,
+      provider: model.provider,
+      url: model.url,
     );
   }
 
@@ -20,6 +22,8 @@ class CourseMapper {
       description: entity.description,
       tier: entity.tier,
       thumbnailUrl: entity.thumbnailUrl,
+      provider: entity.provider,
+      url: entity.url,
     );
   }
 }

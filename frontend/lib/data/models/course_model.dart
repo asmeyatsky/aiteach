@@ -10,6 +10,8 @@ class CourseModel {
     required this.description,
     required this.tier,
     this.thumbnailUrl,
+    this.provider,
+    this.url,
   });
 
   factory CourseModel.fromJson(Map<String, dynamic> json) => _$CourseModelFromJson(json);
@@ -21,4 +23,6 @@ class CourseModel {
   final String tier;
   @JsonKey(name: 'thumbnail_url')
   final String? thumbnailUrl;
+  final String? provider;
+  final String? url;
 }

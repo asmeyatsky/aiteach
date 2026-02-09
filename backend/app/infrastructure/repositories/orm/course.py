@@ -10,5 +10,7 @@ class Course(Base):
     description = Column(String)
     tier = Column(String) # free, premium
     thumbnail_url = Column(String, nullable=True)
+    provider = Column(String, nullable=True)
+    url = Column(String, nullable=True)
 
     lessons = relationship("Lesson", back_populates="course")

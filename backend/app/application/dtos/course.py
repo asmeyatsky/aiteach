@@ -8,6 +8,8 @@ class CourseBase(BaseModel):
     description: str
     tier: Track
     thumbnail_url: Optional[str] = None
+    provider: Optional[str] = None
+    url: Optional[str] = None
 
 class CourseCreate(CourseBase):
     pass

@@ -12,6 +12,8 @@ CourseModel _$CourseModelFromJson(Map<String, dynamic> json) => CourseModel(
   description: json['description'] as String,
   tier: json['tier'] as String,
   thumbnailUrl: json['thumbnail_url'] as String?,
+  provider: json['provider'] as String?,
+  url: json['url'] as String?,
 );
 
 Map<String, dynamic> _$CourseModelToJson(CourseModel instance) =>
@@ -21,4 +23,6 @@ Map<String, dynamic> _$CourseModelToJson(CourseModel instance) =>
       'description': instance.description,
       'tier': instance.tier,
       'thumbnail_url': instance.thumbnailUrl,
+      'provider': instance.provider,
+      'url': instance.url,
     };

@@ -7,6 +7,8 @@ class Course extends Equatable {
   final String description;
   final String tier;
   final String? thumbnailUrl;
+  final String? provider;
+  final String? url;
 
   const Course({
     required this.id,
@@ -14,8 +16,10 @@ class Course extends Equatable {
     required this.description,
     required this.tier,
     this.thumbnailUrl,
+    this.provider,
+    this.url,
   });
 
   @override
-  List<Object?> get props => [id, title, description, tier, thumbnailUrl];
+  List<Object?> get props => [id, title, description, tier, thumbnailUrl, provider, url];
 }

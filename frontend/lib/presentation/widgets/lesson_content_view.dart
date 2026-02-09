@@ -18,6 +18,7 @@ class LessonContentView extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (contentType.toLowerCase()) {
       case 'text':
+      case 'markdown':
         return _buildTextContent(contentData);
       case 'video':
         return _buildVideoContent(contentData);

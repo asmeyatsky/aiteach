@@ -7,5 +7,7 @@ def to_domain(orm_course: CourseORM) -> CourseDomain:
         title=orm_course.title,
         description=orm_course.description,
         tier=orm_course.tier,
-        thumbnail_url=orm_course.thumbnail_url
+        thumbnail_url=orm_course.thumbnail_url,
+        provider=orm_course.provider,
+        url=orm_course.url
     )

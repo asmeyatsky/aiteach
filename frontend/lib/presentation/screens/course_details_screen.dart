@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/providers/courses_provider.dart';
 import 'package:frontend/providers/user_progress_provider.dart';
 import 'package:frontend/providers/user_provider.dart';
@@ -34,6 +35,23 @@ class CourseDetailsScreen extends ConsumerWidget {
                 course.title,
                 style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
+              if (course.provider != null) ...[
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    'Source: ${course.provider}',
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ],
               const SizedBox(height: 10),
               Text(
                 course.description,

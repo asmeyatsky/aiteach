@@ -9,3 +9,5 @@ class Course:
     description: str
     tier: Track  # user, builder, innovator
     thumbnail_url: Optional[str]
+    provider: Optional[str]
+    url: Optional[str]
