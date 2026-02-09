@@ -69,7 +69,7 @@ jobs:
             --min-instances=0 \
             --max-instances=2 \
             --port=8000 \
-            --set-env-vars='^||^DATABASE_URL=sqlite:///./data/staging.db||JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}||TRUSTED_HOSTS=["*"]||DEBUG=True||ALLOWED_ORIGINS=["https://aiteach-frontend-stage-ov3zfsistq-nw.a.run.app","http://localhost:3000"]'
+            --set-env-vars='^||^DATABASE_URL=sqlite:///./data/staging.db||JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}||TRUSTED_HOSTS=["*"]||DEBUG=True||ALLOWED_ORIGINS=["https://aiteach-frontend-stage-ov3zfsistq-nw.a.run.app","https://smeyatsky.com","http://localhost:3000"]'
 
       - name: Get backend URL
         id: backend-url
@@ -132,6 +132,7 @@ jobs:
           docker build \
             --build-arg BACKEND_URL=${{ steps.resolve-backend.outputs.url }} \
             --build-arg ENVIRONMENT=staging \
+            --build-arg BASE_PATH=/aiteach-staging \
             -t $AR_REGISTRY/frontend:staging \
             -f ./frontend/Dockerfile.staging \
             ./frontend
@@ -164,7 +165,7 @@ jobs:
         run: |
           URL="${{ steps.frontend-url.outputs.url }}"
           for i in $(seq 1 6); do
-            STATUS=$(curl -s -o /dev/null -w '%{http_code}' "$URL" || true)
+            STATUS=$(curl -s -o /dev/null -w '%{http_code}' "$URL/aiteach-staging/" || true)
             if [ "$STATUS" = "200" ]; then
               echo "Frontend is up at $URL"
               exit 0
