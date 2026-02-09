@@ -29,7 +29,7 @@ class EnvironmentConfig {
       case Environment.development:
         return 'http://localhost:8000';
       case Environment.staging:
-        return 'https://aiteach-backend-stage-186667783026.europe-west2.run.app';
+        return 'https://aiteach-backend-stage-ov3zfsistq-nw.a.run.app';
       case Environment.production:
         return 'https://api.aiteach.app';
     }
