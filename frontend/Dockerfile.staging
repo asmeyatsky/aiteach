@@ -23,11 +23,6 @@ ARG BASE_PATH=/aiteach-staging
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/build/web /usr/share/nginx/html${BASE_PATH}
 
-# Cache-bust: append ?v=<timestamp> to flutter_bootstrap.js to bypass stale CDN cache
-RUN CACHE_BUST=$(date +%s) && \
-    sed -i "s|flutter_bootstrap.js|flutter_bootstrap.js?v=${CACHE_BUST}|g" \
-    /usr/share/nginx/html${BASE_PATH}/index.html
-
 EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
