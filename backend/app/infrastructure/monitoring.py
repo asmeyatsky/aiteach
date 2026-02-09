@@ -115,6 +115,8 @@ class MetricsCollector:
 cloud_logger = CloudLogger()
 metrics_collector = MetricsCollector()
 
+ANALYTICS_EXCLUDE_PATHS = {"/health", "/docs", "/openapi.json", "/redoc"}
+
 async def monitoring_middleware(request: Request, call_next):
     """Middleware to collect metrics and logs"""
     start_time = time.time()
@@ -131,6 +133,26 @@ async def monitoring_middleware(request: Request, call_next):
             "ip": request.client.host if request.client else None
         }
     )
+
+    # Record page visit for analytics (non-blocking)
+    if request.url.path not in ANALYTICS_EXCLUDE_PATHS:
+        try:
+            from app.infrastructure.database import SessionLocal
+            from app.infrastructure.repositories.orm.analytics import PageVisit
+            db = SessionLocal()
+            try:
+                visit = PageVisit(
+                    path=request.url.path,
+                    method=request.method,
+                    ip_address=request.client.host if request.client else "unknown",
+                    user_agent=request.headers.get("user-agent", ""),
+                )
+                db.add(visit)
+                db.commit()
+            finally:
+                db.close()
+        except Exception as e:
+            logging.getLogger(__name__).warning(f"Failed to record visit: {e}")
 
     try:
         response = await call_next(request)

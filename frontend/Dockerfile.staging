@@ -13,7 +13,8 @@ COPY . .
 RUN flutter build web --release \
     --base-href=${BASE_PATH}/ \
     --dart-define=BACKEND_URL=${BACKEND_URL} \
-    --dart-define=ENVIRONMENT=${ENVIRONMENT}
+    --dart-define=ENVIRONMENT=${ENVIRONMENT} \
+    --dart-define=FLUTTER_WEB_CANVASKIT_URL=https://www.gstatic.com/flutter-canvaskit/
 
 # Stage 2: Serve with nginx
 FROM nginx:alpine

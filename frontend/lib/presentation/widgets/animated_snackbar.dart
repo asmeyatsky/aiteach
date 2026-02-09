@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 
 class AnimatedSnackbar extends StatefulWidget {
   final String message;
@@ -79,7 +80,7 @@ class _AnimatedSnackbarState extends State<AnimatedSnackbar>
           margin: const EdgeInsets.all(16),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           decoration: BoxDecoration(
-            color: widget.backgroundColor ?? Colors.blueGrey,
+            color: widget.backgroundColor ?? AppColors.surface,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'dart:convert';
 
 class QuizQuestion {
@@ -130,7 +131,7 @@ class _QuizWidgetState extends State<QuizWidget> {
         const SizedBox(height: 10),
         Text(
           'Question ${currentQuestionIndex + 1} of ${quizData.questions.length}',
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
+          style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
         ),
         const SizedBox(height: 20),
         Text(
@@ -154,7 +155,7 @@ class _QuizWidgetState extends State<QuizWidget> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isSelected
                       ? (showResult
-                          ? (isCorrectOption ? Colors.green : Colors.red)
+                          ? (isCorrectOption ? AppColors.neonGreen : AppColors.error)
                           : Theme.of(context).primaryColor)
                       : null,
                   foregroundColor: isSelected && showResult
@@ -176,9 +177,9 @@ class _QuizWidgetState extends State<QuizWidget> {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? (showResult
-                                ? (isCorrectOption ? Colors.green : Colors.red)
+                                ? (isCorrectOption ? AppColors.neonGreen : AppColors.error)
                                 : Theme.of(context).primaryColor)
-                            : Colors.grey[300],
+                            : AppColors.textMuted,
                         shape: BoxShape.circle,
                       ),
                       child: Center(
@@ -187,7 +188,7 @@ class _QuizWidgetState extends State<QuizWidget> {
                           style: TextStyle(
                             color: isSelected
                                 ? Colors.white
-                                : Colors.grey[700],
+                                : AppColors.textSecondary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -221,14 +222,14 @@ class _QuizWidgetState extends State<QuizWidget> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: isCorrect ? Colors.green[100] : Colors.red[100],
+              color: isCorrect ? AppColors.neonGreen.withOpacity(0.1) : AppColors.error.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
                 Icon(
                   isCorrect ? Icons.check_circle : Icons.cancel,
-                  color: isCorrect ? Colors.green : Colors.red,
+                  color: isCorrect ? AppColors.neonGreen : AppColors.error,
                   size: 30,
                 ),
                 const SizedBox(width: 10),
@@ -239,7 +240,7 @@ class _QuizWidgetState extends State<QuizWidget> {
                         : 'Incorrect. The correct answer is ${String.fromCharCode(65 + question.correctAnswerIndex)}.',
                     style: TextStyle(
                       fontSize: 16,
-                      color: isCorrect ? Colors.green[800] : Colors.red[800],
+                      color: isCorrect ? AppColors.neonGreen : AppColors.error,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

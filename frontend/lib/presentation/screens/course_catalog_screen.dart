@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/providers/courses_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/utils/exceptions.dart';
@@ -38,7 +39,7 @@ class CourseCatalogScreen extends ConsumerWidget {
             return const Center(
               child: Text(
                 'No courses available yet. Please check back later!',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                 textAlign: TextAlign.center,
               ),
             );
@@ -58,7 +59,7 @@ class CourseCatalogScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   const Text(
                     'Continue your AI learning journey',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                   ),
                   const SizedBox(height: 24),
                   
@@ -139,7 +140,7 @@ class CourseCatalogScreen extends ConsumerWidget {
             child: Text(
               errorMessage,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.red),
+              style: const TextStyle(color: AppColors.error),
             ),
           );
         },

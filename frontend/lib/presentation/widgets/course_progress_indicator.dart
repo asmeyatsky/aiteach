@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 
 class CourseProgressIndicator extends StatelessWidget {
   final int completedLessons;
@@ -40,9 +41,9 @@ class CourseProgressIndicator extends StatelessWidget {
               children: [
                 Text(
                   '$completedLessons of $totalLessons lessons completed',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: AppColors.textSecondary,
                   ),
                 ),
                 Text(

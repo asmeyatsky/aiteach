@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/data/models/user_badge_model.dart';
 import 'package:frontend/presentation/widgets/badge_card.dart';
 
@@ -10,30 +11,30 @@ class BadgesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (userBadges.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.emoji_events_outlined,
               size: 60,
-              color: Colors.grey,
+              color: AppColors.textSecondary,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               'No badges earned yet',
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.grey,
+                color: AppColors.textSecondary,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               'Complete lessons and participate in the community to earn badges!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey,
+                color: AppColors.textSecondary,
               ),
             ),
           ],

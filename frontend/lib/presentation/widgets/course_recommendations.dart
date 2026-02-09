@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/domain/entities/course_recommendation.dart';
 import 'package:frontend/domain/value_objects/proficiency_level.dart';
 import 'package:go_router/go_router.dart';
@@ -31,11 +32,11 @@ String getLevelShortName(ProficiencyLevel level) {
 Color getLevelColor(ProficiencyLevel level) {
   switch (level) {
     case ProficiencyLevel.beginner:
-      return Colors.green;
+      return AppColors.neonGreen;
     case ProficiencyLevel.intermediate:
-      return Colors.orange;
+      return AppColors.warning;
     case ProficiencyLevel.advanced:
-      return Colors.red;
+      return AppColors.error;
   }
 }
 
@@ -102,12 +103,12 @@ class RecommendedCoursesSection extends ConsumerWidget {
           Icon(
             Icons.school_outlined,
             size: 60,
-            color: Colors.grey[400],
+            color: AppColors.textMuted,
           ),
           const SizedBox(height: 16),
           const Text(
             'No courses available for this level yet.',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+            style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
           ),
         ],
       ),
@@ -139,7 +140,7 @@ class _CourseCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                  color: AppColors.surfaceVariant,
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                 ),
                 child: Row(
@@ -163,13 +164,13 @@ class _CourseCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: AppColors.border,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         course.category,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: AppColors.textSecondary,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -199,7 +200,7 @@ class _CourseCard extends StatelessWidget {
                         course.description,
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Colors.grey,
+                          color: AppColors.textSecondary,
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -207,11 +208,11 @@ class _CourseCard extends StatelessWidget {
                       const SizedBox(height: 12),
                       Row(
                         children: [
-                          const Icon(Icons.access_time, size: 16, color: Colors.grey),
+                          Icon(Icons.access_time, size: 16, color: AppColors.textSecondary),
                           const SizedBox(width: 4),
                           Text('${course.estimatedHours} hours'),
                           const SizedBox(width: 16),
-                          const Icon(Icons.star, size: 16, color: Colors.amber),
+                          Icon(Icons.star, size: 16, color: AppColors.warning),
                           const SizedBox(width: 4),
                           Text('${course.rating}'),
                         ],
@@ -224,14 +225,14 @@ class _CourseCard extends StatelessWidget {
                           return Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Colors.blue[100],
+                              color: AppColors.neonCyan.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               skill,
                               style: const TextStyle(
                                 fontSize: 10,
-                                color: Colors.blue,
+                                color: AppColors.neonCyan,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -329,12 +330,12 @@ class PopularCoursesSection extends ConsumerWidget {
           Icon(
             Icons.trending_up_outlined,
             size: 60,
-            color: Colors.grey[400],
+            color: AppColors.textMuted,
           ),
           const SizedBox(height: 16),
           const Text(
             'No popular courses available yet.',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+            style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/presentation/animations/animations.dart';
 
 class LoadingAnimation extends StatelessWidget {
@@ -18,9 +19,9 @@ class LoadingAnimation extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             message,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              color: Colors.grey,
+              color: AppColors.textSecondary,
             ),
           ),
         ],

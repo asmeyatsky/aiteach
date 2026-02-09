@@ -17,6 +17,8 @@ from app.infrastructure.repositories.feed_repository import FeedRepository
 from app.domain.ports.repository_ports import FeedRepositoryPort
 from app.infrastructure.repositories.suggestion_repository import SuggestionRepository
 from app.domain.ports.repository_ports import SuggestionRepositoryPort
+from app.infrastructure.repositories.analytics_repository import AnalyticsRepository
+from app.domain.ports.repository_ports import AnalyticsRepositoryPort
 
 def get_user_repository(db: Session = Depends(get_db)) -> UserRepositoryPort:
     return UserRepository(db)
@@ -41,3 +43,6 @@ def get_feed_repository(db: Session = Depends(get_db)) -> FeedRepositoryPort:
 
 def get_suggestion_repository(db: Session = Depends(get_db)) -> SuggestionRepositoryPort:
     return SuggestionRepository(db)
+
+def get_analytics_repository(db: Session = Depends(get_db)) -> AnalyticsRepositoryPort:
+    return AnalyticsRepository(db)

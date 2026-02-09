@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/presentation/widgets/responsive_layout.dart';
 
 class WebLayout extends StatelessWidget {
@@ -27,34 +28,34 @@ class WebLayout extends StatelessWidget {
         // Sidebar for tablet
         Container(
           width: 200,
-          color: Colors.blueGrey[50],
-          child: const Column(
+          color: AppColors.surface,
+          child: Column(
             children: [
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CircleAvatar(
                 radius: 30,
-                backgroundColor: Colors.blueGrey,
-                child: Icon(Icons.person, color: Colors.white),
+                backgroundColor: AppColors.neonCyan,
+                child: const Icon(Icons.person, color: Colors.white),
               ),
-              SizedBox(height: 16),
-              ListTile(
+              const SizedBox(height: 16),
+              const ListTile(
                 leading: Icon(Icons.book),
                 title: Text('Courses'),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.forum),
                 title: Text('Forum'),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.person),
                 title: Text('Profile'),
               ),
-              Spacer(),
-              ListTile(
+              const Spacer(),
+              const ListTile(
                 leading: Icon(Icons.settings),
                 title: Text('Settings'),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.help),
                 title: Text('Help'),
               ),
@@ -73,62 +74,62 @@ class WebLayout extends StatelessWidget {
         // Full sidebar for desktop
         Container(
           width: 250,
-          color: Colors.blueGrey[50],
-          child: const Column(
+          color: AppColors.surface,
+          child: Column(
             children: [
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               CircleAvatar(
                 radius: 40,
-                backgroundColor: Colors.blueGrey,
-                child: Icon(Icons.person, color: Colors.white, size: 40),
+                backgroundColor: AppColors.neonCyan,
+                child: const Icon(Icons.person, color: Colors.white, size: 40),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'AI Education Platform',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blueGrey,
+                  color: AppColors.neonCyan,
                 ),
               ),
-              SizedBox(height: 32),
-              ListTile(
+              const SizedBox(height: 32),
+              const ListTile(
                 leading: Icon(Icons.book, size: 30),
                 title: Text(
                   'Courses',
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.forum, size: 30),
                 title: Text(
                   'Forum',
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.person, size: 30),
                 title: Text(
                   'Profile',
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              Spacer(),
-              ListTile(
+              const Spacer(),
+              const ListTile(
                 leading: Icon(Icons.settings, size: 30),
                 title: Text(
                   'Settings',
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.help, size: 30),
                 title: Text(
                   'Help',
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
             ],
           ),
         ),

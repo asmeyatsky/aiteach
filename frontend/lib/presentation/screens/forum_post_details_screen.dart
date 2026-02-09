@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/domain/entities/forum_post.dart';
 import 'package:frontend/providers/forum_provider.dart';
 import 'package:frontend/providers/user_provider.dart';
@@ -30,7 +31,7 @@ class ForumPostDetailsScreen extends ConsumerWidget {
             const SizedBox(height: 10),
             Text(
               'By: ${post.owner.username} on ${post.createdAt.toLocal().toString().split(' ')[0]}',
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+              style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 20),
             const Text(
@@ -55,7 +56,7 @@ class ForumPostDetailsScreen extends ConsumerWidget {
                           const SizedBox(height: 4),
                           Text(
                             'By: ${comment.owner.username} on ${comment.createdAt.toLocal().toString().split(' ')[0]}',
-                            style: const TextStyle(fontSize: 10, color: Colors.grey),
+                            style: const TextStyle(fontSize: 10, color: AppColors.textSecondary),
                           ),
                         ],
                       ),

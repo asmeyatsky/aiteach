@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/data/models/lesson_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/presentation/animations/animations.dart';
@@ -34,7 +35,7 @@ class LessonCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: isCompleted ? Colors.green : Colors.blue,
+                    color: isCompleted ? AppColors.neonGreen : AppColors.neonCyan,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -59,7 +60,7 @@ class LessonCard extends StatelessWidget {
                         lesson.contentType,
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Colors.grey,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -68,13 +69,13 @@ class LessonCard extends StatelessWidget {
                 if (isCompleted)
                   const Icon(
                     Icons.check_circle,
-                    color: Colors.green,
+                    color: AppColors.neonGreen,
                     size: 24,
                   )
                 else
                   const Icon(
                     Icons.arrow_forward_ios,
-                    color: Colors.grey,
+                    color: AppColors.textSecondary,
                     size: 16,
                   ),
               ],

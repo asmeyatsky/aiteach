@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:frontend/data/models/feed_item_model.dart';
 import 'package:frontend/providers/feed_provider.dart';
@@ -33,7 +34,7 @@ class FeedScreen extends ConsumerWidget {
                   ),
                   subtitle: Text(
                     '${item.sourceName} • ${_formatDate(item.publishedAt)}',
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: TextStyle(color: AppColors.textSecondary),
                   ),
                   children: [
                     Padding(
@@ -75,7 +76,7 @@ class FeedScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 64, color: Colors.red),
+              const Icon(Icons.error_outline, size: 64, color: AppColors.error),
               const SizedBox(height: 16),
               Text('Error loading feed: $error'),
               ElevatedButton(

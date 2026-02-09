@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/data/models/user_badge_model.dart';
 
 class BadgeCard extends StatelessWidget {
@@ -22,9 +23,9 @@ class BadgeCard extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: Colors.blue[100],
+                color: AppColors.neonCyan.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.blue, width: 2),
+                border: Border.all(color: AppColors.neonCyan, width: 2),
               ),
               child: userBadge.badge.iconUrl != null
                   ? ClipRRect(
@@ -33,11 +34,11 @@ class BadgeCard extends StatelessWidget {
                         userBadge.badge.iconUrl!,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.emoji_events, color: Colors.blue);
+                          return Icon(Icons.emoji_events, color: AppColors.neonCyan);
                         },
                       ),
                     )
-                  : const Icon(Icons.emoji_events, color: Colors.blue, size: 30),
+                  : Icon(Icons.emoji_events, color: AppColors.neonCyan, size: 30),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -54,17 +55,17 @@ class BadgeCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     userBadge.badge.description,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
-                      color: Colors.grey,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Awarded on ${userBadge.awardedAt.toLocal().toString().split(' ')[0]}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/domain/value_objects/proficiency_level.dart';
 
 class ProficiencySelectionDialog extends StatefulWidget {
@@ -31,7 +32,7 @@ class _ProficiencySelectionDialogState extends State<ProficiencySelectionDialog>
           children: [
             const Text(
               'Choose the level that best matches your current AI/ML knowledge and experience.',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 24),
             _ProficiencyOption(
@@ -98,7 +99,7 @@ class _ProficiencyOption extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: isSelected ? Colors.blue : Colors.grey[300]!,
+          color: isSelected ? AppColors.neonCyan : AppColors.textMuted,
           width: isSelected ? 2 : 1,
         ),
       ),
@@ -114,9 +115,9 @@ class _ProficiencyOption extends StatelessWidget {
                 height: 24,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSelected ? Colors.blue : Colors.transparent,
+                  color: isSelected ? AppColors.neonCyan : Colors.transparent,
                   border: Border.all(
-                    color: isSelected ? Colors.blue : Colors.grey,
+                    color: isSelected ? AppColors.neonCyan : AppColors.textSecondary,
                     width: 2,
                   ),
                 ),
@@ -134,7 +135,7 @@ class _ProficiencyOption extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                        color: isSelected ? Colors.blue : Colors.black,
+                        color: isSelected ? AppColors.neonCyan : AppColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -142,7 +143,7 @@ class _ProficiencyOption extends StatelessWidget {
                       description,
                       style: const TextStyle(
                         fontSize: 14,
-                        color: Colors.grey,
+                        color: AppColors.textSecondary,
                       ),
                     ),
                   ],

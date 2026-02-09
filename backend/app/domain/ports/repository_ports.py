@@ -211,11 +211,21 @@ class SuggestionRepositoryPort(ABC):
     @abstractmethod
     def get_suggestion(self, suggestion_id: int) -> Optional[SuggestedContent]:
         pass
-    
+
     @abstractmethod
     def get_suggestions(self, skip: int = 0, limit: int = 100) -> List[SuggestedContent]:
         pass
 
     @abstractmethod
     def create_suggestion(self, suggestion, user_id: int) -> SuggestedContent:
+        pass
+
+
+class AnalyticsRepositoryPort(ABC):
+    @abstractmethod
+    def record_visit(self, path: str, method: str, ip_address: str, user_agent: str, user_id: int = None):
+        pass
+
+    @abstractmethod
+    def get_summary(self, days: int = 30):
         pass

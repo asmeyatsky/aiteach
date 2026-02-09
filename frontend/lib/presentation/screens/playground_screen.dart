@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/providers/playground_provider.dart';
 
 class PlaygroundScreen extends ConsumerStatefulWidget {
@@ -72,7 +73,7 @@ class _PlaygroundScreenState extends ConsumerState<PlaygroundScreen> {
                       child: Text(
                         'Start a conversation with the AI assistant!',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                        style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                       ),
                     )
                   : ListView.builder(
@@ -83,16 +84,16 @@ class _PlaygroundScreenState extends ConsumerState<PlaygroundScreen> {
                         final role = message['role'];
                         final content = message['content'];
 
-                        Color bgColor = Colors.grey.shade100;
+                        Color bgColor = AppColors.surfaceVariant;
                         Alignment alignment = Alignment.centerLeft;
 
                         if (role == 'user') {
-                          bgColor = Colors.blue.shade100;
+                          bgColor = AppColors.neonCyan.withOpacity(0.15);
                           alignment = Alignment.centerRight;
                         } else if (role == 'assistant') {
-                          bgColor = Colors.green.shade50;
+                          bgColor = AppColors.neonGreen.withOpacity(0.1);
                         } else if (role == 'error') {
-                          bgColor = Colors.red.shade50;
+                          bgColor = AppColors.error.withOpacity(0.1);
                         }
 
                         return Align(

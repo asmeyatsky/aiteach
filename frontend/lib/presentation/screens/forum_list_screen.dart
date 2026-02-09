@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/providers/forum_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/presentation/widgets/responsive_layout.dart';
@@ -22,7 +23,7 @@ class ForumListScreen extends ConsumerWidget {
             return const Center(
               child: Text(
                 'No posts yet. Be the first to start a discussion!',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                 textAlign: TextAlign.center,
               ),
             );
@@ -68,7 +69,7 @@ class ForumListScreen extends ConsumerWidget {
           child: Text(
             'Failed to load forum posts. Please check your internet connection or try again later. Error: $error',
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.red),
+            style: const TextStyle(color: AppColors.error),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/services/proficiency_service.dart';
@@ -157,7 +158,7 @@ class _ProficiencyAssessmentScreenState extends ConsumerState<ProficiencyAssessm
             const SizedBox(height: 16),
             const Text(
               'Choose the level that best describes your current knowledge and experience with AI and machine learning.',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 32),
             if (_selectedLevel == null) ...[
@@ -225,13 +226,13 @@ class _ProficiencyAssessmentScreenState extends ConsumerState<ProficiencyAssessm
           children: [
             Text(
               'Question ${_currentQuestionIndex + 1} of ${_questions.length}',
-              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+              style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.neonCyan),
             ),
             const SizedBox(width: 8),
             LinearProgressIndicator(
               value: ((_currentQuestionIndex + 1) / _questions.length).toDouble(),
-              backgroundColor: Colors.grey[300],
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+              backgroundColor: AppColors.textMuted,
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.neonCyan),
             ),
           ],
         ),
@@ -250,8 +251,8 @@ class _ProficiencyAssessmentScreenState extends ConsumerState<ProficiencyAssessm
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(
-                    color: _answers[_currentQuestionIndex] && index == _answers.indexOf(true) 
-                        ? Colors.blue 
+                    color: _answers[_currentQuestionIndex] && index == _answers.indexOf(true)
+                        ? AppColors.neonCyan
                         : Colors.transparent,
                     width: 2,
                   ),
@@ -271,8 +272,8 @@ class _ProficiencyAssessmentScreenState extends ConsumerState<ProficiencyAssessm
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: _answers[_currentQuestionIndex] && index == _answers.indexOf(true)
-                                ? Colors.blue
-                                : Colors.grey[300],
+                                ? AppColors.neonCyan
+                                : AppColors.textMuted,
                           ),
                           child: Center(
                             child: _answers[_currentQuestionIndex] && index == _answers.indexOf(true)
@@ -282,7 +283,7 @@ class _ProficiencyAssessmentScreenState extends ConsumerState<ProficiencyAssessm
                                     style: TextStyle(
                                       color: _answers[_currentQuestionIndex] && index == _answers.indexOf(true)
                                           ? Colors.white
-                                          : Colors.grey,
+                                          : AppColors.textSecondary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -363,7 +364,7 @@ class _ProficiencyLevelCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: isSelected ? Colors.blue : Colors.transparent,
+          color: isSelected ? AppColors.neonCyan : Colors.transparent,
           width: 2,
         ),
       ),
@@ -380,12 +381,12 @@ class _ProficiencyLevelCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.blue : Colors.grey[200],
+                      color: isSelected ? AppColors.neonCyan : AppColors.border,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       _getIconForLevel(level),
-                      color: isSelected ? Colors.white : Colors.grey,
+                      color: isSelected ? Colors.white : AppColors.textSecondary,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -398,7 +399,7 @@ class _ProficiencyLevelCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: isSelected ? Colors.blue : Colors.black,
+                            color: isSelected ? AppColors.neonCyan : AppColors.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -406,14 +407,14 @@ class _ProficiencyLevelCard extends StatelessWidget {
                           description,
                           style: const TextStyle(
                             fontSize: 14,
-                            color: Colors.grey,
+                            color: AppColors.textSecondary,
                           ),
                         ),
                       ],
                     ),
                   ),
                   if (isSelected)
-                    const Icon(Icons.check_circle, color: Colors.blue, size: 30),
+                    const Icon(Icons.check_circle, color: AppColors.neonCyan, size: 30),
                 ],
               ),
               const SizedBox(height: 16),
@@ -426,7 +427,7 @@ class _ProficiencyLevelCard extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 4.0),
                     child: Row(
                       children: [
-                        const Icon(Icons.check, size: 16, color: Colors.green),
+                        const Icon(Icons.check, size: 16, color: AppColors.neonGreen),
                         const SizedBox(width: 8),
                         Expanded(child: Text(feature)),
                       ],
@@ -439,12 +440,12 @@ class _ProficiencyLevelCard extends StatelessWidget {
                   onPressed: onTap,
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    side: BorderSide(color: isSelected ? Colors.blue : Colors.grey),
+                    side: BorderSide(color: isSelected ? AppColors.neonCyan : AppColors.textSecondary),
                   ),
                   child: Text(
                     isSelected ? 'Selected' : 'Select Level',
                     style: TextStyle(
-                      color: isSelected ? Colors.blue : Colors.grey,
+                      color: isSelected ? AppColors.neonCyan : AppColors.textSecondary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

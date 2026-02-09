@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:frontend/presentation/widgets/quiz_widget.dart';
 
@@ -57,7 +58,7 @@ class LessonContentView extends StatelessWidget {
           Container(
             height: 200,
             decoration: BoxDecoration(
-              color: Colors.black,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Center(
@@ -66,18 +67,18 @@ class LessonContentView extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.play_circle_outline,
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     size: 60,
                   ),
                   const SizedBox(height: 10),
                   Text(
                     'Watch Video',
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: AppColors.textPrimary),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     uri.host,
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                    style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
                   ),
                 ],
               ),
@@ -86,7 +87,7 @@ class LessonContentView extends StatelessWidget {
           const SizedBox(height: 10),
           SelectableText(
             'Video URL: $content',
-            style: const TextStyle(fontSize: 12, color: Colors.blue),
+            style: TextStyle(fontSize: 12, color: AppColors.neonCyan),
           ),
         ],
       );

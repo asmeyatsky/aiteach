@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/app_colors.dart';
 
 class LeaderboardItem {
   final int rank;
@@ -49,8 +50,8 @@ class LeaderboardWidget extends StatelessWidget {
               return Container(
                 decoration: item.isCurrentUser
                     ? BoxDecoration(
-                        color: Colors.blue[50],
-                        border: Border.all(color: Colors.blue),
+                        color: AppColors.neonCyan.withOpacity(0.15),
+                        border: Border.all(color: AppColors.neonCyan),
                       )
                     : null,
                 child: ListTile(
@@ -82,7 +83,7 @@ class LeaderboardWidget extends StatelessWidget {
                     '${item.points} pts',
                     style: TextStyle(
                       fontWeight: item.isCurrentUser ? FontWeight.bold : FontWeight.normal,
-                      color: item.isCurrentUser ? Colors.blue : null,
+                      color: item.isCurrentUser ? AppColors.neonCyan : null,
                     ),
                   ),
                 ),
@@ -97,13 +98,13 @@ class LeaderboardWidget extends StatelessWidget {
   Color _getRankColor(int rank) {
     switch (rank) {
       case 1:
-        return Colors.orange;
+        return AppColors.warning;
       case 2:
-        return Colors.grey;
+        return AppColors.textSecondary;
       case 3:
         return Colors.brown;
       default:
-        return Colors.blue;
+        return AppColors.neonCyan;
     }
   }
 }

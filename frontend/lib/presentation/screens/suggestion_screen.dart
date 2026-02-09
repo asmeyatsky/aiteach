@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/data/models/suggestion_model.dart';
 import 'package:frontend/providers/suggestion_provider.dart';
 
@@ -87,7 +88,7 @@ class _SuggestionScreenState extends ConsumerState<SuggestionScreen> {
               const SizedBox(height: 16),
               const Text(
                 'Help us improve the platform by suggesting valuable AI/ML learning resources.',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 24),
               TextFormField(

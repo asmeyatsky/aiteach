@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/providers/gamification_provider.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/presentation/widgets/badges_grid.dart';
@@ -53,11 +54,11 @@ class ProfileScreen extends ConsumerWidget {
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundColor: Colors.blue[100],
+                      backgroundColor: AppColors.neonCyan.withOpacity(0.15),
                       child: const Icon(
                         Icons.person,
                         size: 40,
-                        color: Colors.blue,
+                        color: AppColors.neonCyan,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -73,7 +74,7 @@ class ProfileScreen extends ConsumerWidget {
                       userProfile?.email ?? 'N/A',
                       style: const TextStyle(
                         fontSize: 16,
-                        color: Colors.grey,
+                        color: AppColors.textSecondary,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -90,7 +91,7 @@ class ProfileScreen extends ConsumerWidget {
                         child: Text(
                           'Failed to load badges. Please check your internet connection or try again later. Error: $error',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.red),
+                          style: const TextStyle(color: AppColors.error),
                         ),
                       ),
                     ),
@@ -102,7 +103,7 @@ class ProfileScreen extends ConsumerWidget {
                 child: Text(
                   'Failed to load user profile. Please check your internet connection or try again later. Error: $error',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.red),
+                  style: const TextStyle(color: AppColors.error),
                 ),
               ),
             ),
@@ -122,7 +123,7 @@ class _ProficiencySection extends StatelessWidget {
           children: [
             const Row(
               children: [
-                Icon(Icons.school, color: Colors.blue),
+                Icon(Icons.school, color: AppColors.neonCyan),
                 SizedBox(width: 12),
                 Text(
                   'Your Learning Path',
@@ -137,13 +138,13 @@ class _ProficiencySection extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blue[50],
+                color: AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue[100]!),
+                border: Border.all(color: AppColors.neonCyan.withOpacity(0.15)),
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.auto_graph, color: Colors.blue),
+                  Icon(Icons.auto_graph, color: AppColors.neonCyan),
                   SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -154,7 +155,7 @@ class _ProficiencySection extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                            color: AppColors.neonCyan,
                           ),
                         ),
                         SizedBox(height: 4),
@@ -162,7 +163,7 @@ class _ProficiencySection extends StatelessWidget {
                           'Complete foundational courses to build your AI knowledge',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.blue,
+                            color: AppColors.neonCyan,
                           ),
                         ),
                       ],
@@ -229,13 +230,13 @@ class _RecommendationItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(color: AppColors.border),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.grey),
+          Icon(icon, color: AppColors.textSecondary),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -253,7 +254,7 @@ class _RecommendationItem extends StatelessWidget {
                   description,
                   style: const TextStyle(
                     fontSize: 12,
-                    color: Colors.grey,
+                    color: AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -262,14 +263,14 @@ class _RecommendationItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.blue[100],
+              color: AppColors.neonCyan.withOpacity(0.15),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
               duration,
               style: const TextStyle(
                 fontSize: 10,
-                color: Colors.blue,
+                color: AppColors.neonCyan,
                 fontWeight: FontWeight.w500,
               ),
             ),

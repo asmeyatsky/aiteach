@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/data/models/lesson_model.dart';
 import 'package:frontend/providers/user_progress_provider.dart';
 import 'package:frontend/providers/user_provider.dart';
@@ -36,7 +37,7 @@ class LessonViewScreen extends ConsumerWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: isCompleted ? Colors.green : Colors.blue,
+                        color: isCompleted ? AppColors.neonGreen : AppColors.neonCyan,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -52,13 +53,13 @@ class LessonViewScreen extends ConsumerWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: AppColors.border,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         lesson.contentType,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: AppColors.textSecondary,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -110,19 +111,19 @@ class LessonViewScreen extends ConsumerWidget {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.green[50],
+                        color: AppColors.neonGreen.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.green),
+                        border: Border.all(color: AppColors.neonGreen),
                       ),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.check_circle, color: Colors.green),
+                          Icon(Icons.check_circle, color: AppColors.neonGreen),
                           SizedBox(width: 8),
                           Text(
                             'Lesson Completed!',
                             style: TextStyle(
-                              color: Colors.green,
+                              color: AppColors.neonGreen,
                               fontWeight: FontWeight.w500,
                             ),
                           ),

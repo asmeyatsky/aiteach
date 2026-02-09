@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/data/models/project_model.dart';
 import 'package:frontend/providers/project_provider.dart';
 
@@ -105,7 +106,7 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen> {
                                       widget.project.track.toUpperCase(),
                                       style: const TextStyle(fontSize: 12),
                                     ),
-                                    backgroundColor: Colors.blue.shade100,
+                                    backgroundColor: AppColors.neonCyan.withOpacity(0.15),
                                   ),
                                   Chip(
                                     label: Text(
@@ -209,13 +210,13 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen> {
   Color _getDifficultyColor(String difficulty) {
     switch (difficulty.toLowerCase()) {
       case 'easy':
-        return Colors.green.shade100;
+        return AppColors.neonGreen.withOpacity(0.1);
       case 'medium':
-        return Colors.orange.shade100;
+        return AppColors.warning.withOpacity(0.1);
       case 'hard':
-        return Colors.red.shade100;
+        return AppColors.error.withOpacity(0.1);
       default:
-        return Colors.grey.shade100;
+        return AppColors.surfaceVariant;
     }
   }
 }

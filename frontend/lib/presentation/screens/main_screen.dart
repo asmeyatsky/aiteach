@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/presentation/screens/course_catalog_screen.dart';
 import 'package:frontend/presentation/screens/forum_list_screen.dart';
@@ -79,7 +80,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: AppColors.neonCyan,
         onTap: _onItemTapped,
       ),
     );

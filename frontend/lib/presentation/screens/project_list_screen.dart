@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/config/app_colors.dart';
 import 'package:frontend/presentation/screens/project_detail_screen.dart';
 import 'package:frontend/providers/project_provider.dart';
 
@@ -54,7 +55,7 @@ class ProjectListScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 64, color: Colors.red),
+              const Icon(Icons.error_outline, size: 64, color: AppColors.error),
               const SizedBox(height: 16),
               Text('Error loading projects: $error'),
               ElevatedButton(
@@ -71,13 +72,13 @@ class ProjectListScreen extends ConsumerWidget {
   Color _getDifficultyColor(String difficulty) {
     switch (difficulty.toLowerCase()) {
       case 'easy':
-        return Colors.green.shade100;
+        return AppColors.neonGreen.withOpacity(0.1);
       case 'medium':
-        return Colors.orange.shade100;
+        return AppColors.warning.withOpacity(0.1);
       case 'hard':
-        return Colors.red.shade100;
+        return AppColors.error.withOpacity(0.1);
       default:
-        return Colors.grey.shade100;
+        return AppColors.surfaceVariant;
     }
   }
 }
