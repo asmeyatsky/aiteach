@@ -14,7 +14,7 @@ def create_course(course: course_dto.CourseCreate, course_repo: CourseRepository
     return course_repo.create_course(course)
 
 @router.get("/", response_model=List[course_dto.Course])
-def read_courses(skip: int = 0, limit: int = Query(default=20, le=100, ge=1), course_repo: CourseRepositoryPort = Depends(get_course_repository)):
+def read_courses(skip: int = 0, limit: int = Query(default=100, le=100, ge=1), course_repo: CourseRepositoryPort = Depends(get_course_repository)):
     courses = course_repo.get_courses(skip=skip, limit=limit)
     return courses
 
