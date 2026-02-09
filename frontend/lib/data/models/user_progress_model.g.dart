@@ -8,9 +8,9 @@ part of 'user_progress_model.dart';
 
 UserProgressModel _$UserProgressModelFromJson(Map<String, dynamic> json) =>
     UserProgressModel(
-      userId: (json['userId'] as num).toInt(),
-      lessonId: (json['lessonId'] as num).toInt(),
-      completedAt: DateTime.parse(json['completedAt'] as String),
+      userId: (json['user_id'] as num).toInt(),
+      lessonId: (json['lesson_id'] as num).toInt(),
+      completedAt: DateTime.parse(json['completed_at'] as String),
       lesson: json['lesson'] == null
           ? null
           : LessonModel.fromJson(json['lesson'] as Map<String, dynamic>),
@@ -18,8 +18,8 @@ UserProgressModel _$UserProgressModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UserProgressModelToJson(UserProgressModel instance) =>
     <String, dynamic>{
-      'userId': instance.userId,
-      'lessonId': instance.lessonId,
-      'completedAt': instance.completedAt.toIso8601String(),
+      'user_id': instance.userId,
+      'lesson_id': instance.lessonId,
+      'completed_at': instance.completedAt.toIso8601String(),
       'lesson': instance.lesson,
     };

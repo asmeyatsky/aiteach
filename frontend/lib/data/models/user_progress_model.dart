@@ -15,8 +15,11 @@ class UserProgressModel {
   factory UserProgressModel.fromJson(Map<String, dynamic> json) => _$UserProgressModelFromJson(json);
   Map<String, dynamic> toJson() => _$UserProgressModelToJson(this);
 
+  @JsonKey(name: 'user_id')
   final int userId;
+  @JsonKey(name: 'lesson_id')
   final int lessonId;
+  @JsonKey(name: 'completed_at')
   final DateTime completedAt;
   final LessonModel? lesson; // Add lesson field
 }
