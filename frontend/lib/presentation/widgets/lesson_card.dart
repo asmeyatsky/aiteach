@@ -89,11 +89,16 @@ class LessonCard extends StatelessWidget {
   IconData _getIconForContentType(String contentType) {
     switch (contentType.toLowerCase()) {
       case 'text':
+      case 'markdown':
         return Icons.article;
       case 'video':
         return Icons.play_circle_fill;
       case 'quiz':
         return Icons.quiz;
+      case 'lab':
+        return Icons.science;
+      case 'external':
+        return Icons.open_in_new;
       default:
         return Icons.article;
     }
