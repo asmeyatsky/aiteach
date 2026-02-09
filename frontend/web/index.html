@@ -25,7 +25,7 @@
 
   <!-- Security headers via meta tags -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="DENY">
+  <!-- X-Frame-Options set via nginx HTTP header instead -->
   <meta http-equiv="X-XSS-Protection" content="1; mode=block">
   <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
 
@@ -136,6 +136,23 @@
     });
   </script>
 
+  <script>
+    // Force clear stale service workers and caches from previous broken deploys
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (var i = 0; i < registrations.length; i++) {
+          registrations[i].unregister();
+        }
+      });
+    }
+    if ('caches' in window) {
+      caches.keys().then(function(names) {
+        for (var i = 0; i < names.length; i++) {
+          caches.delete(names[i]);
+        }
+      });
+    }
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
