@@ -69,7 +69,7 @@ jobs:
             --min-instances=0 \
             --max-instances=2 \
             --port=8000 \
-            --set-env-vars='^||^DATABASE_URL=sqlite:///./data/staging.db||JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}||TRUSTED_HOSTS=["*"]||DEBUG=True||ALLOWED_ORIGINS=["https://aiteach-frontend-stage-186667783026.europe-west2.run.app","http://localhost:3000"]'
+            --set-env-vars='^||^DATABASE_URL=sqlite:///./data/staging.db||JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}||TRUSTED_HOSTS=["*"]||DEBUG=True||ALLOWED_ORIGINS=["https://aiteach-frontend-stage-ov3zfsistq-nw.a.run.app","http://localhost:3000"]'
 
       - name: Get backend URL
         id: backend-url
