@@ -70,15 +70,25 @@ setup_gcloud_resources() {
 
 # Deploy backend
 deploy_backend() {
-    echo "🔧 Deploying backend..."
+    echo "🔧 Deploying backend directly to Cloud Run from source..."
 
-    cd backend
-
-    # Submit build to Cloud Build
-    gcloud builds submit --config cloudbuild.yaml --project=$PROJECT_ID
+    gcloud run deploy aiteach-backend-staging \
+        --source=backend \
+        --project=$PROJECT_ID \
+        --region=$REGION \
+        --platform=managed \
+        --allow-unauthenticated \
+        --port=8000 \
+        --memory=512Mi \
+        --cpu=1 \
+        --max-instances=10 \
+        --concurrency=80 \
+        --timeout=300 \
+        --set-env-vars=DEBUG=False,LOG_LEVEL=INFO,GOOGLE_CLOUD_PROJECT=$PROJECT_ID \
+        --update-secrets=DATABASE_URL=database-url:latest,JWT_SECRET_KEY=jwt-secret-key:latest \
+        --add-cloudsql-instances=$PROJECT_ID:us-central1:aiteach-db
 
     echo "✅ Backend deployed successfully"
-    cd ..
 }
 
 # Deploy frontend
