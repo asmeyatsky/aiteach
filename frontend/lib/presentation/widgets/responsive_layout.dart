@@ -128,6 +128,8 @@ class AdaptiveGridView extends StatelessWidget {
       crossAxisCount: crossAxisCount,
       mainAxisSpacing: mainAxisSpacing,
       crossAxisSpacing: crossAxisSpacing,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       children: children,
     );
   }
