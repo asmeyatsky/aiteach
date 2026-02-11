@@ -28,7 +28,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           final user = await authService.getCurrentUser();
           if (user != null && mounted) {
             ref.read(currentUserProvider.notifier).state = user;
-            context.go('/');
+            context.go('/home');
           } else if (mounted) {
             context.go('/login');
           }

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Teach - Learn AI &amp; Machine Learning with Personalized Learning Paths</title>
+  <meta name="description" content="Master AI and Machine Learning through personalized learning paths. Free courses from MIT, Stanford, Google AI and more. Interactive playground, code sandbox, and community forum.">
+  <meta name="keywords" content="AI courses, machine learning, deep learning, artificial intelligence education, learn AI free, AI tutorials, neural networks, NLP, computer vision">
+  <meta name="author" content="AI Teach">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://aiteach.app">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="AI Teach - Learn AI & Machine Learning for Free">
+  <meta property="og:description" content="Master AI through personalized learning paths. Courses from MIT, Stanford, Google AI. Interactive playground, code sandbox, and community.">
+  <meta property="og:image" content="https://aiteach.app/icons/Icon-512.png">
+  <meta property="og:url" content="https://aiteach.app">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AI Teach">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Teach - Learn AI & Machine Learning for Free">
+  <meta name="twitter:description" content="Master AI through personalized learning paths. Courses from MIT, Stanford, Google AI. Interactive playground, code sandbox, and community.">
+  <meta name="twitter:image" content="https://aiteach.app/icons/Icon-512.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "AI Teach",
+    "url": "https://aiteach.app",
+    "description": "AI education platform offering personalized learning paths for artificial intelligence and machine learning.",
+    "sameAs": [],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Free AI and Machine Learning courses"
+    },
+    "hasCourse": [
+      {
+        "@type": "Course",
+        "name": "Intro to Machine Learning",
+        "description": "Core ML concepts: supervised, unsupervised, and reinforcement learning",
+        "provider": { "@type": "Organization", "name": "AI Teach" },
+        "isAccessibleForFree": true
+      },
+      {
+        "@type": "Course",
+        "name": "Practical Deep Learning",
+        "description": "Build neural networks with PyTorch and TensorFlow",
+        "provider": { "@type": "Organization", "name": "AI Teach" },
+        "isAccessibleForFree": true
+      },
+      {
+        "@type": "Course",
+        "name": "AI Ethics & Safety",
+        "description": "Responsible AI development and deployment practices",
+        "provider": { "@type": "Organization", "name": "AI Teach" },
+        "isAccessibleForFree": true
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0A0E1A;
+      --bg-secondary: #111627;
+      --bg-card: #161B2E;
+      --text-primary: #F0F0F5;
+      --text-secondary: #A0A4B8;
+      --accent-green: #00E676;
+      --accent-blue: #448AFF;
+      --accent-purple: #B388FF;
+      --accent-cyan: #00E5FF;
+      --border-color: #1E2440;
+      --font-main: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    @font-face {
+      font-family: 'Space Grotesk';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url('https://fonts.gstatic.com/s/spacegrotesk/v16/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2') format('woff2');
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Nav */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 14, 26, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links { display: flex; gap: 0.75rem; align-items: center; }
+
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-ghost:hover { color: var(--text-primary); border-color: var(--text-secondary); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(68, 138, 255, 0.3);
+    }
+
+    .btn-primary:hover { box-shadow: 0 6px 25px rgba(68, 138, 255, 0.45); }
+
+    .btn-large { padding: 0.9rem 2.5rem; font-size: 1.1rem; }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(68, 138, 255, 0.08) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 50%, rgba(179, 136, 255, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .hero-cta { position: relative; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+    /* Trust */
+    .trust {
+      padding: 2rem 2rem 3rem;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .trust p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .trust span { color: var(--text-primary); font-weight: 600; }
+
+    /* Sections */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 3rem;
+    }
+
+    /* Tracks */
+    .tracks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .track-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .track-card:hover { transform: translateY(-4px); }
+    .track-card.user { border-top: 3px solid var(--accent-green); }
+    .track-card.builder { border-top: 3px solid var(--accent-blue); }
+    .track-card.innovator { border-top: 3px solid var(--accent-purple); }
+
+    .track-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .track-card.user h3 { color: var(--accent-green); }
+    .track-card.builder h3 { color: var(--accent-blue); }
+    .track-card.innovator h3 { color: var(--accent-purple); }
+
+    .track-card p { color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 0.95rem; }
+
+    .track-courses { list-style: none; }
+    .track-courses li {
+      padding: 0.4rem 0;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .track-courses li:last-child { border-bottom: none; }
+
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: border-color 0.2s;
+    }
+
+    .feature-card:hover { border-color: var(--accent-blue); }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--bg-secondary);
+    }
+
+    .feature-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .feature-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* Courses */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .course-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .course-card:hover { transform: translateY(-3px); border-color: var(--accent-cyan); }
+
+    .course-tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .course-tag.user { background: rgba(0, 230, 118, 0.15); color: var(--accent-green); }
+    .course-tag.builder { background: rgba(68, 138, 255, 0.15); color: var(--accent-blue); }
+    .course-tag.innovator { background: rgba(179, 136, 255, 0.15); color: var(--accent-purple); }
+
+    .course-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .course-card p { color: var(--text-secondary); font-size: 0.85rem; }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p { color: var(--text-secondary); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+    /* Footer */
+    .footer {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .footer-links { margin-bottom: 1rem; display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+    .footer-links a:hover { color: var(--text-primary); }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav { padding: 0.75rem 1rem; }
+      .nav-brand { font-size: 1.25rem; }
+      .btn { padding: 0.5rem 1rem; font-size: 0.85rem; }
+      .btn-large { padding: 0.7rem 1.75rem; font-size: 1rem; }
+      .section { padding: 3.5rem 1.25rem; }
+      .tracks-grid, .features-grid, .courses-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn, .track-card, .course-card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-brand" aria-label="AI Teach home">AI Teach</div>
+    <div class="nav-links">
+      <a href="login" class="btn btn-ghost">Log In</a>
+      <a href="register" class="btn btn-primary">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <h1>Learn AI the<br><span class="highlight">Smart Way</span></h1>
+    <p class="hero-sub">Personalized learning paths that take you from curious beginner to confident AI practitioner. Free courses, interactive tools, and a community of learners.</p>
+    <div class="hero-cta">
+      <a href="register" class="btn btn-primary btn-large">Start Learning for Free</a>
+      <a href="#tracks" class="btn btn-ghost btn-large">Explore Tracks</a>
+    </div>
+  </header>
+
+  <!-- Trust Strip -->
+  <section class="trust" aria-label="Content sources">
+    <p>Curated content from <span>MIT</span>, <span>Stanford</span>, <span>Google AI</span>, <span>Microsoft AI</span>, <span>Fast.ai</span>, <span>DeepLearning.AI</span>, and more</p>
+  </section>
+
+  <!-- Learning Tracks -->
+  <section class="section" id="tracks" aria-labelledby="tracks-heading">
+    <h2 class="section-title" id="tracks-heading">Three Tracks, One Goal</h2>
+    <p class="section-sub">Pick the path that matches where you are and where you want to go.</p>
+    <div class="tracks-grid">
+
+      <article class="track-card user">
+        <h3>User Track</h3>
+        <p>Understand AI as a tool. Learn to use AI products effectively and think critically about the technology shaping everyday life.</p>
+        <ul class="track-courses">
+          <li>How AI Works: A Non-Technical Guide</li>
+          <li>Everyday AI: Tools That Save You Hours</li>
+          <li>Prompt Engineering Essentials</li>
+          <li>AI Ethics for Everyone</li>
+        </ul>
+      </article>
+
+      <article class="track-card builder">
+        <h3>Builder Track</h3>
+        <p>Build with AI. Go from writing your first line of Python to training models and deploying real-world ML applications.</p>
+        <ul class="track-courses">
+          <li>Intro to Machine Learning</li>
+          <li>Practical Deep Learning with PyTorch</li>
+          <li>Natural Language Processing</li>
+          <li>Computer Vision Fundamentals</li>
+        </ul>
+      </article>
+
+      <article class="track-card innovator">
+        <h3>Innovator Track</h3>
+        <p>Push the frontier. Dive into cutting-edge research, advanced architectures, and the ideas that will define the next era of AI.</p>
+        <ul class="track-courses">
+          <li>Transformer Architectures Deep Dive</li>
+          <li>Reinforcement Learning</li>
+          <li>Generative AI &amp; Diffusion Models</li>
+          <li>AI Research Methods</li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Platform Features -->
+  <section class="section" aria-labelledby="features-heading">
+    <h2 class="section-title" id="features-heading">More Than Just Courses</h2>
+    <p class="section-sub">A full learning environment built for hands-on understanding.</p>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">&#x1F9EA;</div>
+        <h3>AI Playground</h3>
+        <p>Experiment with models in an interactive sandbox. Tweak parameters, visualize outputs, and build intuition.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">&#x1F4BB;</div>
+        <h3>Code Sandbox</h3>
+        <p>Write and run Python code directly in your browser. No setup, no installs, just learn.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">&#x1F4AC;</div>
+        <h3>Community Forum</h3>
+        <p>Ask questions, share projects, and learn alongside others on the same journey.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">&#x1F680;</div>
+        <h3>Hands-On Projects</h3>
+        <p>Apply what you learn. Build real projects with guided instructions and peer feedback.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">&#x1F4F0;</div>
+        <h3>AI News Feed</h3>
+        <p>Stay current with curated AI news, paper summaries, and industry updates.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">&#x1F3C6;</div>
+        <h3>Gamification</h3>
+        <p>Earn XP, unlock achievements, and track your progress on the leaderboard.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Featured Courses -->
+  <section class="section" aria-labelledby="courses-heading">
+    <h2 class="section-title" id="courses-heading">Featured Courses</h2>
+    <p class="section-sub">Start with any of these popular picks.</p>
+    <div class="courses-grid">
+
+      <article class="course-card">
+        <span class="course-tag user">User</span>
+        <h3>Prompt Engineering Essentials</h3>
+        <p>Learn to communicate effectively with large language models. Craft prompts that get results.</p>
+      </article>
+
+      <article class="course-card">
+        <span class="course-tag builder">Builder</span>
+        <h3>Intro to Machine Learning</h3>
+        <p>Supervised and unsupervised learning, model evaluation, and your first end-to-end ML pipeline.</p>
+      </article>
+
+      <article class="course-card">
+        <span class="course-tag builder">Builder</span>
+        <h3>Practical Deep Learning</h3>
+        <p>Build neural networks with PyTorch. CNNs, RNNs, and training workflows from scratch.</p>
+      </article>
+
+      <article class="course-card">
+        <span class="course-tag innovator">Innovator</span>
+        <h3>Transformer Architectures</h3>
+        <p>Attention mechanisms, BERT, GPT, and the architecture behind modern AI breakthroughs.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="cta-section" aria-labelledby="cta-heading">
+    <h2 id="cta-heading">Start Learning for Free</h2>
+    <p>No credit card required. Pick a track and begin your first lesson in under two minutes.</p>
+    <a href="register" class="btn btn-primary btn-large">Create Free Account</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="login">Log In</a>
+      <a href="register">Sign Up</a>
+    </nav>
+    <p>&copy; 2025 AI Teach. All rights reserved.</p>
+  </footer>
+
+  <!-- Auth redirect: if user is already logged in, send them to the app -->
+  <script>
+    (function() {
+      try {
+        var token = localStorage.getItem('flutter.jwt_token') ||
+                    localStorage.getItem('jwt_token');
+        if (token) {
+          window.location.replace('home');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+</body>
+</html>

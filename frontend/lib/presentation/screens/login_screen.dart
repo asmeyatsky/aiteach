@@ -37,7 +37,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (token != null) {
       // If token exists, navigate to home screen
       if (mounted) {
-        context.go('/');
+        context.go('/home');
       }
     }
   }
@@ -108,13 +108,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   if (user != null) {
                                     ref.read(currentUserProvider.notifier).state = user;
                                     if (mounted) {
-                                      context.go('/'); // Navigate to home screen on successful login
+                                      context.go('/home'); // Navigate to home screen on successful login
                                     }
                                   }
                                 } catch (userError) {
                                   // Still navigate even if user info fails
                                   if (mounted) {
-                                    context.go('/');
+                                    context.go('/home');
                                   }
                                 }
                               } else {

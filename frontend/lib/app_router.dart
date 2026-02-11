@@ -47,7 +47,7 @@ final GoRouter router = GoRouter(
             const Text('Page not found', style: TextStyle(fontSize: 20)),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () => context.go('/'),
+              onPressed: () => context.go('/home'),
               child: const Text('Go Home'),
             ),
           ],
@@ -75,7 +75,7 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/',
+      path: '/home',
       builder: (BuildContext context, GoRouterState state) {
         return const MainScreen();
       },
